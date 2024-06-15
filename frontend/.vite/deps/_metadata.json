@@ -1,0 +1,101 @@
+{
+  "hash": "5c3d5993",
+  "browserHash": "a09bae03",
+  "optimized": {
+    "react": {
+      "src": "../../node_modules/react/index.js",
+      "file": "react.js",
+      "fileHash": "c3b4d66e",
+      "needsInterop": true
+    },
+    "react-dom/client": {
+      "src": "../../node_modules/react-dom/client.js",
+      "file": "react-dom_client.js",
+      "fileHash": "410a1809",
+      "needsInterop": true
+    },
+    "react-router-dom": {
+      "src": "../../node_modules/react-router-dom/dist/index.js",
+      "file": "react-router-dom.js",
+      "fileHash": "ce8b831a",
+      "needsInterop": false
+    },
+    "chart.js": {
+      "src": "../../node_modules/chart.js/dist/chart.js",
+      "file": "chart__js.js",
+      "fileHash": "fe9fe810",
+      "needsInterop": false
+    },
+    "axios": {
+      "src": "../../node_modules/axios/index.js",
+      "file": "axios.js",
+      "fileHash": "3218ad43",
+      "needsInterop": false
+    },
+    "tailwindcss/resolveConfig": {
+      "src": "../../node_modules/tailwindcss/resolveConfig.js",
+      "file": "tailwindcss_resolveConfig.js",
+      "fileHash": "2a7b1f68",
+      "needsInterop": true
+    },
+    "autoprefixer": {
+      "src": "../../node_modules/autoprefixer/lib/autoprefixer.js",
+      "file": "autoprefixer.js",
+      "fileHash": "0cd69f30",
+      "needsInterop": true
+    },
+    "jwt-decode": {
+      "src": "../../node_modules/jwt-decode/build/esm/index.js",
+      "file": "jwt-decode.js",
+      "fileHash": "58c4cef3",
+      "needsInterop": false
+    },
+    "chart.js/helpers": {
+      "src": "../../node_modules/chart.js/helpers/helpers.js",
+      "file": "chart__js_helpers.js",
+      "fileHash": "89657d98",
+      "needsInterop": false
+    },
+    "react-flatpickr": {
+      "src": "../../node_modules/react-flatpickr/build/index.js",
+      "file": "react-flatpickr.js",
+      "fileHash": "58105777",
+      "needsInterop": true
+    },
+    "react-transition-group": {
+      "src": "../../node_modules/react-transition-group/esm/index.js",
+      "file": "react-transition-group.js",
+      "fileHash": "1403d980",
+      "needsInterop": false
+    },
+    "chartjs-adapter-moment": {
+      "src": "../../node_modules/chartjs-adapter-moment/dist/chartjs-adapter-moment.esm.js",
+      "file": "chartjs-adapter-moment.js",
+      "fileHash": "d8437acc",
+      "needsInterop": false
+    }
+  },
+  "chunks": {
+    "chunk-4XJ76OXM": {
+      "file": "chunk-4XJ76OXM.js"
+    },
+    "chunk-KOABQC56": {
+      "file": "chunk-KOABQC56.js"
+    },
+    "chunk-XRMR5KPY": {
+      "file": "chunk-XRMR5KPY.js"
+    },
+    "chunk-Y5NXYZBD": {
+      "file": "chunk-Y5NXYZBD.js"
+    },
+    "chunk-LXMUQPHU": {
+      "file": "chunk-LXMUQPHU.js"
+    },
+    "chunk-3OA7HDTD": {
+      "file": "chunk-3OA7HDTD.js"
+    },
+    "chunk-WGAPYIUP": {
+      "file": "chunk-WGAPYIUP.js"
+    }
+  }
+}
