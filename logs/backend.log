@@ -349,3 +349,12 @@ DEBUG 2024-06-16 12:54:24,127 expenses_views 7525 6219575296 expense not added: 
 DEBUG 2024-06-16 12:55:08,250 expenses_views 8481 6195507200 expense added
 DEBUG 2024-06-16 13:54:58,595 credit_card_views 8506 6146142208 Credit card not added: Cannot assign "UUID('d968d621-2fa6-4131-95e6-ac3120bfa067')": "CreditCard.family_id" must be a "Family" instance.
 DEBUG 2024-06-16 13:55:31,637 credit_card_views 10285 6197293056 Credit card added
+DEBUG 2024-06-16 16:17:22,564 credit_card_views 12566 6166261760 Credit card not added: cannot access local variable 'card' where it is not associated with a value
+DEBUG 2024-06-16 16:19:52,397 credit_card_views 12566 6183088128 Credit card not added: cannot access local variable 'card' where it is not associated with a value
+DEBUG 2024-06-16 16:28:06,917 credit_card_views 12744 6137458688 Credit card not added: cannot access local variable 'card' where it is not associated with a value
+DEBUG 2024-06-16 16:28:27,231 credit_card_views 12752 6162542592 Credit card not added: cannot access local variable 'card' where it is not associated with a value
+DEBUG 2024-06-16 16:31:35,378 credit_card_views 12795 6193115136 Credit card not added: cannot access local variable 'card' where it is not associated with a value
+DEBUG 2024-06-16 16:32:20,498 credit_card_views 12808 6167916544 Credit card not added: cannot access local variable 'card' where it is not associated with a value
+DEBUG 2024-06-16 16:32:29,609 credit_card_views 12808 6167916544 Credit card not added: cannot access local variable 'card' where it is not associated with a value
+DEBUG 2024-06-16 16:32:37,515 credit_card_views 12808 6167916544 Credit card not added: cannot access local variable 'card' where it is not associated with a value
+DEBUG 2024-06-16 16:40:47,134 credit_card_views 12877 6202634240 Credit card added

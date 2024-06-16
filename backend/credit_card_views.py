@@ -29,36 +29,23 @@ def add_credit_card(request):
     try:
         user_id= request.user.id
         user = CustomUser.objects.get(id=user_id)
-        name = request.data.get('name', '')
-        day_of_charge = request.data.get('day_of_charge', '')
-        credit_type = request.data.get('credit_type', '')
-        line_of_credit = request.data.get('line_of_credit', '')
-        last_four_digits = request.data.get('last_four_digits', '')
-        status = request.data.get('status', '')
+        request.data['user'] = user.id
+        request.data['family'] = user.family_id
 
-      
-        # Create the credit_card
-        credit_card = CreditCard.objects.create(
-            user_id=CustomUser(user_id),  # Assign the user instance directly
-            family_id= Family(user.family_id),
-            name=name,
-            day_of_charge=day_of_charge, 
-            credit_type=credit_type,
-            line_of_credit=line_of_credit,
-            last_four_digits=last_four_digits,
-            status=status,
-            created_at=timezone.now(),
-            updated_at=timezone.now()
-        )
-        credit_card.save()
-        logger.debug('Credit card added')
-        return JsonResponse({'successful': 'Credit card added'})
+        serializer = CreditCardSerializer(data=request.data)
+        if serializer.is_valid():
+            card = serializer.save()
+            logger.debug('Credit card added')
+            return Response({'successful': 'Credit card added'})
+        else:
+            logger.debug(f'Credit card not added: {str(e)}')
+            return Response({'error': str(e)}, status=500)
         
     except CustomUser.DoesNotExist:
-        return JsonResponse({'error': 'User does not exist'}, status=404)
+        return Response({'error': 'User does not exist'}, status=404)
     except Exception as e:
         logger.debug(f'Credit card not added: {str(e)}')
-        return JsonResponse({'error': str(e)}, status=500)
+        return Response({'error': str(e)}, status=500)
     
 
 
@@ -82,17 +69,17 @@ def delete_credit_card(request, credit_card_id):
 def get_credit_card(request):
     user_id= request.user.id
     try:
+        
         credit_cards = CreditCard.objects.filter(user_id=user_id)
-        credit_cards_list = [{'id': card.id, 'name': card.name,'day_of_charge':card.day_of_charge,'credit_type':card.credit_type,'line_of_credit':card.line_of_credit,'last_four_digits':card.last_four_digits,'amount_to_charge': card.amount_to_charge,'credit_type':card.credit_type,'status':card.status} for card in credit_cards]
-        return JsonResponse(
-        {
+        serializer = CreditCardSerializer(credit_cards,many=True)
+        return Response({
         'status':200,
-        'credit_cards':credit_cards_list,
+        'credit_cards':serializer.data,
         })
         
     except Exception as e:
         print(f"Error: {str(e)}")  # Debug: Print the error message
-        return JsonResponse({
+        return Response({
             'status': 500,
             'message': 'An error occurred while fetching data.',
             'error': str(e)
@@ -105,31 +92,33 @@ def get_credit_card(request):
 
 
 #get chosen card
-@api_view(['POST'])
+@api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def get_chosen_credit_card(request,card_id):
-    
+    user_id= request.user.id
     try:
-        credit_card = CreditCard.objects.filter(id=card_id)
-        chosen_credit_card = [{'id': card.id, 'name': card.name,'day_of_charge':card.day_of_charge,'credit_type':card.credit_type,'line_of_credit':card.line_of_credit,'last_four_digits':card.last_four_digits,'amount_to_charge': card.amount_to_charge,'credit_type':card.credit_type,'status':card.status}for card in credit_card]
-        if credit_card.exists():
-            return JsonResponse(
-            {
-            'status':200,
-            'chosen_credit_card':chosen_credit_card,
-            })
+        
+        credit_card = CreditCard.objects.filter(user_id=user_id)
+        serializer = CreditCardSerializer(credit_card)
+        return Response({
+        'status':200,
+        'chosen_card':serializer.data,
+        })
         
     except Exception as e:
         print(f"Error: {str(e)}")  # Debug: Print the error message
-        return JsonResponse({
+        return Response({
             'status': 500,
             'message': 'An error occurred while fetching data.',
             'error': str(e)
         }, status=500)
+    
+    except CreditCard.DoesNotExist:
+        return Response({"error": "Credit card not found"}, status=status.HTTP_404_NOT_FOUND)
 
 # -------------------------------------------------------------------------------
     # TODO: fix this view
-@api_view(['POST'])
+@api_view(['PUT'])
 @permission_classes([IsAuthenticated])
 def reset_credit_card_transactions(self):
     today = timezone.now()

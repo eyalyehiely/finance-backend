@@ -60,17 +60,28 @@ class DebtSerializer(serializers.ModelSerializer):
 
 
 class CreditCardSerializer(serializers.ModelSerializer):
+    last_four_digits = serializers.CharField(max_length=5)
+
 
     class Meta:
         model = CreditCard
-        fields = ['id', 'day_of_charge', 'credit_type', 'line_of_credit', 'amount_to_charge','depending_charges']
+        fields = '__all__'
 
-    def amount_to_charge(self, obj):
-        return obj.amount_to_charge
+    def validate_last_four_digits(self, value):
+            """
+            Validate that the last_four_digits field has exactly 4 digits.
+            """
+            if len(value) != 4 or not value.isdigit():
+                raise serializers.ValidationError("last_four_digits must be exactly 4 digits.")
+            return value
+    
+    
+    # def amount_to_charge(self, obj):
+    #     return obj.amount_to_charge
 
 
-    def depending_charges(self,obj):
-        return obj.depending_charges
+    # def depending_charges(self,obj):
+    #     return obj.depending_charges
 
 
 class ExpenseSerializer(serializers.ModelSerializer):

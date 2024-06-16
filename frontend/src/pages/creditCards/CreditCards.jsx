@@ -12,7 +12,7 @@ import EditCard from './EditCard';
 function CreditCards() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [creditCards, setCreditCards] = useState([]);
-  const [chosenCard, setChosenCard] = useState([]);
+  // const [chosenCard, setChosenCard] = useState([]);
   // const [logo, setLogo] = useState([]);
   const token = localStorage.getItem('authTokens') ? JSON.parse(localStorage.getItem('authTokens')).access : null;
 
@@ -20,7 +20,7 @@ function CreditCards() {
  
   // function chosenCreditCard(){
   //   const card_id = document.getElementById('credit_card').value || '';
-  //   axios.post(`http://localhost:8000/api/get_chosen_credit_card/${card_id}/`, {},{
+  //   axios.get(`http://localhost:8000/api/get_chosen_credit_card/${card_id}/`, {},{
   //     headers: {
   //       'content-type': 'application/json',
   //       Authorization: `Bearer ${token}`,
