@@ -1,85 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import swal from 'sweetalert';
 import AddCommaToNumber from '../../components/AddComma';
+import fetchExpensesData from '../../functions/expenses/fetchExpensesData';
+import deleteExpense from '../../functions/expenses/deleteExpense';
+import saveEdit from '/src/functions/expenses/saveEdit.js'
 
 function ExpensesTable() {
   const [expenses, setExpenses] = useState([]);
   const [editingExpenseId, setEditingExpenseId] = useState(null);
   const [editedExpense, setEditedExpense] = useState({});
-  const [status, setStatus] = useState({});
-
+  // const [status, setStatus] = useState({});
   const token = localStorage.getItem('authTokens') ? JSON.parse(localStorage.getItem('authTokens')).access : null;
 
-  function fetchData() {
-    axios.post('http://localhost:8000/api/get_all_expenses/', {}, {
-      headers: {
-        'content-type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      }
-    })
-      .then(response => {
-        if (response.data.status === 200) {
-          setExpenses(response.data.all_expenses);
-        } else {
-          console.log('Error:', response.data.message);
-          swal({
-            title: "Error!",
-            text: `Frontend Error: ${response.data.message}`,
-            icon: "warning",
-            button: "OK",
-          });
-        }
-      })
-      .catch(error => {
-        console.error('There was an error!', error);
-        swal({
-          title: "Error!",
-          text: `Backend Error: ${error.message}`,
-          icon: "error",
-          button: "OK",
-        });
-      });
-  }
-
-  function deleteExpense(id) {
-    swal({
-      title: "האם אתה בטוח?",
-      text: "ברגע שתלחץ על אישור לא יהיה ניתן לשחזר את המידע",
-      icon: "warning",
-      buttons: true,
-      dangerMode: true,
-    }).then((willDelete) => {
-      if (willDelete) {
-        axios.delete(`http://localhost:8000/api/delete_expense/${id}/`, {
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`,
-          }
-        }).then((response) => {
-          swal({
-            title: "🗑️!עבודה טובה",
-            text: " !ההוצאה נמחק בהצלחה",
-            icon: "success",
-            button: "אישור",
-          }).then(() => {
-            fetchData(); // Refresh the data after deletion
-            window.location.reload()
-          });
-        }).catch((error) => {
-          console.error("Error deleting expense:", error);
-          swal({
-            title: "Ⅹ!שגיאה ",
-            text: "שגיאת שרת!",
-            icon: "warning",
-            button: "אישור",
-          });
-        });
-      } else {
-        swal("הנתונים שלך בטוחים");
-      }
-    });
-  }
   
 
   function handleEditChange(event, field) {
@@ -94,112 +25,30 @@ function ExpensesTable() {
     setEditedExpense(expense);
   }
 
-  function saveEdit() {
-    const editedData = {
-      payment_method: editedExpense.payment_method,
-      date_and_time: editedExpense.date_and_time,
-      name: editedExpense.name,
-      price: editedExpense.price.replace(/,/g, ''), // Remove commas before saving
-      credit_card: editedExpense.credit_card || '',
-    };
 
-    axios.put(`http://localhost:8000/api/edit_expense/${editingExpenseId}/`, editedData, {
-      headers: {
-        'content-type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      }
-    })
-      .then(response => {
-        if (response.data.status === 200) {
-          swal({
-            title: "Success!",
-            text: "Expense updated successfully!",
-            icon: "success",
-            button: "OK",
-          });
-          setExpenses(expenses.map(expense => expense.id === editingExpenseId ? response.data.expense : expense));
-          setEditingExpenseId(null);
-          fetchData();
-        } else {
-          console.log('Error:', response.data.message);
-          alert(response.data.message); // Adjust error handling as needed
-        }
-      })
-      .catch(error => {
-        console.error('There was an error!', error);
-        alert('An error occurred while updating the expense.'); // Adjust error handling as needed
-      });
-  }
+  // function isCreditCard() {
+  //   if (status === 'creditcard') {
+  //     return (
+  //         <div>
+  //           {/* cards */}
+  //           {/* <label className="block text-sm font-medium mb-1" htmlFor="life_status">
+  //             משפחה <span className="text-rose-500">*</span>
+  //           </label> */}
+  //           <td className="p-2">
+  //           cards.map()
+  //             <select type="text" id="name" className="text-right" value={editedExpense.name} >
 
-  function getCreditData() {
-    axios.post('http://localhost:8000/api/get_credit_card/', {},{
-      headers: {
-        'content-type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      }
-    })
-      .then(response => {
-        if (response.data.status === 200) {
-          const cards = response.data.credit_cards ;
-        } else {
-          console.log('Error:', response.data.message);
-          swal({
-            title: "Ⅹ!שגיאה ",
-            text: {"!שגיאת מערכת":response.data.message},
-            icon: "warning",
-            button: "אישור",
-          })
-        }
-      })
-
-      .catch(error => {
-        console.error('There was an error!', error);
-        swal({
-          title: "Ⅹ!שגיאה ",
-          text: {"!שגיאת backend":response.data.message},
-          icon: "warning",
-          button: "אישור",
-        })
-      });
-  }
-
-
-
-
-
-
-
-
-
-  function isCreditCard() {
-    if (status === 'creditcard') {
-      return (
-          <div>
-            {/* cards */}
-            {/* <label className="block text-sm font-medium mb-1" htmlFor="life_status">
-              משפחה <span className="text-rose-500">*</span>
-            </label> */}
-            <td className="p-2">
-            cards.map()
-              <select type="text" id="name" className="text-right" value={editedExpense.name} >
-
-              </select>
-            </td>
-          </div>
-      );
-    }
-  }
-
-
-
-
-
-
+  //             </select>
+  //           </td>
+  //         </div>
+  //     );
+  //   }
+  // }
 
 
 
   useEffect(() => {
-    fetchData();
+    fetchExpensesData(token,setExpenses);
   }, []);
 
   return (
@@ -244,7 +93,7 @@ function ExpensesTable() {
                         <input type="text" id="name" className="text-right" value={editedExpense.name} onChange={(e) => handleEditChange(e, 'name')} />
                       </td>
                       <td className="p-2">
-                        <select id="payment_method" className="text-right" value={editedExpense.payment_method} onChange={(e) => handleEditChange(e, 'payment_method'), setStatus(e.target.value)}>
+                        <select id="payment_method" className="text-right" value={editedExpense.payment_method} onChange={(e) => handleEditChange(e, 'payment_method')}>
                           <option value=""></option>
                           <option value="credit_card">כרטיס אשראי</option>
                           <option value="direct_debit">הוראת קבע</option>

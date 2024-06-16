@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import Sidebar from '../../partials/Sidebar';
 import Header from '../../partials/Header';
-import axios from 'axios';
-import {
-  NavLink,
-} from 'react-router-dom';
+import {NavLink} from 'react-router-dom';
+import addCreditCard from '/src/functions/credit_cards/addCreditCard.js'
+import Rights from '../../components/Rights';
+import getCreditCardData from '/src/functions/credit_cards/getCreditCardData.js'
+
 
 function AddCreditCard() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -13,60 +14,7 @@ function AddCreditCard() {
   const token = localStorage.getItem('authTokens') ? JSON.parse(localStorage.getItem('authTokens')).access : null;
 
   
-  function fetchData() {
-    const name = document.getElementById('name').value;
-    const day_of_charge = document.getElementById('day_of_charge').value;
-    const credit_type = document.getElementById('credit_type').value;
-    const line_of_credit = document.getElementById('line_of_credit').value;
-    const last_four_digits = document.getElementById('last_four_digits').value;
-    const status = document.getElementById('status').value;
-
-  
-    axios.post('http://localhost:8000/api/add_credit_card/', {
-      name: name,
-      day_of_charge: day_of_charge,
-      credit_type: credit_type,
-      line_of_credit: line_of_credit,
-      last_four_digits: last_four_digits,
-      status: status,
-    }, {
-      headers: {
-        'content-type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      }
-    })
-    .then((response) => {
-      console.log(response.data);
-      swal({
-        title: "💳כרטיס נוסף בהצלחה!",
-        icon: "success",
-        button: "אישור",
-      }).then(() => {
-        window.location.href = '/creditcards/all-cards';
-      });
-    })
-    .catch((error) => {
-      console.error('Error:', error);
-      if (error.response) {
-        console.error('Response Status:', error.response.status);
-        console.error('Response Data:', error.response.data);
-        swal({
-          title: "שגיאה במערכת!",
-          text: error.response.data.message || 'שגיאת שרת',
-          icon: "warning",
-          button: "אישור",
-        });
-      } else {
-        console.error('No response from server:', error.request);
-        swal({
-          title: "שגיאה במערכת!",
-          text: "אין תגובה מהשרת",
-          icon: "warning",
-          button: "אישור",
-        });
-      }
-    });
-  }
+ 
   
   // function validateCardLength(){
   //   const last_four_digits = document.getElementById('last_four_digits').value|| '';
@@ -82,36 +30,17 @@ function AddCreditCard() {
   //   return true
   // }
 
-  function getCreditData() {
-    axios.post('http://localhost:8000/api/get_credit_card/', {},{
-      headers: {
-        'content-type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      }
-    })
-      .then(response => {
-        if (response.data.status === 200) {
-          setCreditCards(response.data.credit_cards);
-        } else {
-          console.log('Error:', response.data.message);
-          alert(response.data.message);
-        }
-      })
-      .catch(error => {
-        console.error('There was an error!', error);
-        alert('An error occurred while fetching data.');
-      });
-  }
+  
 
   useEffect(() => {
-    getCreditData();
+    getCreditCardData(token,setCreditCards);
   }, []);
 
   
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    fetchData()
+    addCreditCard(token)
   };
 
   return (

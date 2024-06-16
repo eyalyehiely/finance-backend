@@ -6,12 +6,10 @@ import SearchForm from '../../partials/actions/SearchForm';
 import DeleteButton from '../../partials/actions/DeleteButton';
 import DateSelect from '../../components/DateSelect';
 import FilterButton from '../../components/DropdownFilter';
-import ExpensesTable from './IncomesTable';
 import PaginationClassic from '../../components/PaginationClassic';
-import {
-  NavLink,
-} from 'react-router-dom';
+import {NavLink,} from 'react-router-dom';
 import SavingsTable from './SavingsTable';
+import Rights from '/src/components/Rights';
 
 
 function AllSavings() {
@@ -116,7 +114,7 @@ function AllSavings() {
         </main>
 
       </div>
-
+<Rights/>
     </div>
   );
 }

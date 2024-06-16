@@ -42,7 +42,7 @@ def add_debt(request):
         # Create the debt
         debt = Debts.objects.create(
             user_id=CustomUser(user_id),  # Assign the user instance directly
-            family_id=user.family_id,
+            family_id=Family(user.family_id),
             name=name,
             type=type, 
             amount=amount,

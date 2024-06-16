@@ -19,7 +19,7 @@ const EditCard = ({ card, onClose }) => {
           {/* <CreditCardLogo cardType={card.card_type} className="w-10 h-6" /> */}
 
           <div className="text-gray-600 text-sm">
-            <span>סופר: {card.last4}</span>
+            <span>סופר: {card.last_four_digits}</span>
           </div>
         </div>
 
@@ -35,7 +35,7 @@ const EditCard = ({ card, onClose }) => {
               id="name"
               name="name"
               className="border border-gray-300 rounded-md shadow-sm focus:ring-slate-500 focus:border-slate-500 block w-full sm:text-sm"
-              defaultValue={card.card_name}
+              defaultValue={card.name}
             />
           </div>
 

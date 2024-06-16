@@ -1,5 +1,4 @@
 import React, {useState} from 'react';
-// import axios from 'axios'
 import Sidebar from '../../partials/Sidebar';
 import Header from '../../partials/Header';
 import SearchForm from '../../partials/actions/SearchForm';
@@ -8,9 +7,8 @@ import DateSelect from '../../components/DateSelect';
 import FilterButton from '../../components/DropdownFilter';
 import ExpensesTable from './IncomesTable';
 import PaginationClassic from '../../components/PaginationClassic';
-import {
-  NavLink,
-} from 'react-router-dom';
+import {NavLink} from 'react-router-dom';
+import Rights from '../../components/Rights';
 
 
 function AllIncomes() {
@@ -115,7 +113,7 @@ function AllIncomes() {
         </main>
 
       </div>
-
+<Rights/>
     </div>
   );
 }

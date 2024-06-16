@@ -5,114 +5,44 @@ import Header from '../../partials/Header';
 import { NavLink, Navigate } from 'react-router-dom';
 import CreditCardLogo from '../component/CreditCardLogo';
 import Rights from '../../components/Rights';
+import getCreditCardData from '/src/functions/credit_cards/getCreditCardData.js'
+import deleteCard from '/src/functions/credit_cards/getCreditCardData.js'
+import EditCard from './EditCard';
+
 function CreditCards() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [creditCards, setCreditCards] = useState([]);
   const [chosenCard, setChosenCard] = useState([]);
-  const [logo, setLogo] = useState([]);
+  // const [logo, setLogo] = useState([]);
   const token = localStorage.getItem('authTokens') ? JSON.parse(localStorage.getItem('authTokens')).access : null;
 
 
-
-  function getCreditData() {
-    axios.post('http://localhost:8000/api/get_credit_card/', {},{
-      headers: {
-        'content-type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      }
-    })
-      .then(response => {
-        if (response.data.status === 200) {
-          setCreditCards(response.data.credit_cards);
-        } else {
-          console.log('Error:', response.data.message);
-          swal({
-            title: "Ⅹ!שגיאה ",
-            text: {"!שגיאת מערכת":response.data.message},
-            icon: "warning",
-            button: "אישור",
-          })
-        }
-      })
-      .catch(error => {
-        console.error('There was an error!', error);
-        swal({
-          title: "Ⅹ!שגיאה ",
-          text: {"!שגיאת backend":response.data.message},
-          icon: "warning",
-          button: "אישור",
-        })
-      });
-  }
-
-  function deleteCard(id) {
-    swal({
-      title: "האם אתה בטוח?",
-      text: "ברגע שתלחץ על אישור לא יהיה ניתן לשחזר את המידע",
-      icon: "warning",
-      buttons: true,
-      dangerMode: true,
-    }).then((willDelete) => {
-      if (willDelete) {
-        axios.delete(`http://localhost:8000/api/delete_credit_card/${id}/`, {
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`,
-          }
-        }).then((response) => {
-          swal({
-            title: "🗑️!כרטיס נמחק בהצלחה",
-            icon: "success",
-            button: "אישור",
-          }).then(() => {
-            fetchData(); 
-            window.location.reload();// Refresh the data after deletion
-          });
-        }).catch((error) => {
-          console.error("Error deleting card:", error);
-          swal({
-            title: "שגיאת שרת",
-            icon: "warning",
-            button: "אישור",
-          });
-        });
-      } else {
-        swal("הנתונים שלך בטוחים");
-      }
-    });
-  }
-
-  // function chosenCard(){
-  //   const creditCard = document.getElementById('credit_card').value
-  //   setChosenCard(creditCard)
-   
-  // }
  
-  function chosenCreditCard(){
-    const card_id = document.getElementById('credit_card').value || '';
-    axios.post(`http://localhost:8000/api/get_chosen_credit_card/${card_id}/`, {},{
-      headers: {
-        'content-type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      }
-    }).then((response)=>{
-      setChosenCard(response.data.chosen_credit_card)
-      console.log(response.data.chosen_credit_card);
+  // function chosenCreditCard(){
+  //   const card_id = document.getElementById('credit_card').value || '';
+  //   axios.post(`http://localhost:8000/api/get_chosen_credit_card/${card_id}/`, {},{
+  //     headers: {
+  //       'content-type': 'application/json',
+  //       Authorization: `Bearer ${token}`,
+  //     }
+  //   }).then((response)=>{
+  //     setChosenCard(response.data.chosen_credit_card)
+  //     console.log(response.data.chosen_credit_card);
     
-    }).catch((error) => {
-        console.error("Error fetching chosen credit card:", error);
-        swal({
-          title: "Ⅹ!שגיאה",
-          text: "שגיאת מערכת",
-          icon: "warning",
-          button: "אישור",
-        });
-    });
+  //   }).catch((error) => {
+  //       console.error("Error fetching chosen credit card:", error);
+  //       swal({
+  //         title: "Ⅹ!שגיאה",
+  //         text: "שגיאת מערכת",
+  //         icon: "warning",
+  //         button: "אישור",
+  //       });
+  //   });
  
-  }
+  // }
 
   useEffect(() => {
-    getCreditData();
+    getCreditCardData(token,setCreditCards);
   }, []);
   return (
     <div className="flex h-[100dvh] overflow-hidden" dir = "rtl">
@@ -179,7 +109,7 @@ function CreditCards() {
               <div className="space-y-2">
                 {/* Cards */}
                 <label className="relative block cursor-pointer text-left w-full">
-                  <input type="radio" id='credit_card'name="radio-buttons" className="peer sr-only" key={card.id} defaultChecked value={card.id} onClick={chosenCreditCard}/>
+                  <input type="radio" id='credit_card'name="radio-buttons" className="peer sr-only" key={card.id} defaultChecked value={card.id}/>
                   
                   <div className="p-4 rounded dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600 shadow-sm duration-150 ease-in-out">
                     <div className="grid grid-cols-12 items-center gap-x-2">
@@ -237,8 +167,8 @@ function CreditCards() {
             </div>
            
 
-        {chosenCard.length > 0 ? (
-        chosenCard.map((card, index) => (
+        {creditCards.length > 0 ? (
+        creditCards.map((card, index) => (
                   
         <div key={index}>
           {/* Sidebar */}
@@ -359,7 +289,7 @@ function CreditCards() {
                   {/* Edit / Delete */}
                   <div className="flex items-center space-x-3 mt-6">
                     <div className="w-1/2">
-                      <button className="btn w-full dark:bg-slate-800 border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600 text-slate-600 dark:text-slate-300">
+                      <button className="btn w-full dark:bg-slate-800 border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600 text-slate-600 dark:text-slate-300" onClick={EditCard}>
                       <span className="ml-2">ערוך כרטיס</span>
                         <svg className="w-4 h-4 fill-current text-slate-500 dark:text-slate-400 shrink-0" viewBox="0 0 16 16">
                           <path d="M11.7.3c-.4-.4-1-.4-1.4 0l-10 10c-.2.2-.3.4-.3.7v4c0 .6.4 1 1 1h4c.3 0 .5-.1.7-.3l10-10c.4-.4.4-1 0-1.4l-4-4zM4.6 14H2v-2.6l6-6L10.6 8l-6 6zM12 6.6L9.4 4 11 2.4 13.6 5 12 6.6z" />

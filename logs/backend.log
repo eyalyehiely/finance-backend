@@ -344,3 +344,8 @@ DEBUG 2024-06-15 02:54:55,628 credit_card_views 89525 6159806464 Credit card add
 DEBUG 2024-06-15 02:58:39,822 credit_card_views 89525 6176632832 Credit card added
 DEBUG 2024-06-15 03:08:56,109 expenses_views 89525 6176632832 expense added
 DEBUG 2024-06-15 18:08:44,268 incomes_views 92714 6200307712 Income added
+DEBUG 2024-06-16 12:26:07,123 debts_views 6707 6128168960 Debt not added: Cannot assign "UUID('d968d621-2fa6-4131-95e6-ac3120bfa067')": "Debts.family_id" must be a "Family" instance.
+DEBUG 2024-06-16 12:54:24,127 expenses_views 7525 6219575296 expense not added: Cannot assign "UUID('d968d621-2fa6-4131-95e6-ac3120bfa067')": "Expenses.family_id" must be a "Family" instance.
+DEBUG 2024-06-16 12:55:08,250 expenses_views 8481 6195507200 expense added
+DEBUG 2024-06-16 13:54:58,595 credit_card_views 8506 6146142208 Credit card not added: Cannot assign "UUID('d968d621-2fa6-4131-95e6-ac3120bfa067')": "CreditCard.family_id" must be a "Family" instance.
+DEBUG 2024-06-16 13:55:31,637 credit_card_views 10285 6197293056 Credit card added

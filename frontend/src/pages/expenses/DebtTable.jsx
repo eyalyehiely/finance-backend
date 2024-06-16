@@ -1,80 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import swal from 'sweetalert'; // Assuming you have sweetalert installed
 import AddCommaToNumber from '../../components/AddComma';
+import fetchDebtData from '../../functions/debts/fetchDebtData';
+import deleteDebt from '../../functions/debts/deleteDebt';
+import saveEdit from '/src/functions/debts/saveEdit.js'
+
 function DebtTable() {
   const [debts, setDebts] = useState([]);
   const [editingDebtId, setEditingDebtId] = useState(null);
   const [editedDebt, setEditedDebt] = useState({});
   const token = localStorage.getItem('authTokens') ? JSON.parse(localStorage.getItem('authTokens')).access : null;
 
-  function fetchData() {
-    axios.post('http://localhost:8000/api/get_all_debts/', {}, {
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      }
-    }).then(response => {
-      if (response.data.status === 200) {
-        setDebts(response.data.all_debts);
-      } else {
-        console.log('Error:', response.data.message);
-        swal({
-          title: "Ⅹ!שגיאה ",
-          text: response.data.message,
-          icon: "warning",
-          button: "אישור",
-        });
-      }
-    }).catch(error => {
-      console.error('There was an error!', error);
-      swal({
-        title: "Ⅹ!שגיאה ",
-        text: "An error occurred while fetching data.",
-        icon: "warning",
-        button: "אישור",
-      });
-    });
-  }
-
-  function deleteDebt(id) {
-    swal({
-      title: "האם אתה בטוח?",
-      text: "ברגע שתלחץ על אישור לא יהיה ניתן לשחזר את המידע",
-      icon: "warning",
-      buttons: true,
-      dangerMode: true,
-    }).then((willDelete) => {
-      if (willDelete) {
-        axios.delete(`http://localhost:8000/api/delete_debt/${id}/`, {
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`,
-          }
-        }).then((response) => {
-          swal({
-            title: "🗑️!עבודה טובה",
-            text: " !החוב נמחק בהצלחה",
-            icon: "success",
-            button: "אישור",
-          }).then(() => {
-            fetchData(); // Refresh the data after deletion
-            window.location.reload()
-          });
-        }).catch((error) => {
-          console.error("Error deleting debt:", error);
-          swal({
-            title: "Ⅹ!שגיאה ",
-            text: "An error occurred while deleting the debt.",
-            icon: "warning",
-            button: "אישור",
-          });
-        });
-      } else {
-        swal("הנתונים שלך בטוחים");
-      }
-    });
-  }
+  
+  
 
   function handleEditChange(event, field) {
     setEditedDebt({
@@ -88,52 +25,10 @@ function DebtTable() {
     setEditedDebt(debt);
   }
 
-  function saveEdit() {
-    const updatedDebt = {
-      ...editedDebt,
-      // amount: parseFloat(editedDebt.amount.replace(/,/g, '')),
-    };
-
-    axios.put(`http://localhost:8000/api/edit_debt/${editingDebtId}/`, updatedDebt, {
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      }
-    }).then(response => {
-      if (response.data.status === 200) {
-        swal({
-          title: "החוב התעדכן בהצלחה ",
-          icon: "success",
-          button: "אישור",
-        }).then(()=>{
-          setDebts(debts.map(debt => debt.id === editingDebtId ? response.data.debt : debt));
-          setEditingDebtId(null);
-          fetchData();
-          window.location.reload()
-        })
-        
-      } else {
-        console.log('Error:', response.data.message);
-        swal({
-          title: "Ⅹ!שגיאה ",
-          text: response.data.message,
-          icon: "warning",
-          button: "אישור",
-        });
-      }
-    }).catch(error => {
-      console.error('There was an error!', error);
-      swal({
-        title: "Ⅹ!שגיאה ",
-        text: "An error occurred while updating the debt.",
-        icon: "warning",
-        button: "אישור",
-      });
-    });
-  }
+  
 
   useEffect(() => {
-    fetchData();
+    fetchDebtData(token,setDebts);
   }, []);
 
   return (

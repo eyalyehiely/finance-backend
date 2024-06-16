@@ -4,6 +4,7 @@ import AuthImage from '../images/finance.avif';
 import AuthDecoration from '../images/auth-decoration.png';
 import axios from "axios";
 import GetAdress from './component/GetAdress';
+import Rights from '/src/components/Rights';
 
 
 function Signup() {
@@ -267,7 +268,7 @@ function Signup() {
             </div>
 
           </div>
-
+<Rights/>
         </main>
 
     );

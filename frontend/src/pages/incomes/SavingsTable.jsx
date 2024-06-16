@@ -10,73 +10,6 @@ function SavingsTable() {
   const token = localStorage.getItem('authTokens') ? JSON.parse(localStorage.getItem('authTokens')).access : null;
 
   
-  function fetchData() {
-    axios.post('http://localhost:8000/api/get_all_savings/', {},{
-      headers: {
-        'content-type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      }
-    })
-      .then(response => {
-        if (response.data.status === 200) {
-          setSavings(response.data.all_savings);
-        } else {
-          console.log('Error:', response.data.message);
-          swal({
-            title: "Ⅹ!שגיאה ",
-            text: {"!שגיאת frontend":response.data.message},
-            icon: "warning",
-            button: "אישור",
-          })
-        }
-      })
-      .catch(error => {
-        console.error('There was an error!', error);
-        swal({
-          title: "Ⅹ!שגיאה ",
-          text: {"!שגיאת BACKEND":response.data.message},
-          icon: "warning",
-          button: "אישור",
-        })
-      });
-  }
-
-  function deleteSaving(id) {
-    swal({
-      title: "האם אתה בטוח?",
-      text: "ברגע שתלחץ על אישור לא יהיה ניתן לשחזר את המידע",
-      icon: "warning",
-      buttons: true,
-      dangerMode: true,
-    }).then((willDelete) => {
-      if (willDelete) {
-        axios.delete(`http://localhost:8000/api/delete_saving/${id}/`, {
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`,
-          }
-        }).then((response) => {
-          swal({
-            title: "🗑️!!החסכון נמחק בהצלחה",
-            icon: "success",
-            button: "אישור",
-          }).then(() => {
-            fetchData(); // Refresh the data after deletion
-          });
-        }).catch((error) => {
-          console.error("Error deleting saving:", error);
-          swal({
-            title: "Ⅹ!שגיאה ",
-            text: "An error occurred while deleting the saving.",
-            icon: "warning",
-            button: "אישור",
-          });
-        });
-      } else {
-        swal("הנתונים שלך בטוחים");
-      }
-    });
-  }
 
   function handleEditChange(event, field) {
     setEditedSaving({
@@ -121,7 +54,7 @@ function SavingsTable() {
           // Upstarting_date the savings list with the returned saving data
           setSavings(savings.map(saving => saving.id === editingSavingId ? response.data.saving : saving));
           setEditingSavingsId(null);
-          fetchData();
+          fetchSavingsData(token,setSavings);
           location.href = '/incomes/all-savings';
           })
         } else {
@@ -148,7 +81,7 @@ function SavingsTable() {
 
  
   useEffect(() => {
-    fetchData();
+    fetchSavingsData(token,setSavings);
   }, []);
 
   return (

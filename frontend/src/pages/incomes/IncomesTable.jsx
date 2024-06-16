@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import AddCommaToNumber from '../../components/AddComma';
-import swal from 'sweetalert'
+import fetchIncomesData from '../../functions/incomes/addIncome';
+import deleteIncome from '../../functions/incomes/deleteIncome';
+
+
 
 function IncomesTable() {
   const [incomes, setIncomes] = useState([]);
@@ -10,75 +12,8 @@ function IncomesTable() {
   const token = localStorage.getItem('authTokens') ? JSON.parse(localStorage.getItem('authTokens')).access : null;
 
   
-  
-  function fetchData() {
-    axios.post('http://localhost:8000/api/get_all_incomes/', {},{
-      headers: {
-        'content-type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      }
-    })
-      .then(response => {
-        if (response.data.status === 200) {
-          setIncomes(response.data.all_incomes);
-        } else {
-          console.log('Error:', response.data.message);
-          swal({
-            title: "Ⅹ!שגיאה ",
-            text: {"!שגיאת frontend":response.data.message},
-            icon: "warning",
-            button: "אישור",
-          })
-        }
-      })
-      .catch(error => {
-        console.error('There was an error!', error);
-        swal({
-          title: "Ⅹ!שגיאה ",
-          text: {"!שגיאת BACKEND":response.data.message},
-          icon: "warning",
-          button: "אישור",
-        })
-      });
-  }
 
-  function deleteIncome(id) {
-    swal({
-      title: "האם אתה בטוח?",
-      text: "ברגע שתלחץ על אישור לא יהיה ניתן לשחזר את המידע",
-      icon: "warning",
-      buttons: true,
-      dangerMode: true,
-    }).then((willDelete) => {
-      if (willDelete) {
-        axios.delete(`http://localhost:8000/api/delete_income/${id}/`, {
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`,
-          }
-        }).then((response) => {
-          swal({
-            title: "🗑️!עבודה טובה",
-            text: " !החוב נמחק בהצלחה",
-            icon: "success",
-            button: "אישור",
-          }).then(() => {
-            fetchData(); // Refresh the data after deletion
-          });
-        }).catch((error) => {
-          console.error("Error deleting income:", error);
-          swal({
-            title: "Ⅹ!שגיאה ",
-            text: "An error occurred while deleting the income.",
-            icon: "warning",
-            button: "אישור",
-          });
-        });
-      } else {
-        swal("הנתונים שלך בטוחים");
-      }
-    });
-  }
+  
 
   function handleEditChange(event, field) {
     setEditedIncome({
@@ -119,7 +54,7 @@ function IncomesTable() {
           // Update the incomes list with the returned income data
           setIncomes(incomes.map(income => income.id === editingincomeId ? response.data.income : income));
           setEditingIncomesId(null);
-          fetchData();
+          fetchIncomesData(token,setIncomes);
           location.href = '/incomes/all-incomes';
           })
         } else {
@@ -146,7 +81,7 @@ function IncomesTable() {
 
  
   useEffect(() => {
-    fetchData();
+    fetchIncomesData(token,setIncomes);
   }, []);
 
   return (

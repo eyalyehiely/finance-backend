@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import Sidebar from '../../partials/Sidebar';
 import Header from '../../partials/Header';
-import axios from 'axios';
-import {
-  NavLink,
-} from 'react-router-dom';
+import {NavLink} from 'react-router-dom';
+import fetchDebtData  from '/src/functions/debts/addDebtData.js';
+import Rights from '/src/components/Rights.jsx';
+import getCreditCardData from '../../functions/credit_cards/getCreditCardData'
 
 function AddDebt() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -12,99 +12,9 @@ function AddDebt() {
   const [creditCards, setCreditCards] = useState([]);
   const token = localStorage.getItem('authTokens') ? JSON.parse(localStorage.getItem('authTokens')).access : null;
 
-  
-  function fetchData() {
-    const name = document.getElementById('name').value
-    const type = document.getElementById('type').value
-    const amount = document.getElementById('amount').value;
-    const line_of_debt = document.getElementById('line_of_debt').value
-    const interest = document.getElementById('interest').value
-    const starting_date = document.getElementById('starting_date').value;
-    const finish_date = document.getElementById('finish_date').value;
-    
-    
-    
-    console.log(
-      name,
-      type,
-      amount,
-      line_of_debt,
-      interest,
-      finish_date,
-      starting_date
-      )
-
-      axios.post('http://localhost:8000/api/add_debt/', {
-        name: name,
-        type: type,
-        amount: amount,
-        line_of_debt: line_of_debt,
-        interest: interest,
-        finish_date: finish_date,
-        starting_date: starting_date,
-      }, {
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`,
-        }
-      })
-      .then((response) => {
-        console.log(response.data);
-        swal({
-          title: "💰!עבודה טובה",
-          text: " !הוצאה נוספה בהצלחה",
-          icon: "success",
-          button: "אישור",
-        }).then(() => {
-          window.location.href = '/expenses/debts';
-        });
-      })
-      .catch((error) => {
-        console.error('There was an error!', error);
-        swal({
-          title: "Ⅹ!שגיאה ",
-          text: {"!שגיאת מערכת": error.response.data.message},
-          icon: "warning",
-          button: "אישור",
-        });
-      });
-      
-  }
-
-
-  function getCreditData() {
-    axios.post('http://localhost:8000/api/get_credit_card/', {},{
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`,
-      }
-    })
-      .then(response => {
-        if (response.data.status === 200) {
-          setCreditCards(response.data.credit_cards);
-        } else {
-          console.log('Error:', response.data.message);
-          swal({
-            title: "Ⅹ!שגיאה ",
-            text: {"!שגיאת frontend":response.data.message},
-            icon: "warning",
-            button: "אישור",
-          })
-        }
-      })
-      .catch(error => {
-        console.error('There was an error!', error);
-        swal({
-          title: "Ⅹ!שגיאה ",
-          text: {"!שגיאת backend":response.data.message},
-          icon: "warning",
-          button: "אישור",
-        })
-      });
-  }
 
   useEffect(() => {
-    getCreditData();
+    getCreditCardData(token,setCreditCards);
   }, []);
 
   function isCreditCard() {
@@ -140,7 +50,7 @@ function AddDebt() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    fetchData()
+    addDebtData(token)
   };
 
   return (
@@ -166,13 +76,8 @@ function AddDebt() {
                     className={({ isActive }) =>
                       'block transition duration-150 truncate ' + (isActive ? 'text-indigo-500' : 'text-slate-400 hover:text-slate-200')
                     }
-                    
-                  >
-                    <span className="hidden xs:block ml-2 text-white">חזור 
-                      {/* <svg className="w-4 h-4 fill-current opacity-50 shrink-0" viewBox="0 0 16 16">
-                    <path d="M15 7H9V1c0-.6-.4-1-1-1S7 .4 7 1v6H1c-.6 0-1 .4-1 1s.4 1 1 1h6v6c0 .6.4 1 1 1s1-.4 1-1V9h6c.6 0 1-.4 1-1s-.4-1-1-1z" />
-                  </svg> */}
-                    </span>
+                    >
+                    <span className="hidden xs:block ml-2 text-white">חזור </span>
                   </NavLink>
               </button>
             <div className="border-t border-slate-200 dark:border-slate-700">

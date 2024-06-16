@@ -40,7 +40,7 @@ def add_credit_card(request):
         # Create the credit_card
         credit_card = CreditCard.objects.create(
             user_id=CustomUser(user_id),  # Assign the user instance directly
-            family_id=user.family_id,
+            family_id= Family(user.family_id),
             name=name,
             day_of_charge=day_of_charge, 
             credit_type=credit_type,

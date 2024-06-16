@@ -4,6 +4,7 @@ import axios from 'axios';
 import AuthImage from '../images/auth-image.jpg';
 import AuthDecoration from '../images/auth-decoration.png';
 import { jwtDecode } from "jwt-decode";
+import Rights from '/src/components/Rights';
 
 
 
@@ -146,6 +147,7 @@ function Signin() {
          
         </div>
       </div>
+      <Rights/>
     </main>
   );
 }

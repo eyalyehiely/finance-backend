@@ -11,6 +11,8 @@ import DashboardCard04 from '../partials/dashboard/DashboardCard04';
 import DashboardCard05 from '../partials/dashboard/DashboardCard05';
 import DashboardCard06 from '../partials/dashboard/DashboardCard06';
 import DashboardCard07 from '../partials/dashboard/DashboardCard07';
+import Rights from '/src/components/Rights';
+
 
 function Dashboard() {
 
@@ -77,7 +79,7 @@ function Dashboard() {
         </main>
 
       </div>
-
+<Rights/>
     </div>
   );
 }

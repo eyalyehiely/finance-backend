@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import Sidebar from '../../partials/Sidebar';
 import Header from '../../partials/Header';
-import axios from 'axios';
+import Rights from '/src/components/Rights';
 import { NavLink } from 'react-router-dom';
-import swal from 'sweetalert';
+import fetchExpensesData from '../../functions/expenses/addExpensesData';
+import getCreditCardData from '/src/functions/credit_cards/getCreditCardData.js';
 
 
 function AddExpense() {
@@ -12,80 +13,8 @@ function AddExpense() {
   const [creditCards, setCreditCards] = useState([]);
   const token = localStorage.getItem('authTokens') ? JSON.parse(localStorage.getItem('authTokens')).access : null;
 
-  function fetchData() {
-    const payment_method = document.getElementById('payment_method').value;
-    const expense_type = document.getElementById('expense_type').value;
-    const date_and_time = document.getElementById('date_and_time').value;
-    const name = document.getElementById('name').value;
-    const category = document.getElementById('category').value;
-    const price = document.getElementById('price').value;
-    const credit_card = document.getElementById('credit_card')?.value || '';
-
-    axios.post('http://localhost:8000/api/add_expense/', {
-      name: name,
-      payment_method: payment_method,
-      expense_type: expense_type,
-      date_and_time: date_and_time,
-      category: category,
-      price: price,
-      credit_card: credit_card,
-    }, {
-      headers: {
-        'content-type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      }
-    }).then((response) => {
-      console.log(response.data);
-      swal({
-        title: "💰!עבודה טובה",
-        text: " !הוצאה נוספה בהצלחה",
-        icon: "success",
-        button: "אישור",
-      }).then(() => {
-        window.location.href = '/expenses/all-expenses';
-      });
-    }).catch((error) => {
-      console.error('Error:', error.response.data.message);
-      swal({
-        title: "Ⅹ!שגיאה ",
-        text: "!שגיאת BACKEND",
-        icon: "warning",
-        button: "אישור",
-      });
-    });
-  }
-
-  function getCreditData() {
-    axios.post('http://localhost:8000/api/get_credit_card/', {}, {
-      headers: {
-        'content-type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      }
-    }).then(response => {
-      if (response.data.status === 200) {
-        setCreditCards(response.data.credit_cards);
-      } else {
-        console.log('Error:', response.data.message);
-        swal({
-          title: "Ⅹ!שגיאה ",
-          text: "!שגיאת frontend",
-          icon: "warning",
-          button: "אישור",
-        });
-      }
-    }).catch(error => {
-      console.error('There was an error!', error);
-      swal({
-        title: "Ⅹ!שגיאה ",
-        text: "!שגיאת BACKEND",
-        icon: "warning",
-        button: "אישור",
-      });
-    });
-  }
-
   useEffect(() => {
-    getCreditData();
+    getCreditCardData(token,setCreditCards);
   }, []);
 
   function isCreditCard() {
@@ -121,7 +50,7 @@ function AddExpense() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    fetchData();
+    fetchExpensesData(token);
   };
 
   return (
@@ -228,6 +157,7 @@ function AddExpense() {
           </div>
         </main>
       </div>
+      <Rights/>
     </div>
   );
 }

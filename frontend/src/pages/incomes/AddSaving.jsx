@@ -1,11 +1,10 @@
 import React, { useState} from 'react';
 import Sidebar from '../../partials/Sidebar';
 import Header from '../../partials/Header';
-import axios from 'axios';
-import {
-  NavLink,
-} from 'react-router-dom';
-import swal from 'sweetalert'
+import {NavLink} from 'react-router-dom';
+import addSaving from '/src/functions/savings/addSaving.js'
+import Rights from '/src/components/Rights';
+
 
 function AddSaving() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -13,60 +12,11 @@ function AddSaving() {
   const token = localStorage.getItem('authTokens') ? JSON.parse(localStorage.getItem('authTokens')).access : null;
 
   
-  function fetchData() {
-    const saving_type = document.getElementById('saving_type').value
-    const interest = document.getElementById('interest').value
-    const amount = document.getElementById('amount').value
-    const starting_date = document.getElementById('starting_date').value;
-    const finish_date = document.getElementById('finish_date').value;
 
-   
-  
-    console.log(saving_type,
-      interest,
-      amount,
-      starting_date,
-      finish_date);
-
-    axios.post('http://localhost:8000/api/add_saving/', {
-      saving_type:saving_type,
-      interest:interest,
-      amount:amount,
-      starting_date:starting_date,
-      finish_date:finish_date,
-    },{
-      headers: {
-        'content-type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      }
-    }).then((response) => {
-      console.log(response.data);
-      swal({
-        title: "💰!עבודה טובה",
-        text: " !חסכון נוסף בהצלחה",
-        icon: "success",
-        button: "אישור",
-      }).then(()=>{
-      window.location.href = '/incomes/all-savings'
-      })
-    }).catch((response) => {
-      // console.log(response.data);
-      swal({
-        title: "Ⅹ!שגיאה ",
-        text: {"!שגיאת BACKEND":response.data.message},
-        icon: "warning",
-        button: "אישור",
-      })
-    })
-  }
-
-
-
-  
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    fetchData()
+    addSaving(token)
   };
 
   return (
@@ -156,6 +106,7 @@ function AddSaving() {
           </div>
         </main>
       </div>
+      <Rights/>
     </div>
   );
 }

@@ -1,65 +1,18 @@
-import React, { useState} from 'react';
+import React,{ useState} from 'react';
 import Sidebar from '../../partials/Sidebar';
 import Header from '../../partials/Header';
-import axios from 'axios';
-import {
-  NavLink,
-} from 'react-router-dom';
-import swal from 'sweetalert'
+import {NavLink} from 'react-router-dom';
+import addIncome from '/src/functions/incomes/addIncome.js'
+import Rights from '/src/components/Rights';
 
 function AddIncome() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const token = localStorage.getItem('authTokens') ? JSON.parse(localStorage.getItem('authTokens')).access : null;
 
 
-  
-  function fetchData() {
-    const source = document.getElementById('source').value
-    const amount = document.getElementById('amount').value
-    const date = document.getElementById('date').value;
-
-    console.log(
-      source,
-      amount,
-      date,);
-
-    axios.post('http://localhost:8000/api/add_income/', {
-      source:source,
-      amount:amount,
-      date:date,
-    },{
-      headers: {
-        'content-type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      }
-    }).then((response) => {
-      console.log(response.data);
-      swal({
-        title: "💰!עבודה טובה",
-        text: " !הכנסה נוספה בהצלחה",
-        icon: "success",
-        button: "אישור",
-      }).then(()=>{
-      window.location.href = '/incomes/all-incomes'
-      })
-    }).catch((response) => {
-      // console.log(response.data);
-      swal({
-        title: "Ⅹ!שגיאה ",
-        text: {"!שגיאת שרת":response.data.message},
-        icon: "warning",
-        button: "אישור",
-      })
-    })
-  }
-
-
-
-  
-
   const handleSubmit = (e) => {
     e.preventDefault();
-    fetchData()
+    addIncome(token)
   };
 
   return (
@@ -139,6 +92,7 @@ function AddIncome() {
           </div>
         </main>
       </div>
+      <Rights/>
     </div>
   );
 }

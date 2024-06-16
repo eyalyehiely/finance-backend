@@ -124,7 +124,7 @@ def add_expense(request):
         # Create the expense
         expense = Expenses.objects.create(
             user_id=CustomUser(user_id),  # Assign the user instance directly
-            family_id=user.family_id,
+            family_id=Family(user.family_id),
             payment_method=payment_method,
             expense_type=expense_type, 
             date_and_time=date_and_time,
