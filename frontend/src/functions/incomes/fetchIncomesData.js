@@ -2,7 +2,7 @@
 import axios from 'axios'
 import swal from 'sweetalert';
 
-export default function fetchDebtData(token,setSavings) {
+export default function fetchIncomesData(token,Incomes) {
     axios.post('http://localhost:8000/api/get_all_savings/', {}, {
       headers: {
         'Content-Type': 'application/json',
@@ -10,7 +10,7 @@ export default function fetchDebtData(token,setSavings) {
       }
     }).then(response => {
       if (response.data.status === 200) {
-        setSavings(response.data.all_savings);
+        setIncomes(response.data.all_incomes);
       } else {
         console.log('Error:', response.data.message);
         swal({

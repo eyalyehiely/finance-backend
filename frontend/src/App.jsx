@@ -63,9 +63,9 @@ function App() {
   return (
     <>
       <Routes>
+        
         <Route exact path="/" element={<Dashboard />} />
         {/* <Route path="/dashboard" element={<ProtectedRoute element={Dashboard} />} /> */}
-        
         <Route path="/dashboard/fintech" element={<Fintech />} />
         {/* expenses */}
         <Route path="/expenses/all-expenses" element={<AllExpenses />} />

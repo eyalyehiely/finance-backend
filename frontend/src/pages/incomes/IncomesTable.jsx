@@ -37,59 +37,9 @@ function IncomesTable() {
     saveEdit(token, editedIncome, editingincomeId, setIncomes);
   };
 
-  function saveEdit() {
-    const source = document.getElementById('source').value;
-    const date = document.getElementById('date').value;
-    const amount = document.getElementById('amount').value.replace(/,/g, ''); // Remove commas before saving
-  
-    axios.put(`http://localhost:8000/api/edit_income/${editingincomeId}/`, {
-      source: source,
-      date: date,
-      amount: amount,
-  },{
-      headers: {
-        'content-type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      }
 
-    })
-      .then(response => {
-        if (response.data.status === 200) {
-          swal({
-            title: "💰!עבודה טובה",
-            text: " !הכנסה עודכנה בהצלחה",
-            icon: "success",
-            button: "אישור",
-          }).then(()=>{
-          // Update the incomes list with the returned income data
-          setIncomes(incomes.map(income => income.id === editingincomeId ? response.data.income : income));
-          setEditingIncomesId(null);
-          fetchIncomesData(token,setIncomes);
-          location.href = '/incomes/all-incomes';
-          })
-        } else {
-          console.log('Error:', response.data.message);
-          swal({
-            title: "Ⅹ!שגיאה ",
-            text: {"!שגיאת frontend":response.data.message},
-            icon: "warning",
-            button: "אישור",
-          })
-        }
-      })
-      .catch(error => {
-        console.error('There was an error!', error);
-        swal({
-          title: "Ⅹ!שגיאה ",
-          text: {"!שגיאת BACKEND":response.data.message},
-          icon: "warning",
-          button: "אישור",
-        })
-      });
-  }
+console.log(incomes.length);
 
-
- 
  
 
   return (
@@ -152,8 +102,9 @@ function IncomesTable() {
                         <div className="space-x-1">
                           <button
                             className="text-slate-400 hover:text-slate-500 dark:text-slate-500 dark:hover:text-slate-400 rounded-full"
-                            onClick={saveEdit}
+                            onClick={saveChanges}
                           >
+                            
                             <span className="sr-only">Save</span>
                             <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="green" className="bi bi-check2-circle" viewBox="0 0 16 16">
                               <path d="M2.5 8a5.5 5.5 0 0 1 8.25-4.764.5.5 0 0 0 .5-.866A6.5 6.5 0 1 0 14.5 8a.5.5 0 0 0-1 0 5.5 5.5 0 1 1-11 0" />
@@ -162,7 +113,7 @@ function IncomesTable() {
                           </button>
                           <button
                             className="text-rose-500 hover:text-rose-600 square-full"
-                            onClick={() => setEditingIncomesId(null)}
+                            onClick={cancelEdit}
                           >
                             <span className="sr-only">Cancel</span>
                             <svg className="w-10 h-6 fill-current" viewBox="0 0 32 32">
