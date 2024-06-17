@@ -59,8 +59,7 @@ function AddIncome() {
                         <div className="flex items-center justify-between">
                           <label className="block text-sm font-medium mb-1" htmlFor="source">דרך תשלום<span className="text-rose-500">*</span></label>
                         </div>
-                        <select id='source' name='source' className="form-input w-full" required
-                            onChange={(e) => setStatus(e.target.value)}>
+                        <select id='source' name='source' className="form-input w-full" required>
                            <option value=""></option>
                             <option value="salary">משכורת</option>
                             <option value="allowance">קצבה</option>

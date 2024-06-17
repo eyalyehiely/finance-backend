@@ -1,15 +1,18 @@
 from django.shortcuts import get_object_or_404
-import jwt,datetime,json
+import datetime
 from django.http import  JsonResponse
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
-from .serializers import *
+from .serializers import DebtSerializer
 import logging
 from django.utils import timezone
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
-from django.contrib.auth.decorators import login_required
 from rest_framework import status
+from users.models import CustomUser
+from users.family_models import Family
+from .models import Debts
+
 
 
 
@@ -23,45 +26,33 @@ logger = logging.getLogger('backend')
 
 
 #add
+
+logger = logging.getLogger(__name__)
+
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def add_debt(request):
     try:
         user_id= request.user.id
         user = CustomUser.objects.get(id=user_id)
-        type = request.data.get('type', '')
-        name = request.data.get('name', '')
-        amount = request.data.get('amount', '')
-        line_of_debt = request.data.get('line_of_debt', '')
-        interest = request.data.get('interest', '')
-        starting_date = request.data.get('starting_date', '')
-        finish_date = request.data.get('finish_date', '')
+        request.data['user_id'] = user.id
+        request.data['family_id'] = user.family_id
+        request.data['created_at'] = timezone.now().date()
+        serializer = DebtSerializer(data=request.data)
 
+        if serializer.is_valid():
+            debt = serializer.save()
+            logger.debug('Debt added')
+            return Response({'successful': 'Debt added'})
+        else:
+            logger.debug(f'Debt not added: {str(serializer.errors)}')
+            return Response({'error': str(serializer.errors)}, status=400)
 
-      
-        # Create the debt
-        debt = Debts.objects.create(
-            user_id=CustomUser(user_id),  # Assign the user instance directly
-            family_id=Family(user.family_id),
-            name=name,
-            type=type, 
-            amount=amount,
-            line_of_debt=line_of_debt,
-            interest=interest,
-            starting_date=starting_date,
-            finish_date=finish_date,
-            created_at=timezone.now(),
-            updated_at=timezone.now()
-        )
-        debt.save()
-        logger.debug('Debt added')
-        return JsonResponse({'successful': 'Debt added'})
-        
     except CustomUser.DoesNotExist:
-        return JsonResponse({'error': 'User does not exist'}, status=404)
+        return Response({'error': 'User does not exist'}, status=404)
     except Exception as e:
         logger.debug(f'Debt not added: {str(e)}')
-        return JsonResponse({'error': str(e)}, status=500)
+        return Response({'error': str(e)}, status=500)
 
 
 
@@ -71,20 +62,19 @@ def add_debt(request):
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def get_all_debts(request):
-   
+    user_id= request.user.id
     try:
-        user_id= request.user.id
+        
         debts = Debts.objects.filter(user_id=user_id)
-        debts_list = [{'name': debt.name,'type':debt.type,'amount':debt.amount,'interest':debt.interest,'starting_date': debt.starting_date,'finish_date':debt.finish_date,'line_of_debt':debt.line_of_debt,'id': debt.id,'total_amount':round(debt.total_amount,2)} for debt in debts]
-        return JsonResponse(
-        {
+        serializer = DebtSerializer(debts,many=True)
+        return Response({
         'status':200,
-        'all_debts':debts_list,
+        'all_debts':serializer.data,
         })
         
     except Exception as e:
         print(f"Error: {str(e)}")  # Debug: Print the error message
-        return JsonResponse({
+        return Response({
             'status': 500,
             'message': 'An error occurred while fetching data.',
             'error': str(e)
@@ -96,8 +86,10 @@ def get_all_debts(request):
 @permission_classes([IsAuthenticated])
 def edit_debt(request, debt_id):
     try:
-        user_id= request.user.id
+        user_id = request.user.id
         user = CustomUser.objects.get(id=user_id)
+
+        # Retrieve data from the request
         type = request.data.get('type', '')
         name = request.data.get('name', '')
         amount = request.data.get('amount', '')
@@ -105,35 +97,39 @@ def edit_debt(request, debt_id):
         starting_date = request.data.get('starting_date', '')
         finish_date = request.data.get('finish_date', '')
 
-        # Check if the amount is not empty
-        amount =float(amount)
-        if not amount:
-            return JsonResponse({'error': 'Amount field cannot be empty'}, status=400)
+        # Check if the required date fields are provided
+        if not starting_date or not finish_date:
+            return JsonResponse({'error': 'Starting date and finish date are required'}, status=400)
 
         # Parse dates from request data
-        finish_date_obj = datetime.datetime.strptime(finish_date, "%Y-%m-%d")
-        start_date_obj = datetime.datetime.strptime(starting_date, "%Y-%m-%d")
+        try:
+            start_date_obj = datetime.datetime.strptime(starting_date, "%Y-%m-%d")
+            finish_date_obj = datetime.datetime.strptime(finish_date, "%Y-%m-%d")
+        except ValueError as e:
+            return JsonResponse({'error': f'Invalid date format: {str(e)}'}, status=400)
 
-        # Create or update the debt
+        # Retrieve and update the debt
         debt = Debts.objects.get(id=debt_id)
-        debt.user_id =CustomUser(user_id)
-        debt.family_id = user.family_id
+        debt.user = user  
+        debt.family = Family(user.family)  
         debt.name = name
         debt.type = type
-        debt.amount = amount  # Convert amount to float
-        debt.line_of_debt = debt.line_of_debt  # Not sure where this value is coming from
+        debt.amount = float(amount)  
         debt.interest = interest
         debt.starting_date = start_date_obj
         debt.finish_date = finish_date_obj
         debt.updated_at = timezone.now()
         debt.save()
 
-        return JsonResponse({'status':200,'message': 'Debt updated'})
+        return JsonResponse({'status': 200, 'message': 'Debt updated'})
 
     except CustomUser.DoesNotExist:
         return JsonResponse({'error': 'User does not exist'}, status=404)
+    except Debts.DoesNotExist:
+        return JsonResponse({'error': 'Debt does not exist'}, status=404)
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=500)
+
 
 
 

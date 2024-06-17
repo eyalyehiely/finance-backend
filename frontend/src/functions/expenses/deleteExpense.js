@@ -1,7 +1,8 @@
 import axios from 'axios'
 import swal from 'sweetalert';
+import fetchExpensesData from './fetchExpensesData';
 
-export default function deleteExpense(id) {
+export default function deleteExpense(token,id) {
     swal({
       title: "האם אתה בטוח?",
       text: "ברגע שתלחץ על אישור לא יהיה ניתן לשחזר את המידע",

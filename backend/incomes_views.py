@@ -63,12 +63,9 @@ def get_all_incomes(request):
         # Get all expense records for the given user_id
         user_id= request.user.id
         incomes = Revenues.objects.filter(user_id=user_id)
-        # incomes = incomes.objects.filter(user_id=id)
-
 
         # Sort incomes by price in descending order and get the top 3
         all_incomes = [{'source': income.source, 'amount': income.amount, 'date': income.date, 'id': income.id} for income in incomes]
-
 
         return JsonResponse({
             'status': 200,

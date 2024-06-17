@@ -1,93 +1,47 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import AddCommaToNumber from '../../components/AddComma';
-import swal from 'sweetalert'
+import fetchSavingsData from '../../functions/savings/fetchSavingsData';
+import saveEdit from '../../functions/savings/saveEdit';
+import deleteSaving from '../../functions/savings/deleteSaving';
 
 function SavingsTable() {
   const [savings, setSavings] = useState([]);
-  const [editingSavingId, setEditingSavingsId] = useState(null);
+  const [editingSavingId, setEditingSavingId] = useState(null);
   const [editedSaving, setEditedSaving] = useState({});
   const token = localStorage.getItem('authTokens') ? JSON.parse(localStorage.getItem('authTokens')).access : null;
 
-  
+  useEffect(() => {
+    fetchSavingsData(token, setSavings);
+  }, [token]);
+  console.log(setSavings);
 
-  function handleEditChange(event, field) {
+  const handleEditChange = (event, field) => {
     setEditedSaving({
       ...editedSaving,
       [field]: event.target.value
     });
-  }
+  };
 
-  function startEdit(saving) {
-    setEditingSavingsId(saving.id);
-    setEditedSaving(saving);
-  }
+  const startEdit = (saving) => {
+    setEditingSavingId(saving.id);
+    setEditedSaving({ ...saving });
+  };
 
-  function saveEdit() {
-    const saving_type = document.getElementById('saving_type').value;
-    const interest = document.getElementById('interest').value;
-    const amount = document.getElementById('amount').value.replace(/,/g, ''); // Remove commas before saving
-    const starting_date = document.getElementById('starting_date').value;
-    const finish_date = document.getElementById('finish_date').value;
-  
-    axios.put(`http://localhost:8000/api/edit_saving/${editingSavingId}/`, {
-      saving_type: saving_type,
-      interest:interest,
-      amount: amount,
-      starting_date: starting_date,
-      finish_date:finish_date,
-  },{
-      headers: {
-        'content-type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      }
+  const cancelEdit = () => {
+    setEditingSavingId(null);
+    setEditedSaving({});
+  };
 
-    })
-      .then(response => {
-        if (response.data.status === 200) {
-          swal({
-            title: "💰!עבודה טובה",
-            text: " !חסכון עודכן בהצלחה",
-            icon: "success",
-            button: "אישור",
-          }).then(()=>{
-          // Upstarting_date the savings list with the returned saving data
-          setSavings(savings.map(saving => saving.id === editingSavingId ? response.data.saving : saving));
-          setEditingSavingsId(null);
-          fetchSavingsData(token,setSavings);
-          location.href = '/incomes/all-savings';
-          })
-        } else {
-          console.log('Error:', response.data.message);
-          swal({
-            title: "Ⅹ!שגיאה ",
-            text: {"!שגיאת frontend":response.data.message},
-            icon: "warning",
-            button: "אישור",
-          })
-        }
-      })
-      .catch(error => {
-        console.error('There was an error!', error);
-        swal({
-          title: "Ⅹ!שגיאה ",
-          text: {"!שגיאת BACKEND":response.data.message},
-          icon: "warning",
-          button: "אישור",
-        })
-      });
-  }
-
-
- 
-  useEffect(() => {
-    fetchSavingsData(token,setSavings);
-  }, []);
+  const saveChanges = () => {
+    saveEdit(token, editedSaving, editingSavingId, setSavings);
+  };
 
   return (
     <div className="bg-white dark:bg-slate-800 shadow-lg rounded-sm border border-slate-200 dark:border-slate-700 relative" dir="rtl">
       <header className="px-5 py-4">
-        <h2 className="font-semibold text-slate-800 dark:text-slate-100">חסכונות <span className="text-slate-400 dark:text-slate-500 font-medium">{savings.length}</span></h2>
+        <h2 className="font-semibold text-slate-800 dark:text-slate-100">
+          חסכונות <span className="text-slate-400 dark:text-slate-500 font-medium">{savings.length}</span>
+        </h2>
       </header>
       <div className="overflow-x-auto" dir="rtl">
         <table className="table-auto w-full dark:text-slate-300">
@@ -99,33 +53,28 @@ function SavingsTable() {
               <th className="p-2">
                 <div className="font-semibold text-right">סוג החסכון</div>
               </th>
-             
               <th className="p-2">
                 <div className="font-semibold text-right">סכום</div>
               </th>
-
               <th className="p-2">
                 <div className="font-semibold text-right">ריבית</div>
               </th>
               <th className="p-2">
                 <div className="font-semibold text-right">סכום סופי משוער</div>
               </th>
-
               <th className="p-2">
                 <div className="font-semibold text-right">תאריך התחלה</div>
               </th>
-
               <th className="p-2">
                 <div className="font-semibold text-right">תאריך סיום משוער</div>
               </th>
-
               <th className="p-2">
                 <div className="font-semibold text-right">פעולות</div>
               </th>
             </tr>
           </thead>
           <tbody className="text-sm font-medium divide-y divide-slate-100 dark:divide-slate-700">
-            {savings.length > 0 ? (
+            {savings && savings.length > 0 ? (
               savings.map((saving, index) => (
                 <tr key={saving.id}>
                   <td className="p-2">
@@ -133,7 +82,6 @@ function SavingsTable() {
                   </td>
                   {editingSavingId === saving.id ? (
                     <>
-                     
                       <td className="p-2">
                         <select id="saving_type" className="text-right" value={editedSaving.saving_type} onChange={(e) => handleEditChange(e, 'saving_type')}>
                           <option value=""></option>
@@ -144,32 +92,26 @@ function SavingsTable() {
                           <option value="other">אחר</option>
                         </select>
                       </td>
-                        
                       <td className="p-2">
                         <input type="text" id="amount" className="text-right" value={AddCommaToNumber(editedSaving.amount)} onChange={(e) => handleEditChange(e, 'amount')} />
                       </td>
-
                       <td className="p-2">
                         <input type="text" id="interest" className="text-right" value={AddCommaToNumber(editedSaving.interest)} onChange={(e) => handleEditChange(e, 'interest')} />
                       </td>
-
                       <td className="p-2">
                         <input type="text" id="estimate_total_amount" className="text-right bg-gray-200" value={AddCommaToNumber(parseFloat(editedSaving.total_amount))} disabled />
                       </td>
-
                       <td className="p-2">
-                      <input type="text" id="starting_date" className="text-right" value={editedSaving.starting_date.toLocaleString()} onChange={(e) => handleEditChange(e, 'starting_date')} />
+                        <input type="date" id="starting_date" className="text-right" value={editedSaving.starting_date} onChange={(e) => handleEditChange(e, 'starting_date')} />
                       </td>
-
                       <td className="p-2">
-                      <input type="text" id="finish_date" className="text-right" value={editedSaving.starting_date.toLocaleString()} onChange={(e) => handleEditChange(e, 'finish_date')} />
+                        <input type="date" id="finish_date" className="text-right" value={editedSaving.finish_date} onChange={(e) => handleEditChange(e, 'finish_date')} />
                       </td>
-
                       <td className="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap w-px">
                         <div className="space-x-1">
                           <button
                             className="text-slate-400 hover:text-slate-500 dark:text-slate-500 dark:hover:text-slate-400 rounded-full"
-                            onClick={saveEdit}
+                            onClick={saveChanges}
                           >
                             <span className="sr-only">Save</span>
                             <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="green" className="bi bi-check2-circle" viewBox="0 0 16 16">
@@ -179,7 +121,7 @@ function SavingsTable() {
                           </button>
                           <button
                             className="text-rose-500 hover:text-rose-600 square-full"
-                            onClick={() => setEditingSavingsId(null)}
+                            onClick={cancelEdit}
                           >
                             <span className="sr-only">Cancel</span>
                             <svg className="w-10 h-6 fill-current" viewBox="0 0 32 32">
@@ -191,37 +133,29 @@ function SavingsTable() {
                     </>
                   ) : (
                     <>
-                     
                       <td className="p-2">
                         <div className="text-right">{saving.saving_type}</div>
                       </td>
-
                       <td className="p-2">
                         <div className="text-right">{AddCommaToNumber(saving.amount)}</div>
                       </td>
-
                       <td className="p-2">
                         <div className="text-right">{saving.interest}%</div>
                       </td>
-
                       <td className="p-2">
-                        <div className="text-right">{saving.total_amount}</div>
+                        <div className="text-right">{AddCommaToNumber(saving.total_amount)}</div>
                       </td>
-
                       <td className="p-2">
-                        <div className="text-right">{saving.starting_date.toLocaleString()}</div>
+                        <div className="text-right">{new Date(saving.starting_date).toLocaleDateString()}</div>
                       </td>
-
                       <td className="p-2">
-                        <div className="text-right">{saving.finish_date.toLocaleString()}</div>
+                        <div className="text-right">{new Date(saving.finish_date).toLocaleDateString()}</div>
                       </td>
                       <td className="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap w-px">
                         <div className="space-x-1">
                           <button
                             className="text-slate-400 hover:text-slate-500 dark:text-slate-500 dark:hover:text-slate-400 rounded-full"
-                            onClick={() => {
-                              startEdit(saving);
-                            }}
+                            onClick={() => startEdit(saving)}
                           >
                             <span className="sr-only">Edit</span>
                             <svg className="w-8 h-8 fill-current" viewBox="0 0 32 32">
@@ -230,7 +164,7 @@ function SavingsTable() {
                           </button>
                           <button
                             className="text-rose-500 hover:text-rose-600 rounded-full"
-                            onClick={() => deleteSaving(saving.id)}
+                            onClick={() => deleteSaving(saving.id, token)}
                           >
                             <span className="sr-only">Delete</span>
                             <svg className="w-8 h-8 fill-current" viewBox="0 0 32 32">
@@ -259,3 +193,4 @@ function SavingsTable() {
 }
 
 export default SavingsTable;
+

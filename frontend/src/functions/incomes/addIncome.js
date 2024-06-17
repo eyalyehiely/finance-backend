@@ -1,7 +1,7 @@
 import axios from 'axios';
 import swal from 'sweetalert'
 
-export default function fetchIncome(token) {
+export default function AddIncome(token) {
     const source = document.getElementById('source').value
     const amount = document.getElementById('amount').value
     const date = document.getElementById('date').value;

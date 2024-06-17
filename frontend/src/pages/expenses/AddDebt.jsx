@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Sidebar from '../../partials/Sidebar';
 import Header from '../../partials/Header';
 import {NavLink} from 'react-router-dom';
-import fetchDebtData  from '/src/functions/debts/addDebtData.js';
+import addDebtData  from '/src/functions/debts/addDebtData.js';
 import Rights from '/src/components/Rights.jsx';
 import getCreditCardData from '../../functions/credit_cards/getCreditCardData'
 
@@ -72,7 +72,7 @@ function AddDebt() {
             <button className="btn bg-indigo-500 hover:bg-indigo-600 text-white">
                   <NavLink
                     end
-                    to="/expenses/all-expenses"
+                    to="/expenses/all-debts"
                     className={({ isActive }) =>
                       'block transition duration-150 truncate ' + (isActive ? 'text-indigo-500' : 'text-slate-400 hover:text-slate-200')
                     }

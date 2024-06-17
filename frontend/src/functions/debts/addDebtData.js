@@ -34,7 +34,7 @@ export default function fetchDebtData(token) {
           icon: "success",
           button: "אישור",
         }).then(() => {
-          window.location.href = '/expenses/debts';
+          window.location.href = '/expenses/all-debts';
         });
       })
       .catch((error) => {

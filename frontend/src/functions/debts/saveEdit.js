@@ -1,46 +1,47 @@
-import axios from 'axios'
+import axios from 'axios';
 import swal from 'sweetalert';
+import fetchDebtData from '/src/functions/debts/fetchDebtData.js';
 
-export default function saveEdit() {
-    const updatedDebt = {
-      ...editedDebt,
-      // amount: parseFloat(editedDebt.amount.replace(/,/g, '')),
-    };
+export default function saveEdit(token, editedDebt, editingDebtId, setDebts) {
+  if (!editedDebt || !token || !editingDebtId) {
+    console.error('Invalid input to saveEdit:', { editedDebt, token, editingDebtId });
+    return;
+  }
 
-    axios.put(`http://localhost:8000/api/edit_debt/${editingDebtId}/`, updatedDebt, {
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      }
-    }).then(response => {
+  const editedData = {
+    name: editedDebt.name || '',
+    type: editedDebt.type || '',
+    amount: editedDebt.amount ? String(editedDebt.amount).replace(/,/g, '') : '',
+    interest: editedDebt.interest || '',
+    estimate_total_amount: editedDebt.estimate_total_amount || '',
+    starting_date: editedDebt.starting_date || '',
+    finish_date: editedDebt.finish_date || '',
+  };
+
+  axios.put(`http://localhost:8000/api/edit_debt/${editingDebtId}/`, editedData, {
+    headers: {
+      'content-type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    }
+  })
+    .then(response => {
       if (response.data.status === 200) {
         swal({
-          title: "החוב התעדכן בהצלחה ",
+          title: "Success!",
+          text: "Debt updated successfully!",
           icon: "success",
-          button: "אישור",
-        }).then(()=>{
-          setDebts(debts.map(debt => debt.id === editingDebtId ? response.data.debt : debt));
-          setEditingDebtId(null);
-          fetchDebtData(token,setDebts);
-          window.location.reload()
-        })
-        
+          button: "OK",
+        });
+        setDebts(debts => debts.map(debt => debt.id === editingDebtId ? response.data.debt : debt));
+        fetchDebtData(token, setDebts);
+        window.location.reload()
       } else {
         console.log('Error:', response.data.message);
-        swal({
-          title: "Ⅹ!שגיאה ",
-          text: response.data.message,
-          icon: "warning",
-          button: "אישור",
-        });
+        alert(response.data.message); // Adjust error handling as needed
       }
-    }).catch(error => {
+    })
+    .catch(error => {
       console.error('There was an error!', error);
-      swal({
-        title: "Ⅹ!שגיאה ",
-        text: "An error occurred while updating the debt.",
-        icon: "warning",
-        button: "אישור",
-      });
+      alert('An error occurred while updating the expense.'); // Adjust error handling as needed
     });
-  }
+}

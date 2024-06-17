@@ -36,27 +36,34 @@ class SavingsSerializer(serializers.ModelSerializer):
 #         return obj.calc_payed_amount
 
 
+from rest_framework import serializers
+from .models import Debts
+
 class DebtSerializer(serializers.ModelSerializer):
-    calc_total_amount = serializers.SerializerMethodField()
-    calc_payed_amount = serializers.SerializerMethodField()
-    calc_month_payment = serializers.SerializerMethodField()
-    num_month_payed = serializers.SerializerMethodField()
+    # payed_amount = serializers.SerializerMethodField()
+    # month_payment = serializers.SerializerMethodField()
+    # month_payed = serializers.SerializerMethodField()
+    # num_of_months = serializers.SerializerMethodField()
+    total_amount = serializers.SerializerMethodField()
 
     class Meta:
         model = Debts
-        fields = '__all__'
+        fields = '__all__' 
 
-    def get_calc_total_amount(self, obj):
-        return obj.calc_total_amount
+    # def get_payed_amount(self, obj):
+    #     return obj.payed_amount
 
-    def get_calc_payed_amount(self, obj):
-        return obj.calc_payed_amount
+    # def get_month_payment(self, obj):
+    #     return obj.month_payment
 
-    def get_calc_month_payment(self, obj):
-        return obj.calc_month_payment
+    # def get_month_payed(self, obj):
+    #     return obj.month_payed
 
-    def get_num_month_payed(self, obj):
-        return obj.num_month_payed
+    # def get_num_of_months(self, obj):
+    #     return obj.num_of_months
+
+    def get_total_amount(self, obj):
+        return round(obj.total_amount, 2)
 
 
 class CreditCardSerializer(serializers.ModelSerializer):
@@ -75,7 +82,7 @@ class CreditCardSerializer(serializers.ModelSerializer):
                 raise serializers.ValidationError("last_four_digits must be exactly 4 digits.")
             return value
     
-    
+
     # def amount_to_charge(self, obj):
     #     return obj.amount_to_charge
 

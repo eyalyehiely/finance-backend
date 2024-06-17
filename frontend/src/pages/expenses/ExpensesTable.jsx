@@ -1,55 +1,39 @@
 import React, { useState, useEffect } from 'react';
+import fetchExpensesData from '/src/functions/expenses/fetchExpensesData.js';
+import saveEdit from '/src/functions/expenses/saveEdit.js';
 import AddCommaToNumber from '../../components/AddComma';
-import fetchExpensesData from '../../functions/expenses/fetchExpensesData';
 import deleteExpense from '../../functions/expenses/deleteExpense';
-import saveEdit from '/src/functions/expenses/saveEdit.js'
 
 function ExpensesTable() {
   const [expenses, setExpenses] = useState([]);
   const [editingExpenseId, setEditingExpenseId] = useState(null);
   const [editedExpense, setEditedExpense] = useState({});
-  // const [status, setStatus] = useState({});
   const token = localStorage.getItem('authTokens') ? JSON.parse(localStorage.getItem('authTokens')).access : null;
 
-  
+  useEffect(() => {
+    fetchExpensesData(token, setExpenses);
+  }, [token]);
 
-  function handleEditChange(event, field) {
+  const handleEditChange = (event, field) => {
     setEditedExpense({
       ...editedExpense,
       [field]: event.target.value
     });
-  }
+  };
 
-  function startEdit(expense) {
+  const startEdit = (expense) => {
     setEditingExpenseId(expense.id);
-    setEditedExpense(expense);
-  }
+    setEditedExpense({ ...expense }); // Create a shallow copy of the expense object
+  };
 
+  const cancelEdit = () => {
+    setEditingExpenseId(null);
+    setEditedExpense({});
+  };
 
-  // function isCreditCard() {
-  //   if (status === 'creditcard') {
-  //     return (
-  //         <div>
-  //           {/* cards */}
-  //           {/* <label className="block text-sm font-medium mb-1" htmlFor="life_status">
-  //             משפחה <span className="text-rose-500">*</span>
-  //           </label> */}
-  //           <td className="p-2">
-  //           cards.map()
-  //             <select type="text" id="name" className="text-right" value={editedExpense.name} >
-
-  //             </select>
-  //           </td>
-  //         </div>
-  //     );
-  //   }
-  // }
-
-
-
-  useEffect(() => {
-    fetchExpensesData(token,setExpenses);
-  }, []);
+  const saveChanges = () => {
+    saveEdit(token, editedExpense, editingExpenseId, setExpenses);
+  };
 
   return (
     <div className="bg-white dark:bg-slate-800 shadow-lg rounded-sm border border-slate-200 dark:border-slate-700 relative" dir="rtl">
@@ -102,20 +86,17 @@ function ExpensesTable() {
                           <option value="check">צ׳ק</option>
                         </select>
                       </td>
-
-                      {isCreditCard()}
-
                       <td className="p-2">
                         <input type="text" id="price" className="text-right" value={AddCommaToNumber(editedExpense.price)} onChange={(e) => handleEditChange(e, 'price')} />
                       </td>
                       <td className="p-2">
-                        <input type="text" id="date_and_time" className="text-right" value={new Date(editedExpense.date_and_time).toLocaleString()} onChange={(e) => handleEditChange(e, 'date_and_time')} />
+                        <input type="datetime-local" id="date_and_time" className="text-right" value={new Date(editedExpense.date_and_time).toISOString().slice(0, 16)} onChange={(e) => handleEditChange(e, 'date_and_time')} />
                       </td>
                       <td className="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap w-px">
                         <div className="space-x-1">
                           <button
                             className="text-slate-400 hover:text-slate-500 dark:text-slate-500 dark:hover:text-slate-400 rounded-full"
-                            onClick={saveEdit}
+                            onClick={saveChanges}
                           >
                             <span className="sr-only">Save</span>
                             <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="green" className="bi bi-check2-circle" viewBox="0 0 16 16">
@@ -125,7 +106,7 @@ function ExpensesTable() {
                           </button>
                           <button
                             className="text-rose-500 hover:text-rose-600 squre-full"
-                            onClick={() => setEditingExpenseId(null)}
+                            onClick={cancelEdit}
                           >
                             <span className="sr-only">Cancel</span>
                             <svg className="w-10 h-6 fill-current" viewBox="0 0 32 32">
@@ -153,19 +134,16 @@ function ExpensesTable() {
                         <div className="space-x-1">
                           <button
                             className="text-slate-400 hover:text-slate-500 dark:text-slate-500 dark:hover:text-slate-400 rounded-full"
-                            onClick={() => {
-                              startEdit(expense);
-                            }}
+                            onClick={() => startEdit(expense)}
                           >
                             <span className="sr-only">Edit</span>
                             <svg className="w-8 h-8 fill-current" viewBox="0 0 32 32">
                               <path d="M19.7 8.3c-.4-.4-1-.4-1.4 0l-10 10c-.2.2-.3.4-.3.7v4c0 .6.4 1 1 1h4c.3 0 .5-.1.7-.3l10-10c.4-.4.4-1 0-1.4l-4-4zM12.6 22H10v-2.6l6-6 2.6 2.6-6 6zm7.4-7.4L17.4 12l1.6-1.6 2.6 2.6-1.6 1.6z" />
                             </svg>
                           </button>
-
                           <button
                             className="text-rose-500 hover:text-rose-600 rounded-full"
-                            onClick={() => deleteExpense(expense.id)}
+                            onClick={() => deleteExpense(token, expense.id)}
                           >
                             <span className="sr-only">Delete</span>
                             <svg className="w-8 h-8 fill-current" viewBox="0 0 32 32">
@@ -189,7 +167,6 @@ function ExpensesTable() {
           </tbody>
         </table>
       </div>
-
     </div>
   );
 }

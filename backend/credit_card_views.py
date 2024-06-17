@@ -1,6 +1,3 @@
-from django.shortcuts import get_object_or_404
-import jwt,datetime,json
-from django.http import  JsonResponse
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from .serializers import *
@@ -8,7 +5,6 @@ import logging
 from django.utils import timezone
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
-from django.contrib.auth.decorators import login_required
 from rest_framework import status
 
 
@@ -39,7 +35,7 @@ def add_credit_card(request):
             return Response({'successful': 'Credit card added'})
         else:
             logger.debug(f'Credit card not added: {str(e)}')
-            return Response({'error': str(e)}, status=500)
+            return Response({'error': str(e)}, status=400)
         
     except CustomUser.DoesNotExist:
         return Response({'error': 'User does not exist'}, status=404)

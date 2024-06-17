@@ -358,3 +358,35 @@ DEBUG 2024-06-16 16:32:20,498 credit_card_views 12808 6167916544 Credit card not
 DEBUG 2024-06-16 16:32:29,609 credit_card_views 12808 6167916544 Credit card not added: cannot access local variable 'card' where it is not associated with a value
 DEBUG 2024-06-16 16:32:37,515 credit_card_views 12808 6167916544 Credit card not added: cannot access local variable 'card' where it is not associated with a value
 DEBUG 2024-06-16 16:40:47,134 credit_card_views 12877 6202634240 Credit card added
+DEBUG 2024-06-16 17:19:38,852 debts_views 13729 6138572800 Debt not added: cannot access local variable 'e' where it is not associated with a value
+DEBUG 2024-06-16 17:19:43,895 debts_views 13729 6138572800 Debt not added: cannot access local variable 'e' where it is not associated with a value
+DEBUG 2024-06-16 17:21:14,012 debts_views 13729 6138572800 Debt not added: cannot access local variable 'e' where it is not associated with a value
+DEBUG 2024-06-16 17:21:31,804 debts_views 13729 6138572800 Debt not added: cannot access local variable 'e' where it is not associated with a value
+DEBUG 2024-06-16 17:21:40,421 debts_views 13729 6138572800 Debt not added: cannot access local variable 'e' where it is not associated with a value
+DEBUG 2024-06-16 17:23:54,148 debts_views 13900 6124826624 Debt not added: {'created_at': [ErrorDetail(string='This field is required.', code='required')], 'user_id': [ErrorDetail(string='This field is required.', code='required')]}
+DEBUG 2024-06-16 17:23:54,148 debts_views 13900 6124826624 Debt not added: cannot access local variable 'e' where it is not associated with a value
+DEBUG 2024-06-16 17:25:25,560 debts_views 13926 6203043840 Debt not added: {'created_at': [ErrorDetail(string='This field is required.', code='required')], 'user_id': [ErrorDetail(string='This field is required.', code='required')]}
+DEBUG 2024-06-16 17:25:25,560 debts_views 13926 6203043840 Debt not added: cannot access local variable 'e' where it is not associated with a value
+DEBUG 2024-06-16 17:26:22,516 debts_views 13942 6137294848 Debt not added: {'created_at': [ErrorDetail(string='This field is required.', code='required')], 'user_id': [ErrorDetail(string='This field is required.', code='required')]}
+DEBUG 2024-06-16 17:28:56,692 debts_views 13973 6195572736 Debt not added: {'created_at': [ErrorDetail(string='Expected a date but got a datetime.', code='datetime')], 'user_id': [ErrorDetail(string='This field is required.', code='required')]}
+DEBUG 2024-06-16 17:29:27,360 debts_views 13987 6169505792 Debt not added: unbound method datetime.date() needs an argument
+DEBUG 2024-06-16 17:29:37,134 debts_views 13993 6203650048 Debt not added: module 'django.utils.timezone' has no attribute 'date'
+DEBUG 2024-06-16 17:29:49,401 debts_views 14001 6195572736 Debt not added: function missing required argument 'year' (pos 1)
+DEBUG 2024-06-16 17:30:09,393 debts_views 14018 6128496640 Debt not added: {'created_at': [ErrorDetail(string='Expected a date but got a datetime.', code='datetime')], 'user_id': [ErrorDetail(string='This field is required.', code='required')]}
+DEBUG 2024-06-16 17:32:10,267 debts_views 14042 6195507200 Debt not added: {'user_id': [ErrorDetail(string='This field is required.', code='required')]}
+DEBUG 2024-06-16 17:32:45,941 debts_views 14042 6195507200 Debt not added: {'user_id': [ErrorDetail(string='This field is required.', code='required')]}
+DEBUG 2024-06-16 17:33:20,765 debts_views 14075 6130659328 Debt not added: {'user_id': [ErrorDetail(string='This field is required.', code='required')]}
+DEBUG 2024-06-16 17:34:24,528 debts_views 14108 6167605248 Debt not added: {'user_id': [ErrorDetail(string='This field is required.', code='required')]}
+DEBUG 2024-06-16 17:35:37,367 debts_views 14117 6197948416 Debt not added: {'user_id': [ErrorDetail(string='This field is required.', code='required')]}
+DEBUG 2024-06-16 17:40:58,536 debts_views 14228 6191673344 Debt not added: {'created_at': [ErrorDetail(string='This field is required.', code='required')], 'user_id': [ErrorDetail(string='This field is required.', code='required')]}
+DEBUG 2024-06-16 17:40:58,536 debts_views 14228 6191673344 Debt not added: cannot access local variable 'e' where it is not associated with a value
+DEBUG 2024-06-16 17:41:10,930 debts_views 14246 6191902720 Debt not added: {'created_at': [ErrorDetail(string='This field is required.', code='required')], 'user_id': [ErrorDetail(string='This field is required.', code='required')]}
+DEBUG 2024-06-16 17:41:33,204 debts_views 14263 6192312320 Debt not added: {'created_at': [ErrorDetail(string='This field is required.', code='required')]}
+DEBUG 2024-06-16 17:42:43,236 debts_views 14309 6203011072 Debt added
+DEBUG 2024-06-16 23:34:13,009 expenses_views 15728 6173552640 expense added
+DEBUG 2024-06-17 12:44:52,388 debts_views 16702 6202732544 Debt added
+DEBUG 2024-06-17 13:38:15,361 savings_views 18291 6190837760 saving not added: Cannot assign "UUID('d968d621-2fa6-4131-95e6-ac3120bfa067')": "Savings.family_id" must be a "Family" instance.
+DEBUG 2024-06-17 13:39:11,516 savings_views 18330 6126743552 saving added
+DEBUG 2024-06-17 17:12:18,559 incomes_views 20247 6128037888 Income not added: Cannot assign "UUID('d968d621-2fa6-4131-95e6-ac3120bfa067')": "Revenues.family_id" must be a "Family" instance.
+DEBUG 2024-06-17 17:13:12,937 incomes_views 20247 6128037888 Income not added: Cannot assign "UUID('d968d621-2fa6-4131-95e6-ac3120bfa067')": "Revenues.family_id" must be a "Family" instance.
+DEBUG 2024-06-17 17:13:50,638 incomes_views 20289 6193262592 Income added

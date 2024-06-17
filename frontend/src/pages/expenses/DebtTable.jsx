@@ -1,35 +1,40 @@
 import React, { useState, useEffect } from 'react';
-import AddCommaToNumber from '../../components/AddComma';
-import fetchDebtData from '../../functions/debts/fetchDebtData';
-import deleteDebt from '../../functions/debts/deleteDebt';
-import saveEdit from '/src/functions/debts/saveEdit.js'
+import AddCommaToNumber from '../../components/AddComma';  // Ensure this import is correct
+import fetchDebtData from '../../functions/debts/fetchDebtData';  // Implement this function
+import deleteDebt from '../../functions/debts/deleteDebt';  // Implement this function
+import saveEdit from '/src/functions/debts/saveEdit.js';  // Implement this function
 
 function DebtTable() {
   const [debts, setDebts] = useState([]);
   const [editingDebtId, setEditingDebtId] = useState(null);
-  const [editedDebt, setEditedDebt] = useState({});
+  const [editedDebt, setEditedDebt] = useState({}); 
   const token = localStorage.getItem('authTokens') ? JSON.parse(localStorage.getItem('authTokens')).access : null;
 
-  
-  
+  useEffect(() => {
+    fetchDebtData(token, setDebts);  
+  }, [token]);   
 
-  function handleEditChange(event, field) {
+  const handleEditChange = (event, field) => {
     setEditedDebt({
       ...editedDebt,
       [field]: event.target.value
     });
-  }
+  };
 
-  function startEdit(debt) {
+  const startEdit = (debt) => {
     setEditingDebtId(debt.id);
-    setEditedDebt(debt);
-  }
+    setEditedDebt({...debt});
+  };
 
-  
+  const cancelEdit = () => {
+    setEditingDebtId(null);
+    setEditedDebt({}); // Reset editedDebt state to an empty object
+  };
 
-  useEffect(() => {
-    fetchDebtData(token,setDebts);
-  }, []);
+  const saveChanges = () => {
+    saveEdit(token, editedDebt, editingDebtId, setDebts);
+  };
+
 
   return (
     <div className="bg-white dark:bg-slate-800 shadow-lg rounded-sm border border-slate-200 dark:border-slate-700 relative" dir="rtl">
@@ -118,7 +123,7 @@ function DebtTable() {
                         <div className="space-x-1">
                           <button
                             className="text-slate-400 hover:text-slate-500 dark:text-slate-500 dark:hover:text-slate-400 rounded-full"
-                            onClick={saveEdit}
+                            onClick={saveChanges}
                           >
                             <span className="sr-only">Save</span>
                             <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="green" className="bi bi-check2-circle" viewBox="0 0 16 16">
@@ -128,7 +133,7 @@ function DebtTable() {
                           </button>
                           <button
                             className="text-rose-500 hover:text-rose-600 squre-full"
-                            onClick={() => setEditingDebtId(null)}
+                            onClick={cancelEdit}
                           >
                             <span className="sr-only">Cancel</span>
                             <svg className="w-10 h-6 fill-current" viewBox="0 0 32 32">
@@ -177,7 +182,7 @@ function DebtTable() {
 
                           <button
                             className="text-rose-500 hover:text-rose-600 rounded-full"
-                            onClick={() => deleteDebt(debt.id)}
+                            onClick={() => deleteDebt(debt.id,token)}
                           >
                             <span className="sr-only">Delete</span>
                             <svg className="w-8 h-8 fill-current" viewBox="0 0 32 32">

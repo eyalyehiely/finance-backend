@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import AddCommaToNumber from '../../components/AddComma';
-import fetchIncomesData from '../../functions/incomes/addIncome';
+import fetchIncomesData from '../../functions/incomes/fetchIncomesData';
 import deleteIncome from '../../functions/incomes/deleteIncome';
 
 
@@ -12,7 +12,9 @@ function IncomesTable() {
   const token = localStorage.getItem('authTokens') ? JSON.parse(localStorage.getItem('authTokens')).access : null;
 
   
-
+  useEffect(() => {
+    fetchIncomesData(token,setIncomes);
+  }, [token]);
   
 
   function handleEditChange(event, field) {
@@ -24,8 +26,16 @@ function IncomesTable() {
 
   function startEdit(income) {
     setEditingIncomesId(income.id);
-    setEditedIncome(income);
+    setEditedIncome({...income});
   }
+  const cancelEdit = () => {
+    setEditingIncomesId(null);
+    setEditedIncome({}); // Reset editedIncome state to an empty object
+  };
+
+  const saveChanges = () => {
+    saveEdit(token, editedIncome, editingincomeId, setIncomes);
+  };
 
   function saveEdit() {
     const source = document.getElementById('source').value;
@@ -80,9 +90,7 @@ function IncomesTable() {
 
 
  
-  useEffect(() => {
-    fetchIncomesData(token,setIncomes);
-  }, []);
+ 
 
   return (
     <div className="bg-white dark:bg-slate-800 shadow-lg rounded-sm border border-slate-200 dark:border-slate-700 relative" dir="rtl">

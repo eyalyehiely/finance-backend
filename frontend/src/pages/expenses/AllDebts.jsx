@@ -9,9 +9,7 @@ import FilterButton from '../../components/DropdownFilter';
 import DebtTable from './DebtTable';
 import PaginationClassic from '../../components/PaginationClassic';
 import Rights from '../../components/Rights';
-import {
-  NavLink,
-} from 'react-router-dom';
+import {NavLink} from 'react-router-dom';
 
 
 function AllDebts() {
