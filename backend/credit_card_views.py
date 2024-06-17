@@ -1,3 +1,6 @@
+from django.shortcuts import get_object_or_404
+import jwt,datetime,json
+from django.http import  JsonResponse
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from .serializers import *
@@ -5,6 +8,7 @@ import logging
 from django.utils import timezone
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
+from django.contrib.auth.decorators import login_required
 from rest_framework import status
 
 
@@ -34,14 +38,14 @@ def add_credit_card(request):
             logger.debug('Credit card added')
             return Response({'successful': 'Credit card added'})
         else:
-            logger.debug(f'Credit card not added: {str(e)}')
-            return Response({'error': str(e)}, status=400)
+            logger.debug(f'Credit card not added: {str(serializer.error_messages)}')
+            return Response({'error': str(serializer.error_messages)}, status=500)
         
     except CustomUser.DoesNotExist:
         return Response({'error': 'User does not exist'}, status=404)
     except Exception as e:
-        logger.debug(f'Credit card not added: {str(e)}')
-        return Response({'error': str(e)}, status=500)
+        logger.debug(f'Credit card not added: {str(serializer.error_messages)}')
+        return Response({'error': str(serializer.error_messages)}, status=500)
     
 
 
@@ -94,8 +98,8 @@ def get_chosen_credit_card(request,card_id):
     user_id= request.user.id
     try:
         
-        credit_card = CreditCard.objects.filter(user_id=user_id)
-        serializer = CreditCardSerializer(credit_card)
+        credit_cards = CreditCard.objects.filter(user_id=user_id)
+        serializer = CreditCardSerializer(credit_cards)
         return Response({
         'status':200,
         'chosen_card':serializer.data,

@@ -1,27 +1,26 @@
-import axios from 'axios';
+
+import axios from 'axios'
 import swal from 'sweetalert';
 
-export default function fetchSavingsData(token, setSavings) {
-  axios.post('http://localhost:8000/api/get_all_savings/', {}, {
-    headers: {
-      'content-type': 'application/json',
-      Authorization: `Bearer ${token}`,
-    }
-  })
-    .then(response => {
+export default function fetchSavingsData(token,setSavings,) {
+    axios.post('http://localhost:8000/api/get_all_savings/', {}, {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      }
+    }).then(response => {
       if (response.data.status === 200) {
         setSavings(response.data.all_savings);
       } else {
         console.log('Error:', response.data.message);
         swal({
-          title: "שגיאה!",
+          title: "Ⅹ!שגיאה ",
           text: `שגיאת frontend: ${response.data.message}`,
           icon: "warning",
           button: "אישור",
         });
       }
-    })
-    .catch(error => {
+    }).catch(error => {
       console.error('There was an error!', error);
       swal({
         title: "שגיאה!",
@@ -30,4 +29,4 @@ export default function fetchSavingsData(token, setSavings) {
         button: "אישור",
       });
     });
-}
+  }

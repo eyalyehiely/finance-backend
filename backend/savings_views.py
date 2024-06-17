@@ -30,12 +30,11 @@ logger = logging.getLogger('backend')
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def get_all_savings(request):
-
     user_id= request.user.id
     try:
         
-        saving = Savings.objects.filter(user_id=user_id)
-        serializer = SavingsSerializer(saving,many=True)
+        savings = Savings.objects.filter(user_id=user_id)
+        serializer = SavingsSerializer(savings,many=True)
         return Response({
         'status':200,
         'all_saving':serializer.data,
@@ -125,7 +124,7 @@ def edit_saving(request, saving_id):
         # Create or update the saving
         saving, created = Savings.objects.get_or_create(id=saving_id)
         saving.user_id = CustomUser(user_id)
-        saving.family_id = user.family_id
+        saving.family_id = Family(user.family_id)
         saving.saving_type = saving_type
         saving.interest = interest
         saving.amount = amount  # Convert amount to float

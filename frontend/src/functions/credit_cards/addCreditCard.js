@@ -1,6 +1,7 @@
 
 import axios from 'axios';
 import swal from 'sweetalert'
+import getCreditCard from './getCreditCardData'
 
 export default function addCreditCard(token) {
     const name = document.getElementById('name').value;
@@ -9,7 +10,11 @@ export default function addCreditCard(token) {
     const line_of_credit = document.getElementById('line_of_credit').value;
     const last_four_digits = document.getElementById('last_four_digits').value;
     const status = document.getElementById('status').value;
-
+console.log( name, day_of_charge,
+   credit_type,
+   line_of_credit,
+   last_four_digits,
+  status,);
   
     axios.post('http://localhost:8000/api/add_credit_card/', {
       name: name,
@@ -31,6 +36,7 @@ export default function addCreditCard(token) {
         icon: "success",
         button: "אישור",
       }).then(() => {
+        getCreditCard(token)
         window.location.href = '/creditcards/all-cards';
       });
     })

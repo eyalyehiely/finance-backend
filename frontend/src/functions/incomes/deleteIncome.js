@@ -1,7 +1,8 @@
 import swal from 'sweetalert'
 import axios from 'axios';
+import fetchIncomesData from './fetchIncomesData';
 
-export default function deleteIncome(id) {
+export default function deleteIncome(id,token) {
     swal({
       title: "האם אתה בטוח?",
       text: "ברגע שתלחץ על אישור לא יהיה ניתן לשחזר את המידע",

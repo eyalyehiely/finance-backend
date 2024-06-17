@@ -1,46 +1,51 @@
 import React, { useState, useEffect } from 'react';
 import AddCommaToNumber from '../../components/AddComma';
-import fetchSavingsData from '../../functions/savings/fetchSavingsData';
-import saveEdit from '../../functions/savings/saveEdit';
+import fetchSavingsData from '../../functions/savings/fetchSavingsData'
 import deleteSaving from '../../functions/savings/deleteSaving';
+import saveEdit from '../../functions/savings/saveEdit';
+
+
+
 
 function SavingsTable() {
   const [savings, setSavings] = useState([]);
-  const [editingSavingId, setEditingSavingId] = useState(null);
+  const [editingSavingsId, setEditingSavingsId] = useState(null);
   const [editedSaving, setEditedSaving] = useState({});
   const token = localStorage.getItem('authTokens') ? JSON.parse(localStorage.getItem('authTokens')).access : null;
 
+ 
   useEffect(() => {
     fetchSavingsData(token, setSavings);
   }, [token]);
-  console.log(setSavings);
+  
 
-  const handleEditChange = (event, field) => {
+
+  function handleEditChange(event, field) {
     setEditedSaving({
       ...editedSaving,
       [field]: event.target.value
     });
-  };
+  }
 
-  const startEdit = (saving) => {
-    setEditingSavingId(saving.id);
-    setEditedSaving({ ...saving });
-  };
-
+  function startEdit(saving) {
+    setEditingSavingsId(saving.id);
+    setEditedSaving({...saving});
+  }
   const cancelEdit = () => {
-    setEditingSavingId(null);
-    setEditedSaving({});
+    setEditingSavingsId(null);
+    setEditedSaving({}); // Reset editedSaving state to an empty object
   };
 
   const saveChanges = () => {
-    saveEdit(token, editedSaving, editingSavingId, setSavings);
+    saveEdit(token, editedSaving, editingSavingsId, setSavings);
   };
+
 
   return (
     <div className="bg-white dark:bg-slate-800 shadow-lg rounded-sm border border-slate-200 dark:border-slate-700 relative" dir="rtl">
       <header className="px-5 py-4">
         <h2 className="font-semibold text-slate-800 dark:text-slate-100">
-          חסכונות <span className="text-slate-400 dark:text-slate-500 font-medium">{savings.length}</span>
+          חסכונות <span className="text-slate-400 dark:text-slate-500 font-medium">{savings?.length}</span>
         </h2>
       </header>
       <div className="overflow-x-auto" dir="rtl">
@@ -74,13 +79,13 @@ function SavingsTable() {
             </tr>
           </thead>
           <tbody className="text-sm font-medium divide-y divide-slate-100 dark:divide-slate-700">
-            {savings && savings.length > 0 ? (
+            {savings.length > 0 ? (
               savings.map((saving, index) => (
                 <tr key={saving.id}>
                   <td className="p-2">
                     <div className="text-right">{index + 1}</div>
                   </td>
-                  {editingSavingId === saving.id ? (
+                  {editingSavingsId === saving.id ? (
                     <>
                       <td className="p-2">
                         <select id="saving_type" className="text-right" value={editedSaving.saving_type} onChange={(e) => handleEditChange(e, 'saving_type')}>
@@ -155,7 +160,9 @@ function SavingsTable() {
                         <div className="space-x-1">
                           <button
                             className="text-slate-400 hover:text-slate-500 dark:text-slate-500 dark:hover:text-slate-400 rounded-full"
-                            onClick={() => startEdit(saving)}
+                            onClick={() => {
+                              startEdit(saving);
+                            }}
                           >
                             <span className="sr-only">Edit</span>
                             <svg className="w-8 h-8 fill-current" viewBox="0 0 32 32">

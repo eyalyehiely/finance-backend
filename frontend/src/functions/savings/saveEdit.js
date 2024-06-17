@@ -1,9 +1,10 @@
 import axios from 'axios';
 import swal from 'sweetalert'
+import fetchSavingsData from './fetchSavingsData';
 
-export default function saveEdit(token, editedSaving, editingSavingId, setSavings) {
-    if (!editedSaving || !token || !editingSavingId) {
-      console.error('Invalid input to saveEdit:', { editedSaving, token, editingSavingId });
+export default function saveEdit(token, editedSaving, editingSavingsId, setSavings) {
+    if (!editedSaving || !token || !editingSavingsId) {
+      console.error('Invalid input to saveEdit:', { editedSaving, token, editingSavingsId });
       return;
     }
     const editedData = {
@@ -13,7 +14,7 @@ export default function saveEdit(token, editedSaving, editingSavingId, setSaving
     starting_date : editedSaving.starting_date || '',
     finish_date : editedSaving.finish_date || '',
     }
-    axios.put(`http://localhost:8000/api/edit_saving/${editingSavingId}/`, editedData, {
+    axios.put(`http://localhost:8000/api/edit_saving/${editingSavingsId}/`, editedData, {
     
     headers: {
         'content-type': 'application/json',
@@ -29,8 +30,8 @@ export default function saveEdit(token, editedSaving, editingSavingId, setSaving
             button: "אישור",
           }).then(()=>{
           // Upstarting_date the savings list with the returned saving data
-          setSavings(savings.map(saving => saving.id === editingSavingId ? response.data.saving : saving));
-
+          setSavings(savings=> savings.map(saving => saving.id === editingSavingsId ? response.data.saving : saving));
+          fetchSavingsData(token,setSavings)
           window.location.reload()
           })
         } else {

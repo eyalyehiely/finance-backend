@@ -1,15 +1,14 @@
-from django.shortcuts import get_object_or_404
-import jwt,datetime,json
+import datetime
 from django.http import  JsonResponse
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
-from .serializers import *
+from .serializers import RevenueSerializer
 import logging
 from django.utils import timezone
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
-from django.contrib.auth.decorators import login_required
 from rest_framework import status
+from .models import *
 
 
 # general 
@@ -23,7 +22,7 @@ logger = logging.getLogger('backend')
 
 # incomes
 
-# fetch user incomes for the current_month revenus and savings
+# fetch user incomes for the current_month revenus and savings 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def fetch_user_incomes(request):
@@ -57,24 +56,19 @@ def fetch_user_incomes(request):
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def get_all_incomes(request):
-
+    user_id= request.user.id
     try:
-
-        # Get all expense records for the given user_id
-        user_id= request.user.id
+        
         incomes = Revenues.objects.filter(user_id=user_id)
-
-        # Sort incomes by price in descending order and get the top 3
-        all_incomes = [{'source': income.source, 'amount': income.amount, 'date': income.date, 'id': income.id} for income in incomes]
-
-        return JsonResponse({
-            'status': 200,
-            'all_incomes': all_incomes,
-        }, status=200)
-
+        serializer = RevenueSerializer(incomes,many=True)
+        return Response({
+        'status':200,
+        'all_incomes':serializer.data,
+        })
+        
     except Exception as e:
         print(f"Error: {str(e)}")  # Debug: Print the error message
-        return JsonResponse({
+        return Response({
             'status': 500,
             'message': 'An error occurred while fetching data.',
             'error': str(e)
@@ -98,7 +92,7 @@ def add_income(request):
         # Create the income
         revenue = Revenues.objects.create(
             user_id=CustomUser(user_id),  # Assign the user instance directly
-            family_id=user.family_id,
+            family_id=Family(user.family_id),
             source=source, 
             amount=amount,
             date=date,
@@ -154,7 +148,7 @@ def edit_income(request, income_id):
         # Create or update the income
         income, created = Revenues.objects.get_or_create(id=income_id)
         income.user_id = CustomUser(user_id)
-        income.family_id = user.family_id
+        income.family_id = Family(user.family_id)
         income.source = source
         income.amount = amount  # Convert amount to float
         income.date = date_obj

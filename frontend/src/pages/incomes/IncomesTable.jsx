@@ -2,12 +2,13 @@ import React, { useState, useEffect } from 'react';
 import AddCommaToNumber from '../../components/AddComma';
 import fetchIncomesData from '../../functions/incomes/fetchIncomesData';
 import deleteIncome from '../../functions/incomes/deleteIncome';
+import saveEdit from '../../functions/incomes/saveEdit';
 
 
 
 function IncomesTable() {
   const [incomes, setIncomes] = useState([]);
-  const [editingincomeId, setEditingIncomesId] = useState(null);
+  const [editingIncomesId, setEditingIncomesId] = useState(null);
   const [editedIncome, setEditedIncome] = useState({});
   const token = localStorage.getItem('authTokens') ? JSON.parse(localStorage.getItem('authTokens')).access : null;
 
@@ -15,7 +16,7 @@ function IncomesTable() {
   useEffect(() => {
     fetchIncomesData(token,setIncomes);
   }, [token]);
-  
+
 
   function handleEditChange(event, field) {
     setEditedIncome({
@@ -34,11 +35,11 @@ function IncomesTable() {
   };
 
   const saveChanges = () => {
-    saveEdit(token, editedIncome, editingincomeId, setIncomes);
+    saveEdit(token, editedIncome, editingIncomesId, setIncomes);
   };
 
 
-console.log(incomes.length);
+
 
  
 
@@ -78,7 +79,7 @@ console.log(incomes.length);
                   <td className="p-2">
                     <div className="text-right">{index + 1}</div>
                   </td>
-                  {editingincomeId === income.id ? (
+                  {editingIncomesId === income.id ? (
                     <>
                      
                       <td className="p-2">
@@ -152,7 +153,7 @@ console.log(incomes.length);
                           </button>
                           <button
                             className="text-rose-500 hover:text-rose-600 rounded-full"
-                            onClick={() => deleteIncome(income.id)}
+                            onClick={() => deleteIncome(income.id,token)}
                           >
                             <span className="sr-only">Delete</span>
                             <svg className="w-8 h-8 fill-current" viewBox="0 0 32 32">

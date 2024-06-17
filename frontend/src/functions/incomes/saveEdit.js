@@ -1,20 +1,27 @@
-export default function saveEdit() {
-    const source = document.getElementById('source').value;
-    const date = document.getElementById('date').value;
-    const amount = document.getElementById('amount').value.replace(/,/g, ''); // Remove commas before saving
+
+import axios from 'axios'
+import swal from 'sweetalert';
+import fetchIncomesData from './fetchIncomesData';
+
+export default function saveEdit(token, editedIncome, editingIncomeId, setIncomes) {
+  if (!editedIncome || !token || !editingIncomeId) {
+    console.error('Invalid input to saveEdit:', { editedIncome, token, editingIncomeId });
+    return;
+  }
+    const editedData = {
+      source : editedIncome.source || '', 
+      date :editedIncome.date || '',
+      amount: editedIncome.amount ? String(editedIncome.amount).replace(/,/g, '') : '',
+    };
+
+    axios.put(`http://localhost:8000/api/edit_income/${editingIncomeId}/`,editedData, {
   
-    axios.put(`http://localhost:8000/api/edit_income/${editingincomeId}/`, {
-      source: source,
-      date: date,
-      amount: amount,
-  },{
       headers: {
         'content-type': 'application/json',
         Authorization: `Bearer ${token}`,
       }
 
-    })
-      .then(response => {
+    }).then(response => {
         if (response.data.status === 200) {
           swal({
             title: "💰!עבודה טובה",
@@ -23,10 +30,10 @@ export default function saveEdit() {
             button: "אישור",
           }).then(()=>{
           // Update the incomes list with the returned income data
-          setIncomes(incomes.map(income => income.id === editingincomeId ? response.data.income : income));
-          setEditingIncomesId(null);
+          setIncomes(incomes=> incomes.map(income => income.id === editingIncomeId ? response.data.income : income));
           fetchIncomesData(token,setIncomes);
-          location.href = '/incomes/all-incomes';
+          window.location.reload()
+
           })
         } else {
           console.log('Error:', response.data.message);

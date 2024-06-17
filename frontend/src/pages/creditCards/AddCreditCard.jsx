@@ -4,13 +4,12 @@ import Header from '../../partials/Header';
 import {NavLink} from 'react-router-dom';
 import addCreditCard from '/src/functions/credit_cards/addCreditCard.js'
 import Rights from '../../components/Rights';
-import getCreditCardData from '/src/functions/credit_cards/getCreditCardData.js'
+import getCreditCardData from '../../functions/credit_cards/getCreditCardData'
 
 
 function AddCreditCard() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [status, setStatus] = useState('no');
-  const [creditCards, setCreditCards] = useState([]);
   const token = localStorage.getItem('authTokens') ? JSON.parse(localStorage.getItem('authTokens')).access : null;
 
   
@@ -33,7 +32,7 @@ function AddCreditCard() {
   
 
   useEffect(() => {
-    getCreditCardData(token,setCreditCards);
+    getCreditCardData(token);
   }, []);
 
   
@@ -98,7 +97,7 @@ function AddCreditCard() {
                         <div className="flex items-center justify-between">
                           <label className="block text-sm font-medium mb-1" htmlFor="day_of_charge"> יום חיוב<span className="text-rose-500">*</span></label>
                         </div>
-                        <select id='day_of_charge' name='day_of_charge' className="form-input w-full" required>
+                        <select type ="number" id='day_of_charge' name='day_of_charge' className="form-input w-full" required >
                            <option value=""></option>
                             <option value="2">2</option>
                             <option value="10">10</option>

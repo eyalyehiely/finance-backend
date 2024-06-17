@@ -42,6 +42,11 @@ export default function saveEdit(token, editedDebt, editingDebtId, setDebts) {
     })
     .catch(error => {
       console.error('There was an error!', error);
-      alert('An error occurred while updating the expense.'); // Adjust error handling as needed
+      swal({
+        title: "Ⅹ!שגיאה ",
+        text: {"!שגיאת BACKEND":response.data.message},
+        icon: "warning",
+        button: "אישור",
+      })
     });
 }

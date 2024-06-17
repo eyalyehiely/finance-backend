@@ -166,7 +166,7 @@ class CreditCard(BaseModel):
     day_of_charge = models.CharField(max_length=50, choices=DAY_OF_CHARGE)
     credit_type = models.TextField(max_length=50, choices=CREDIT_TYPE)
     line_of_credit = models.FloatField(blank=True, null=True)
-    last_four_digits = models.TextField(max_length=100)
+    last_four_digits = models.TextField(max_length=4)
     status = models.CharField(max_length=50, choices=STATUS)
 
 
