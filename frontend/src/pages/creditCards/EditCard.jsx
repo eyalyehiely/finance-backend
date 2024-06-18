@@ -1,64 +1,155 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-// import CreditCardLogo from './CreditCardLogo'; // Assuming you have a CreditCardLogo component
+import 'bootstrap/dist/css/bootstrap.min.css';
+import React, { useState, useEffect } from 'react';
+import Button from 'react-bootstrap/Button';
+import Modal from 'react-bootstrap/Modal';
+import Form from 'react-bootstrap/Form';
+import getCreditCardData from '../../functions/credit_cards/getCreditCardData';
+import updateCreditCard from '../../functions/credit_cards/updateCreditCard';
 
-const EditCard = ({ card, onClose }) => {
+
+function EditCard({ card }) {
+  const [show, setShow] = useState(false);
+  const [creditCards, setCreditCards] = useState([]);
+  const [editingCardId, setEditingCardId] = useState(null);
+  const [data, setData] = useState({
+    name: '',
+    line_of_credit: '',
+    status: '',
+    credit_type: '',
+    last_four_digits: '',
+  });
+
+  const token = localStorage.getItem('authTokens') ? JSON.parse(localStorage.getItem('authTokens')).access : null;
+
+  useEffect(() => {
+    if (token) {
+      getCreditCardData(token, setCreditCards);
+    }
+  }, [token]);
+
+  const handleClose = () => {
+    setShow(false);
+    setData({
+      name: '',
+      line_of_credit: '',
+      status: '',
+      credit_type: '',
+      last_four_digits: '',
+    });
+    setEditingCardId(null);
+  };
+
+  const handleShow = () => {
+    setEditingCardId(card.id);
+    setData({
+      name: card.name,
+      line_of_credit: card.line_of_credit,
+      status: card.status,
+      credit_type: card.credit_type,
+      last_four_digits: card.last_four_digits,
+    });
+    setShow(true);
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setData({ ...data, [name]: value });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    updateCreditCard(token, setCreditCards, editingCardId, data, handleClose);
+  };
+
   return (
-    <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-gray-800 bg-opacity-50 z-50">
-      <div className="bg-white rounded-lg p-6 max-w-sm mx-auto relative overflow-hidden shadow-lg transform scale-0 opacity-0 transition-all duration-300">
-        <button
-          className="absolute top-0 right-0 m-4 text-gray-600 hover:text-gray-800 focus:outline-none"
-          onClick={onClose}
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-          </svg>
-        </button>
+    <>
+      <Button onClick={handleShow} variant="warning">
+        <span className="ml-2"></span>
+        <svg className="w-4 h-4 fill-current text-slate-500 dark:text-slate-400 shrink-0" viewBox="0 0 16 16">
+          <path d="M11.7.3c-.4-.4-1-.4-1.4 0l-10 10c-.2.2-.3.4-.3.7v4c0 .6.4 1 1 1h4c.3 0 .5-.1.7-.3l10-10c.4-.4.4-1 0-1.4l-4-4zM4.6 14H2v-2.6l6-6L10.6 8l-6 6zM12 6.6L9.4 4 11 2.4 13.6 5 12 6.6z" />
+        </svg>
+      </Button>
 
-        <div className="flex items-center justify-between mb-4">
-          {/* <CreditCardLogo cardType={card.card_type} className="w-10 h-6" /> */}
+      <Modal show={show} onHide={handleClose} centered dir="rtl">
+        <Modal.Header>
+          <Modal.Title>פרטי כרטיס האשראי</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form onSubmit={handleSubmit}>
+            <Form.Group controlId="formCardName">
+              <Form.Label>שם הכרטיס</Form.Label>
+              <Form.Control
+                as="select"
+                name="name"
+                value={data.name}
+                onChange={handleChange}
+              >
+                <option value="Visa">Visa</option>
+                <option value="Mastercard">Mastercard</option>
+                <option value="American Express">American Express</option>
+                <option value="Diners">Diners</option>
+              </Form.Control>
+            </Form.Group>
 
-          <div className="text-gray-600 text-sm">
-            <span>סופר: {card.last_four_digits}</span>
-          </div>
-        </div>
+            <Form.Group controlId="formCreditType">
+              <Form.Label>סוג הכרטיס</Form.Label>
+              <Form.Control
+                as="select"
+                name="credit_type"
+                value={data.credit_type}
+                onChange={handleChange}
+              >
+                <option value="debit">debit</option>
+                <option value="credit">credit</option>
+              </Form.Control>
+            </Form.Group>
 
-        <form className="space-y-4">
-          {/* Form fields for editing card details */}
-          {/* Example: */}
-          <div className="space-y-1">
-            <label className="block text-sm font-medium text-gray-700" htmlFor="name">
-              שם בעל הכרטיס
-            </label>
-            <input
-              type="text"
-              id="name"
-              name="name"
-              className="border border-gray-300 rounded-md shadow-sm focus:ring-slate-500 focus:border-slate-500 block w-full sm:text-sm"
-              defaultValue={card.name}
-            />
-          </div>
+            <Form.Group controlId="formStatus">
+              <Form.Label>סטטוס</Form.Label>
+              <Form.Control
+                as="select"
+                name="status"
+                value={data.status}
+                onChange={handleChange}
+              >
+                <option value="Active">פעיל</option>
+                <option value="Blocked">מושבת</option>
+              </Form.Control>
+            </Form.Group>
 
-          {/* Add more form fields for other details like expiration date, CVV, etc. */}
-        </form>
-
-        <div className="mt-6 flex justify-end">
-          <button
-            type="button"
-            className="bg-slate-500 hover:bg-slate-600 text-white px-4 py-2 rounded-md focus:outline-none"
-            onClick={onClose}
-          >
-            שמור שינויים
-          </button>
-        </div>
-      </div>
-    </div>
+            <Form.Group controlId="formCreditLimit">
+              <Form.Label>מסגרת אשראי</Form.Label>
+              <Form.Control
+                type="input"
+                name="line_of_credit"
+                value={data.line_of_credit}
+                onChange={handleChange}
+              />
+            </Form.Group>
+            
+            <Form.Group controlId="formLastFourDigits">
+              <Form.Label>4 ספרות אחרונות</Form.Label>
+              <Form.Control
+                type="input"
+                name="last_four_digits"
+                value={data.last_four_digits}
+                onChange={handleChange}
+              />
+            </Form.Group>
+            
+            <Button variant="success" type="submit" className="mt-3">
+              שמור
+            </Button>
+          </Form>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleClose}>
+            סגור
+          </Button>
+        </Modal.Footer>
+      </Modal>
+    </>
   );
-};
-
-EditCard.propTypes = {
-  card: PropTypes.object.isRequired, // Assuming card is an object with necessary details
-  onClose: PropTypes.func.isRequired, // Function to close the flying card
-};
+}
 
 export default EditCard;

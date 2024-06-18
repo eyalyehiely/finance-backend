@@ -220,18 +220,14 @@ class ExpensesViewSet(viewsets.ModelViewSet):
 
 
 
-#TODO: set logs to the example view
 
 
 
-@api_view(['GET'])
-def hello_world(request):
-    return Response({'message': 'Hello, world'})
 
 
-@api_view(['GET'])
-def dashboard(request):
-    return render(request, template_name='mosaic-react/eyal.html')
+
+
+
 
 
 

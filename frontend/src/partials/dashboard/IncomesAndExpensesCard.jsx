@@ -1,70 +1,26 @@
 import React, { useState, useEffect } from 'react';
 import DoughnutChart from '../../charts/DoughnutChart';
-import axios from 'axios';
 import Icon from '../../images/icon-03.svg';
+import fetchCurrentMonthExpenses from '../../functions/expenses/fetchCurrentMonthExpenses';
+import fetchCurrentMonthIncomes from '../../functions/incomes/fatchCurrentMonthIncomes'
 
 
 
 function IncomesAndExpensesCard() {
-  const [allExpenses, setAllExpenses] = useState(null);
+  const [expensesAmount, setAmount] = useState(null);
   const [incomes, setIncomes] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const token = localStorage.getItem('authTokens') ? JSON.parse(localStorage.getItem('authTokens')).access : null;
 
-  function fetchExpensesData() {
-    setLoading(true);
-    axios.post('http://localhost:8000/api/expenses/fetch_user_expenses/',{},{
-    headers: {
-      'content-type': 'application/json',
-      Authorization: `Bearer ${token}`,
-    }
-  }).then(response => {
-        setLoading(false);
-        if (response.data.status === 200) {
-          setAllExpenses(response.data.all_expenses)
-          
-        } else {
-          setError(response.data.message);
-        }
-      })
-      .catch(error => {
-        setLoading(false);
-        setError('An error occurred while fetching data.');
-        console.error('There was an error!', error);
-      });
-  }
-  function fetchIncomesData() {
-    setLoading(true);
-    axios.post('http://localhost:8000/api/incomes/fetch_user_incomes/',{},{
-      headers: {
-        'content-type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      }
-    })
-      .then(response => {
-        setLoading(false);
-        if (response.data.status === 200) {
-          setIncomes(response.data.month_revenues)
-          
-        } else {
-          setError(response.data.message);
-        }
-      })
-      .catch(error => {
-        setLoading(false);
-        setError('An error occurred while fetching data.');
-        console.error('There was an error!', error);
-      });
-  }
 
-const difference = incomes - allExpenses
+const difference = incomes - expensesAmount
   const chartData = {
     labels: ['הוצאות', 'הכנסות','הפרש'],
     datasets: [
       {
         data: [
-          allExpenses || 0, // Data for expenses
+          expensesAmount || 0, // Data for expenses
           incomes || 0, //Data for incomes
           difference || 0, //Data for difference
         ],
@@ -86,10 +42,10 @@ const difference = incomes - allExpenses
     ],
   };
   useEffect(() => {
-    fetchExpensesData(); // Call fetchData when the component mounts
+    fetchCurrentMonthExpenses(token,setAmount); // Call fetchData when the component mounts
   }, []);
   useEffect(() => {
-    fetchIncomesData(); // Call fetchData when the component mounts
+    fetchCurrentMonthIncomes(token,setLoading,setIncomes,setError); // Call fetchData when the component mounts
   }, []);
 
   return (

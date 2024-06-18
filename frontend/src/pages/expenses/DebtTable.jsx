@@ -4,6 +4,7 @@ import fetchDebtData from '../../functions/debts/fetchDebtData';  // Implement t
 import deleteDebt from '../../functions/debts/deleteDebt';  // Implement this function
 import saveEdit from '/src/functions/debts/saveEdit.js';  // Implement this function
 
+
 function DebtTable() {
   const [debts, setDebts] = useState([]);
   const [editingDebtId, setEditingDebtId] = useState(null);

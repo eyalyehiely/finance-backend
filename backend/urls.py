@@ -67,8 +67,8 @@ urlpatterns = [
 
 
     path('reset_credit_card_transactions/',reset_credit_card_transactions,name = 'reset_credit_card_transactions'),
-    path('hello-world/',hello_world, name='hello_world'),
-    path('dashboard/', dashboard, name='dashboard'),
+
+
     
 
  ]

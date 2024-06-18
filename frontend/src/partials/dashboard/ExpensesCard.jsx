@@ -1,49 +1,17 @@
 import React,{useState} from 'react';
 import Icon from '../../images/icon-02.svg';
-import axios from 'axios'
 import { useEffect } from 'react';
-
-
-
+import fetchCurrentMonthExpenses from '../../functions/expenses/fetchCurrentMonthExpenses';
 
 function ExpensesCard() {
     const token = localStorage.getItem('authTokens') ? JSON.parse(localStorage.getItem('authTokens')).access : null;
     const [amount, setAmount] = useState(null);
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState(null);
+    
 
-    function fetchData(event = null) {
-      setLoading(true);
-      if (event) {
-        event.preventDefault();
-      }
-      axios.post('http://localhost:8000/api/expenses/fetch_user_expenses/',{},{
-        headers: {
-          'content-type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        }
-    }).then(response => {
-      setLoading(false);
-          if (response.data.status ===200) {
-              console.log({'all_expenses':response.data.all_expenses});
-              setAmount(response.data.all_expenses); 
-          } else {
-              setError(response.data.message);
-              console.log('Error:', response.data.message);
-              // alert(response.data.message);
-          }
-      })
-      .catch(error => {
-        setLoading(false);
-        setError('An error occurred while fetching data.');
-        console.error('There was an error!', error);
-        // alert('An error occurred while fetching data.');
-    });
-  }
-
+    
  
   useEffect(() => {
-    fetchData(); // Call fetchData when the component mounts
+    fetchCurrentMonthExpenses(token,setAmount); // Call fetchData when the component mounts
   }, []);
   return (
     <div className="flex flex-col col-span-full sm:col-span-6 xl:col-span-4 bg-white dark:bg-slate-800 shadow-lg rounded-sm border border-slate-200 dark:border-slate-700">
