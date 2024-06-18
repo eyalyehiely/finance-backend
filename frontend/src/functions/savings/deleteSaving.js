@@ -1,7 +1,8 @@
 import axios from 'axios';
 import swal from 'sweetalert'
+import fetchSavingsData from './fetchSavingsData';
 
-export default function deleteSaving(id) {
+export default function deleteSaving(id,token) {
     swal({
       title: "האם אתה בטוח?",
       text: "ברגע שתלחץ על אישור לא יהיה ניתן לשחזר את המידע",
@@ -10,7 +11,7 @@ export default function deleteSaving(id) {
       dangerMode: true,
     }).then((willDelete) => {
       if (willDelete) {
-        axios.delete(`http://localhost:8000/api/delete_saving/${id}/`, {
+        axios.delete(`http://localhost:8000/api/savings/delete_saving/${id}/`, {
           headers: {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${token}`,
@@ -21,7 +22,8 @@ export default function deleteSaving(id) {
             icon: "success",
             button: "אישור",
           }).then(() => {
-            fetchSavingsData(token,setSavings); // Refresh the data after deletion
+          fetchSavingsData(token);
+          window.location.reload() // Refresh the data after deletion
           });
         }).catch((error) => {
           console.error("Error deleting saving:", error);

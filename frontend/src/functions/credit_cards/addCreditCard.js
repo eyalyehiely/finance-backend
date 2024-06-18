@@ -16,7 +16,7 @@ console.log( name, day_of_charge,
    last_four_digits,
   status,);
   
-    axios.post('http://localhost:8000/api/add_credit_card/', {
+    axios.post('http://localhost:8000/api/cards/add_credit_card/', {
       name: name,
       day_of_charge: day_of_charge,
       credit_type: credit_type,

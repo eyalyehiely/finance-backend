@@ -4,13 +4,13 @@ import Sidebar from '../partials/Sidebar';
 import Header from '../partials/Header';
 import WelcomeBanner from '../partials/dashboard/WelcomeBanner';
 // import Datepicker from '../components/Datepicker';
-import DashboardCard01 from '../partials/dashboard/DashboardCard01';
-import DashboardCard02 from '../partials/dashboard/DashboardCard02';
-import DashboardCard03 from '../partials/dashboard/DashboardCard03';
-import DashboardCard04 from '../partials/dashboard/DashboardCard04';
-import DashboardCard05 from '../partials/dashboard/DashboardCard05';
-import DashboardCard06 from '../partials/dashboard/DashboardCard06';
-import DashboardCard07 from '../partials/dashboard/DashboardCard07';
+import DashboardCard01 from '../partials/dashboard/IncomesCard';
+import DashboardCard02 from '../partials/dashboard/ExpensesCard';
+import DashboardCard03 from '../partials/dashboard/SavingsCard';
+import DashboardCard04 from '../partials/dashboard/IncomesAndExpensesCard';
+import DashboardCard05 from '../partials/dashboard/NotesCard';
+import DashboardCard06 from '../partials/dashboard/ExpensesKindsCard';
+import DashboardCard07 from '../partials/dashboard/ExpensesTableCard';
 import Rights from '/src/components/Rights';
 
 
@@ -57,21 +57,29 @@ function Dashboard() {
             {/* Cards */}
             <div className="grid grid-cols-12 gap-6">
 
+              {/* הודעות */}
+              <DashboardCard05 />
+
               {/* הכנסות */}
               <DashboardCard01 />
+
+             
+              
               {/* הוצאות */}
               <DashboardCard02 />
-              {/* Line chart (Acme Professional) */}
+
+                {/* חסכונות */} 
               <DashboardCard03 />
-              {/* חסכונות */}
+
+               {/* הוצאות מול הכנסות */}
               <DashboardCard04 />
-              {/* הוצאות מול הכנסות */}
-              <DashboardCard05 />
-              {/* Doughnut chart (Top Countries) */}
-              <DashboardCard06 />
+
               {/* חלוקת הוצאות חודשית */}
-              <DashboardCard07 />
+              <DashboardCard06 />
+
               {/* שלושת ההוצאות הגדולות ביותר */}
+              <DashboardCard07 />
+             
               
             </div>
 

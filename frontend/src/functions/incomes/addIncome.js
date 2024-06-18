@@ -8,7 +8,7 @@ export default function AddIncome(token) {
 
     console.log(source,amount,date,);
 
-    axios.post('http://localhost:8000/api/add_income/', {
+    axios.post('http://localhost:8000/api/incomes/add_income/', {
       source:source,
       amount:amount,
       date:date,

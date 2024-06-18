@@ -13,7 +13,7 @@ function DebtTable() {
   useEffect(() => {
     fetchDebtData(token, setDebts);  
   }, [token]);   
-
+console.log(debts.length);
   const handleEditChange = (event, field) => {
     setEditedDebt({
       ...editedDebt,

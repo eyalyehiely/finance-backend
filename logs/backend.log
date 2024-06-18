@@ -409,3 +409,25 @@ DEBUG 2024-06-18 01:09:04,327 credit_card_views 27843 6136197120 Request data: {
 DEBUG 2024-06-18 01:10:03,382 credit_card_views 27843 6136197120 Credit card not added: {'created_at': [ErrorDetail(string='This field is required.', code='required')], 'day_of_charge': [ErrorDetail(string='"2" is not a valid choice.', code='invalid_choice')], 'user_id': [ErrorDetail(string='This field is required.', code='required')]}
 DEBUG 2024-06-18 01:10:03,383 credit_card_views 27843 6136197120 Request data: {'name': 'Mastercard', 'day_of_charge': '2', 'credit_type': 'Debit', 'line_of_credit': '7000', 'last_four_digits': '4567', 'status': 'Active'}
 DEBUG 2024-06-18 01:10:20,116 credit_card_views 27867 6138195968 Credit card not added: {'required': 'This field is required.', 'null': 'This field may not be null.', 'invalid': 'Invalid data. Expected a dictionary, but got {datatype}.'}
+DEBUG 2024-06-18 13:39:27,546 debts_views 30955 6199439360 Debt added
+DEBUG 2024-06-18 13:40:21,280 savings_views 30955 6216265728 saving added
+DEBUG 2024-06-18 13:48:45,661 savings_views 31439 6149435392 saving added
+DEBUG 2024-06-18 13:52:29,437 savings_views 31439 6149435392 saving added
+DEBUG 2024-06-18 13:56:15,661 credit_card_views 31439 6149435392 Credit card not added: {'required': 'This field is required.', 'null': 'This field may not be null.', 'invalid': 'Invalid data. Expected a dictionary, but got {datatype}.'}
+DEBUG 2024-06-18 13:57:28,058 credit_card_views 31615 6196080640 Credit card not added: {'required': 'This field is required.', 'null': 'This field may not be null.', 'invalid': 'Invalid data. Expected a dictionary, but got {datatype}.'}
+DEBUG 2024-06-18 13:57:38,030 credit_card_views 31624 6161199104 Credit card not added: {'required': 'This field is required.', 'null': 'This field may not be null.', 'invalid': 'Invalid data. Expected a dictionary, but got {datatype}.'}
+DEBUG 2024-06-18 14:12:24,133 credit_card_views 31721 6213332992 Credit card not added: {'required': 'This field is required.', 'null': 'This field may not be null.', 'invalid': 'Invalid data. Expected a dictionary, but got {datatype}.'}
+DEBUG 2024-06-18 14:16:41,122 credit_card_views 31801 6126039040 Credit card not added: {'required': 'This field is required.', 'null': 'This field may not be null.', 'invalid': 'Invalid data. Expected a dictionary, but got {datatype}.'}
+DEBUG 2024-06-18 14:18:57,881 credit_card_views 31866 6200143872 Credit card not added: {'created_at': [ErrorDetail(string='This field is required.', code='required')], 'day_of_charge': [ErrorDetail(string='"15" is not a valid choice.', code='invalid_choice')]}
+DEBUG 2024-06-18 14:21:15,388 credit_card_views 31933 6130200576 Credit card not added: {'created_at': [ErrorDetail(string='This field is required.', code='required')], 'day_of_charge': [ErrorDetail(string='"15" is not a valid choice.', code='invalid_choice')]}
+DEBUG 2024-06-18 14:23:04,770 credit_card_views 31933 6130200576 Credit card not added: {'created_at': [ErrorDetail(string='This field is required.', code='required')], 'day_of_charge': [ErrorDetail(string='"15" is not a valid choice.', code='invalid_choice')]}
+DEBUG 2024-06-18 14:23:15,361 credit_card_views 31933 6130200576 Credit card not added: {'created_at': [ErrorDetail(string='This field is required.', code='required')], 'day_of_charge': [ErrorDetail(string='"10" is not a valid choice.', code='invalid_choice')]}
+DEBUG 2024-06-18 14:24:10,988 credit_card_views 32022 6195523584 Credit card not added: {'day_of_charge': [ErrorDetail(string='"10" is not a valid choice.', code='invalid_choice')]}
+DEBUG 2024-06-18 14:25:08,542 credit_card_views 32061 6121779200 Credit card not added: {'day_of_charge': [ErrorDetail(string='"10" is not a valid choice.', code='invalid_choice')]}
+DEBUG 2024-06-18 14:25:55,628 credit_card_views 32093 6134870016 Credit card not added: {'day_of_charge': [ErrorDetail(string='"10" is not a valid choice.', code='invalid_choice')]}
+DEBUG 2024-06-18 14:25:55,628 credit_card_views 32093 6151696384 Credit card not added: {'day_of_charge': [ErrorDetail(string='"10" is not a valid choice.', code='invalid_choice')]}
+DEBUG 2024-06-18 14:26:07,632 credit_card_views 32093 6151696384 Credit card not added: {'day_of_charge': [ErrorDetail(string='"10" is not a valid choice.', code='invalid_choice')]}
+DEBUG 2024-06-18 14:26:42,596 credit_card_views 32104 6157447168 Credit card not added: {'day_of_charge': [ErrorDetail(string='"10" is not a valid choice.', code='invalid_choice')]}
+DEBUG 2024-06-18 14:27:09,728 credit_card_views 32104 6157447168 Credit card not added: {'day_of_charge': [ErrorDetail(string='"10" is not a valid choice.', code='invalid_choice')]}
+DEBUG 2024-06-18 15:17:42,387 credit_card_views 32104 6157447168 Credit card not added: {'day_of_charge': [ErrorDetail(string='"2" is not a valid choice.', code='invalid_choice')]}
+DEBUG 2024-06-18 15:20:24,561 credit_card_views 32666 6161002496 Credit card added successfully.

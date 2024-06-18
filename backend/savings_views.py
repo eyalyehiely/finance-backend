@@ -37,7 +37,7 @@ def get_all_savings(request):
         serializer = SavingsSerializer(savings,many=True)
         return Response({
         'status':200,
-        'all_saving':serializer.data,
+        'all_savings':serializer.data,
         })
         
     except Exception as e:

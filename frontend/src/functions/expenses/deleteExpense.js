@@ -11,7 +11,7 @@ export default function deleteExpense(token,id) {
       dangerMode: true,
     }).then((willDelete) => {
       if (willDelete) {
-        axios.delete(`http://localhost:8000/api/delete_expense/${id}/`, {
+        axios.delete(`http://localhost:8000/api/expenses/delete_expense/${id}/`, {
           headers: {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${token}`,

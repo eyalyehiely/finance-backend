@@ -3,7 +3,7 @@ import axios from 'axios'
 import swal from 'sweetalert';
 
 export default function fetchIncomesData(token,setIncomes) {
-    axios.post('http://localhost:8000/api/get_all_incomes/', {}, {
+    axios.post('http://localhost:8000/api/incomes/get_all_incomes/', {}, {
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${token}`,

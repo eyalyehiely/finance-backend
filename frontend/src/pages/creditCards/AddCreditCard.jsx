@@ -99,9 +99,9 @@ function AddCreditCard() {
                         </div>
                         <select type ="number" id='day_of_charge' name='day_of_charge' className="form-input w-full" required >
                            <option value=""></option>
-                            <option value="2">2</option>
-                            <option value="10">10</option>
-                            <option value="15">15</option>
+                            <option value={2}>2</option>
+                            <option value={10}>10</option>
+                            <option value={15}>15</option>
                            
                         </select>
                       </div>

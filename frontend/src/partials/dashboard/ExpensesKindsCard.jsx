@@ -4,7 +4,7 @@ import axios from 'axios';
 
 
 
-function DashboardCard06() {
+function ExpensesKindsCard() {
   const [creditCard, setCreditCard] = useState(null);
   const [debts, setDebts] = useState(null);
   const [cash, setCash] = useState(null);
@@ -15,7 +15,7 @@ function DashboardCard06() {
 
   function fetchData() {
     setLoading(true);
-    axios.post('http://localhost:8000/api/fetch_user_expenses/',{},{
+    axios.post('http://localhost:8000/api/expenses/fetch_user_expenses/',{},{
       headers: {
         'content-type': 'application/json',
         Authorization: `Bearer ${token}`,
@@ -84,4 +84,4 @@ function DashboardCard06() {
   );
 }
 
-export default DashboardCard06;
+export default ExpensesKindsCard;

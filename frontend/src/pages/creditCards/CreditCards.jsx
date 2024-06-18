@@ -1,12 +1,11 @@
 import React, { useState,useEffect } from 'react';
-import axios from 'axios'
 import Sidebar from '../../partials/Sidebar';
 import Header from '../../partials/Header';
-import { NavLink, Navigate } from 'react-router-dom';
+import { NavLink} from 'react-router-dom';
 import CreditCardLogo from '../component/CreditCardLogo';
 import Rights from '../../components/Rights';
-import getCreditCardData from '/src/functions/credit_cards/getCreditCardData.js'
-import deleteCard from '/src/functions/credit_cards/getCreditCardData.js'
+import getCreditCardData from '../../functions/credit_cards/getCreditCardData'
+import deleteCard from '../../functions/credit_cards/deleteCard'
 import EditCard from './EditCard';
 
 function CreditCards() {
@@ -18,32 +17,11 @@ function CreditCards() {
 
 
  
-  // function chosenCreditCard(){
-  //   const card_id = document.getElementById('credit_card').value || '';
-  //   axios.get(`http://localhost:8000/api/get_chosen_credit_card/${card_id}/`, {},{
-  //     headers: {
-  //       'content-type': 'application/json',
-  //       Authorization: `Bearer ${token}`,
-  //     }
-  //   }).then((response)=>{
-  //     setChosenCard(response.data.chosen_credit_card)
-  //     console.log(response.data.chosen_credit_card);
-    
-  //   }).catch((error) => {
-  //       console.error("Error fetching chosen credit card:", error);
-  //       swal({
-  //         title: "Ⅹ!שגיאה",
-  //         text: "שגיאת מערכת",
-  //         icon: "warning",
-  //         button: "אישור",
-  //       });
-  //   });
- 
-  // }
+  
 
   useEffect(() => {
     getCreditCardData(token,setCreditCards);
-  }, []);
+  }, [token]);
   return (
     <div className="flex h-[100dvh] overflow-hidden" dir = "rtl">
       {/* Sidebar */}
@@ -299,7 +277,7 @@ function CreditCards() {
                     </div>
                     
                     <div className="w-1/2">
-                      <button  id={card.id} className="btn w-full dark:bg-slate-800 border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600 text-rose-500" onClick={() => deleteCard(card.id)}>
+                      <button  id={card.id} className="btn w-full dark:bg-slate-800 border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600 text-rose-500" onClick={() => deleteCard(token,card.id)}>
                       <span className="ml-2">הסר כרטיס</span>
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
                           <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5M11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47M8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5"/>
@@ -323,7 +301,6 @@ function CreditCards() {
         )
         
 }
-
             </div>
             
         </main>
@@ -340,3 +317,32 @@ export default CreditCards;
 
 
 
+
+
+
+
+
+
+
+// function chosenCreditCard(){
+  //   const card_id = document.getElementById('credit_card').value || '';
+  //   axios.get(`http://localhost:8000/api/get_chosen_credit_card/${card_id}/`, {},{
+  //     headers: {
+  //       'content-type': 'application/json',
+  //       Authorization: `Bearer ${token}`,
+  //     }
+  //   }).then((response)=>{
+  //     setChosenCard(response.data.chosen_credit_card)
+  //     console.log(response.data.chosen_credit_card);
+    
+  //   }).catch((error) => {
+  //       console.error("Error fetching chosen credit card:", error);
+  //       swal({
+  //         title: "Ⅹ!שגיאה",
+  //         text: "שגיאת מערכת",
+  //         icon: "warning",
+  //         button: "אישור",
+  //       });
+  //   });
+ 
+  // }

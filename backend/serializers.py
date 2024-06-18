@@ -1,43 +1,28 @@
+#this file take a place in the presenting data in the api
+
 from rest_framework import serializers
-# from rest_framework.authtoken.admin import User
 from .models import *
 from users.models import Family
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
-#this file take a place in the presenting data in the api
 
 class SavingsSerializer(serializers.ModelSerializer):
+    total_saving_amount = serializers.SerializerMethodField()
+    earnings = serializers.SerializerMethodField()
+
     class Meta:
         model = Savings
         fields = '__all__'
 
+    def get_total_saving_amount(self, obj):
+        return round(obj.total_saving_amount, 2)
 
-# get all data for loans
-# class LoanSerializer(serializers.ModelSerializer):
-#     calc_month_left = serializers.SerializerMethodField()
-#     calc_total_amount = serializers.SerializerMethodField()
-#     calc_month_payment = serializers.SerializerMethodField()
-#     calc_payed_amount = serializers.SerializerMethodField()
-
-#     class Meta:
-#         model = Loans
-#         fields = '__all__'
-
-#     def get_calc_month_left(self, obj):
-#         return obj.calc_month_left
-
-#     def get_calc_total_amount(self, obj):
-#         return obj.calc_total_amount
-
-#     def get_calc_month_payment(self, obj):
-#         return obj.calc_month_payment
-
-#     def get_calc_payed_amount(self, obj):
-#         return obj.calc_payed_amount
+    def get_earnings(self, obj):
+        return round(obj.earnings, 2)
 
 
-from rest_framework import serializers
-from .models import Debts
+
+
 
 class DebtSerializer(serializers.ModelSerializer):
     # payed_amount = serializers.SerializerMethodField()
@@ -49,6 +34,9 @@ class DebtSerializer(serializers.ModelSerializer):
     class Meta:
         model = Debts
         fields = '__all__' 
+        read_only_fields = ['created_at','updated_at']
+        
+
 
     # def get_payed_amount(self, obj):
     #     return obj.payed_amount
@@ -66,29 +54,29 @@ class DebtSerializer(serializers.ModelSerializer):
         return round(obj.total_amount, 2)
 
 
+
+
 class CreditCardSerializer(serializers.ModelSerializer):
-    last_four_digits = serializers.CharField(max_length=5)
+    DAY_CHOICES = (
+        (1, '2'),
+        (2, '10'),
+        (3, '15'),
 
-
+    )
+    day_of_charge = serializers.ChoiceField(choices=DAY_CHOICES)
+    last_four_digits = serializers.CharField(max_length=4)
+    
     class Meta:
         model = CreditCard
         fields = '__all__'
 
     def validate_last_four_digits(self, value):
-            """
-            Validate that the last_four_digits field has exactly 4 digits.
-            """
-            if len(value) != 4 or not value.isdigit():
-                raise serializers.ValidationError("last_four_digits must be exactly 4 digits.")
-            return value
-    
-
-    # def amount_to_charge(self, obj):
-    #     return obj.amount_to_charge
-
-
-    # def depending_charges(self,obj):
-    #     return obj.depending_charges
+        """
+        Validate that the last_four_digits field has exactly 4 digits.
+        """
+        if len(value) != 4 or not value.isdigit():
+            raise serializers.ValidationError("last_four_digits must be exactly 4 digits.")
+        return value
 
 
 class ExpenseSerializer(serializers.ModelSerializer):

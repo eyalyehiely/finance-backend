@@ -11,7 +11,7 @@ export default function deleteIncome(id,token) {
       dangerMode: true,
     }).then((willDelete) => {
       if (willDelete) {
-        axios.delete(`http://localhost:8000/api/delete_income/${id}/`, {
+        axios.delete(`http://localhost:8000/api/incomes/delete_income/${id}/`, {
           headers: {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${token}`,

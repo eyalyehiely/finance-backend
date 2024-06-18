@@ -16,7 +16,7 @@ export default function saveEdit(token, editedExpense, editingExpenseId, setExpe
     credit_card: editedExpense.credit_card || '',
   };
 
-  axios.put(`http://localhost:8000/api/edit_expense/${editingExpenseId}/`, editedData, {
+  axios.put(`http://localhost:8000/api/expenses/edit_expense/${editingExpenseId}/`, editedData, {
     headers: {
       'content-type': 'application/json',
       Authorization: `Bearer ${token}`,

@@ -6,14 +6,14 @@ import axios from 'axios';
 // Import utilities
 import { tailwindConfig } from '../../utils/Utils';
 
-function DashboardCard04() {
+function SavingsCard() {
   const token = localStorage.getItem('authTokens') ? JSON.parse(localStorage.getItem('authTokens')).access : null;
   const [savings, setSavings] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   function fetchIncomesData() {
     setLoading(true);
-    axios.post('http://localhost:8000/api/fetch_user_incomes/',{},{
+    axios.post('http://localhost:8000/api/incomes/fetch_user_incomes/',{},{
       headers: {
         'content-type': 'application/json',
         Authorization: `Bearer ${token}`,
@@ -77,4 +77,4 @@ function DashboardCard04() {
     );
 }
 
-export default DashboardCard04;
+export default SavingsCard;

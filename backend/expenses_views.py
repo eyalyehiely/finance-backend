@@ -1,14 +1,11 @@
-from django.shortcuts import get_object_or_404
-import jwt,datetime,json
-from django.http import  JsonResponse
+import datetime
+
 from rest_framework.response import Response
-from rest_framework.decorators import api_view
 from .serializers import *
 import logging
 from django.utils import timezone
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
-from django.contrib.auth.decorators import login_required
 from rest_framework import status
 
 
@@ -31,7 +28,7 @@ def fetch_user_expenses(request):
     try:
 
         # Get all data records for the given user_id
-        user_id= request.user.id
+        user_id = request.user.id
         current_month_debts = Debts.objects.filter(user_id=user_id,finish_date__year__gte=current_year,finish_date__month__gte=current_month)
         current_month_expenses = Expenses.objects.filter(user_id=user_id,date_and_time__month=current_month,date_and_time__year=current_year)
         current_month_credit_cards = Expenses.objects.filter(user_id=user_id,payment_method='credit_card',date_and_time__month=current_month,date_and_time__year=current_year)
@@ -45,14 +42,14 @@ def fetch_user_expenses(request):
         #filtering & calculating...
         debts_amount = round(sum([data.month_payment for data in current_month_debts]),2)
         expenses_amount = round(sum([data.price for data in current_month_expenses]),2)
-        credit_cards_amount = sum([data.price for data in current_month_credit_cards])
-        cash_amount = round(sum([data.price for data in current_month_cash],2))
-        check_amount = round(sum([data.price for data in current_month_check],2))
-        all_expenses = round(expenses_amount+debts_amount,)
+        credit_cards_amount = round(sum([data.price for data in current_month_credit_cards]),2)
+        cash_amount = round(sum([data.price for data in current_month_cash]),2)
+        check_amount = round(sum([data.price for data in current_month_check]),2)
+        all_expenses = round(expenses_amount+debts_amount)
 
 
         
-        return JsonResponse({
+        return Response({
             'status': 200,
             'credit_card':credit_cards_amount,
             'debts':debts_amount,
@@ -65,7 +62,7 @@ def fetch_user_expenses(request):
         
     except Exception as e:
         print(f"Error: {str(e)}")  # Debug: Print the error message
-        return JsonResponse({
+        return Response({
             'status': 500,
             'message': 'An error occurred while fetching data.',
             'error': str(e)
@@ -89,14 +86,14 @@ def get_all_expenses(request):
         all_expenses = [{'name': expense.name,'payment_method': expense.payment_method,'price': expense.price,'date_and_time': expense.date_and_time,'id': expense.id}for expense in expenses]
 
 
-        return JsonResponse({
+        return Response({
             'status': 200,
             'all_expenses': all_expenses,
         }, status=200)
 
     except Exception as e:
         print(f"Error: {str(e)}")  # Debug: Print the error message
-        return JsonResponse({
+        return Response({
             'status': 500,
             'message': 'An error occurred while fetching data.',
             'error': str(e)
@@ -137,13 +134,13 @@ def add_expense(request):
         )
         expense.save()
         logger.debug('expense added')
-        return JsonResponse({'successful': 'expense added'})
+        return Response({'successful': 'expense added'})
         
     except CustomUser.DoesNotExist:
-        return JsonResponse({'error': 'User does not exist'}, status=404)
+        return Response({'error': 'User does not exist'}, status=404)
     except Exception as e:
         logger.debug(f'expense not added: {str(e)}')
-        return JsonResponse({'error': str(e)}, status=500)
+        return Response({'error': str(e)}, status=500)
     
 
 
@@ -170,14 +167,14 @@ def fetch_expenses_table(request):
         # Sort expenses by price in descending order and get the top 3
         sorted_expenses = sorted([[expense.name, expense.date_and_time, expense.payment_method, expense.price,expense.id] for expense in expenses], key=lambda x: x[3], reverse=True)[:3]
 
-        return JsonResponse({
+        return Response({
             'status': 200,
             'sorted_expenses': sorted_expenses,
         }, status=200)
 
     except Exception as e:
         print(f"Error: {str(e)}")  # Debug: Print the error message
-        return JsonResponse({
+        return Response({
             'status': 500,
             'message': 'An error occurred while fetching data.',
             'error': str(e)
@@ -218,7 +215,7 @@ def edit_expense(request, expense_id):
         # Check if the price is not empty
         price =float(price)
         if not price:
-            return JsonResponse({'error': 'Amount field cannot be empty'}, status=400)
+            return Response({'error': 'Amount field cannot be empty'}, status=400)
 
         # Parse dates from request data
         
@@ -238,9 +235,9 @@ def edit_expense(request, expense_id):
         expense.updated_at = timezone.now()
         expense.save()
 
-        return JsonResponse({'status':200,'message': 'expense updated'})
+        return Response({'status':200,'message': 'expense updated'})
 
     except CustomUser.DoesNotExist:
-        return JsonResponse({'error': 'User does not exist'}, status=404)
+        return Response({'error': 'User does not exist'}, status=404)
     except Exception as e:
-        return JsonResponse({'error': str(e)}, status=500)
+        return Response({'error': str(e)}, status=500)

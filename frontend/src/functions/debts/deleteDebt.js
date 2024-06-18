@@ -11,7 +11,7 @@ export default function deleteDebt(id,token) {
       dangerMode: true,
     }).then((willDelete) => {
       if (willDelete) {
-        axios.delete(`http://localhost:8000/api/delete_debt/${id}/`, {
+        axios.delete(`http://localhost:8000/api/debts/delete_debt/${id}/`, {
           headers: {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${token}`,

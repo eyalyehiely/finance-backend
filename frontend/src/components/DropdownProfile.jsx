@@ -2,9 +2,10 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Transition from '../utils/Transition';
 import LogoutButton from './LogOut';
+import { jwtDecode } from 'jwt-decode';
 
 import UserAvatar from '../images/user-avatar-32.png';
-const username = localStorage.getItem('username')
+const username = jwtDecode(localStorage.getItem('authTokens')).username
 function DropdownProfile({
   align
 }) {

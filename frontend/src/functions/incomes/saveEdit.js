@@ -14,7 +14,7 @@ export default function saveEdit(token, editedIncome, editingIncomeId, setIncome
       amount: editedIncome.amount ? String(editedIncome.amount).replace(/,/g, '') : '',
     };
 
-    axios.put(`http://localhost:8000/api/edit_income/${editingIncomeId}/`,editedData, {
+    axios.put(`http://localhost:8000/api/incomes/edit_income/${editingIncomeId}/`,editedData, {
   
       headers: {
         'content-type': 'application/json',

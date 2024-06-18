@@ -5,7 +5,7 @@ import Icon from '../../images/icon-03.svg';
 
 
 
-function DashboardCard06() {
+function IncomesAndExpensesCard() {
   const [allExpenses, setAllExpenses] = useState(null);
   const [incomes, setIncomes] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -14,7 +14,7 @@ function DashboardCard06() {
 
   function fetchExpensesData() {
     setLoading(true);
-    axios.post('http://localhost:8000/api/fetch_user_expenses/',{},{
+    axios.post('http://localhost:8000/api/expenses/fetch_user_expenses/',{},{
     headers: {
       'content-type': 'application/json',
       Authorization: `Bearer ${token}`,
@@ -36,7 +36,7 @@ function DashboardCard06() {
   }
   function fetchIncomesData() {
     setLoading(true);
-    axios.post('http://localhost:8000/api/fetch_user_incomes/',{},{
+    axios.post('http://localhost:8000/api/incomes/fetch_user_incomes/',{},{
       headers: {
         'content-type': 'application/json',
         Authorization: `Bearer ${token}`,
@@ -109,4 +109,4 @@ const difference = incomes - allExpenses
   );
 }
 
-export default DashboardCard06;
+export default IncomesAndExpensesCard;

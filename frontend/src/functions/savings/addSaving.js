@@ -14,7 +14,7 @@ export default function addSaving(token) {
   console.log(saving_type, interest, amount, starting_date, finish_date);
 
   // Send POST request to backend API
-  axios.post('http://localhost:8000/api/add_saving/', {
+  axios.post('http://localhost:8000/api/savings/add_saving/', {
     saving_type: saving_type,
     interest: interest,
     amount: amount,

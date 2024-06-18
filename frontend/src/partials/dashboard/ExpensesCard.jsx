@@ -6,7 +6,7 @@ import { useEffect } from 'react';
 
 
 
-function DashboardCard02() {
+function ExpensesCard() {
     const token = localStorage.getItem('authTokens') ? JSON.parse(localStorage.getItem('authTokens')).access : null;
     const [amount, setAmount] = useState(null);
     const [loading, setLoading] = useState(false);
@@ -17,7 +17,7 @@ function DashboardCard02() {
       if (event) {
         event.preventDefault();
       }
-      axios.post('http://localhost:8000/api/fetch_user_expenses/',{},{
+      axios.post('http://localhost:8000/api/expenses/fetch_user_expenses/',{},{
         headers: {
           'content-type': 'application/json',
           Authorization: `Bearer ${token}`,
@@ -63,4 +63,4 @@ function DashboardCard02() {
 }
 
 
-export default DashboardCard02;
+export default ExpensesCard;

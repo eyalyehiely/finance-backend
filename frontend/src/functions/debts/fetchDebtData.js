@@ -3,7 +3,7 @@ import axios from 'axios'
 import swal from 'sweetalert';
 
 export default function fetchDebtData(token,setDebts) {
-    axios.post('http://localhost:8000/api/get_all_debts/', {}, {
+    axios.post('http://localhost:8000/api/debts/get_all_debts/', {}, {
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${token}`,
@@ -11,6 +11,7 @@ export default function fetchDebtData(token,setDebts) {
     }).then(response => {
       if (response.data.status === 200) {
         setDebts(response.data.all_debts);
+
       } else {
         console.log('Error:', response.data.message);
         swal({

@@ -10,11 +10,12 @@ export default function saveEdit(token, editedSaving, editingSavingsId, setSavin
     const editedData = {
     saving_type : editedSaving.saving_type || '',
     interest : editedSaving.interest || '',
-    amount : editedSaving.amount ? String(editedSaving.amount).replace(/,/g, '') : '',    
+    amount : editedSaving.amount ? String(editedSaving.amount).replace(/,/g, '') : '',  
+    total_amount : editedSaving.total_amount ? String(editedSaving.total_amount).replace(/,/g, '') : '',
     starting_date : editedSaving.starting_date || '',
     finish_date : editedSaving.finish_date || '',
     }
-    axios.put(`http://localhost:8000/api/edit_saving/${editingSavingsId}/`, editedData, {
+    axios.put(`http://localhost:8000/api/savings/edit_saving/${editingSavingsId}/`, editedData, {
     
     headers: {
         'content-type': 'application/json',

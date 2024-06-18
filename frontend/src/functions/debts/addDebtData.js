@@ -12,7 +12,7 @@ export default function fetchDebtData(token) {
     
     console.log(name, type, amount, line_of_debt, interest, finish_date, starting_date)
 
-      axios.post('http://localhost:8000/api/add_debt/', {
+      axios.post('http://localhost:8000/api/debts/add_debt/', {
         name: name,
         type: type,
         amount: amount,

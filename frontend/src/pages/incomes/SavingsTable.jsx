@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import AddCommaToNumber from '../../components/AddComma';
+import AddCommaToNumber from '../../components/AddComma'
 import fetchSavingsData from '../../functions/savings/fetchSavingsData'
 import deleteSaving from '../../functions/savings/deleteSaving';
 import saveEdit from '../../functions/savings/saveEdit';
@@ -45,7 +45,7 @@ function SavingsTable() {
     <div className="bg-white dark:bg-slate-800 shadow-lg rounded-sm border border-slate-200 dark:border-slate-700 relative" dir="rtl">
       <header className="px-5 py-4">
         <h2 className="font-semibold text-slate-800 dark:text-slate-100">
-          חסכונות <span className="text-slate-400 dark:text-slate-500 font-medium">{savings?.length}</span>
+          חסכונות <span className="text-slate-400 dark:text-slate-500 font-medium">{savings.length}</span>
         </h2>
       </header>
       <div className="overflow-x-auto" dir="rtl">
@@ -88,7 +88,7 @@ function SavingsTable() {
                   {editingSavingsId === saving.id ? (
                     <>
                       <td className="p-2">
-                        <select id="saving_type" className="text-right" value={editedSaving.saving_type} onChange={(e) => handleEditChange(e, 'saving_type')}>
+                        <select id="saving_type" type = 'number' className="text-right" value={editedSaving.saving_type} onChange={(e) => handleEditChange(e, 'saving_type')}>
                           <option value=""></option>
                           <option value="health">בריאות</option>
                           <option value="business">עסקים</option>
@@ -104,13 +104,13 @@ function SavingsTable() {
                         <input type="text" id="interest" className="text-right" value={AddCommaToNumber(editedSaving.interest)} onChange={(e) => handleEditChange(e, 'interest')} />
                       </td>
                       <td className="p-2">
-                        <input type="text" id="estimate_total_amount" className="text-right bg-gray-200" value={AddCommaToNumber(parseFloat(editedSaving.total_amount))} disabled />
+                        <input type="text" id="total_saving_amount" className="text-right bg-gray-200" value={AddCommaToNumber(parseFloat(editedSaving.total_saving_amount))} disabled />
                       </td>
                       <td className="p-2">
-                        <input type="date" id="starting_date" className="text-right" value={editedSaving.starting_date} onChange={(e) => handleEditChange(e, 'starting_date')} />
+                        <input type="text" id="starting_date" className="text-right" value={editedSaving.starting_date} onChange={(e) => handleEditChange(e, 'starting_date')} />
                       </td>
                       <td className="p-2">
-                        <input type="date" id="finish_date" className="text-right" value={editedSaving.finish_date} onChange={(e) => handleEditChange(e, 'finish_date')} />
+                        <input type="text" id="finish_date" className="text-right" value={editedSaving.finish_date} onChange={(e) => handleEditChange(e, 'finish_date')} />
                       </td>
                       <td className="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap w-px">
                         <div className="space-x-1">
@@ -148,7 +148,7 @@ function SavingsTable() {
                         <div className="text-right">{saving.interest}%</div>
                       </td>
                       <td className="p-2">
-                        <div className="text-right">{AddCommaToNumber(saving.total_amount)}</div>
+                        <div className="text-right">{AddCommaToNumber(saving.total_saving_amount)}</div>
                       </td>
                       <td className="p-2">
                         <div className="text-right">{new Date(saving.starting_date).toLocaleDateString()}</div>

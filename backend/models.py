@@ -98,39 +98,44 @@ class Debts(BaseModel):
         payed_amount = (self.total_amount/self.num_of_months) * calc_months
         return payed_amount
 
-    @property
-    def month_payment(self):
-        month_payment = float(self.total_amount / self.num_of_months)
-        return month_payment
-
+   
     @property
     def month_payed(self):
         num_month_payed = datetime.date.today().month - self.created_at.month
         return num_month_payed
 
-   
 
     @property
-    def num_of_months(self):
-        start_date = self.starting_date
-        num_months = (self.finish_date.year - start_date.year) * 12 + self.finish_date.month - start_date.month
-        return num_months
+    def month_payment(self):
+        if self.num_of_months > 0:
+            month_payment = float(self.total_amount / self.num_of_months)
+        else:
+            month_payment = 0.0  # Handle division by zero scenario
+        return month_payment
 
     @property
     def total_amount(self):
         principal = self.amount
         interest_rate = self.interest
         num_of_months = self.num_of_months
-        monthly_interest_rate = (interest_rate) / 100 / 12
-        total_amount = principal
 
-        for _ in range(num_of_months):
-            interest_amount = total_amount * monthly_interest_rate
-            total_amount += interest_amount
+        if num_of_months > 0:
+            monthly_interest_rate = (interest_rate) / 100 / 12
+            total_amount = principal
 
-        return total_amount
+            for _ in range(num_of_months):
+                interest_amount = total_amount * monthly_interest_rate
+                total_amount += interest_amount
 
+            return total_amount
+        else:
+            return principal  # Return principal if no months
 
+    @property
+    def num_of_months(self):
+        start_date = self.starting_date
+        num_months = (self.finish_date.year - start_date.year) * 12 + self.finish_date.month - start_date.month
+        return num_months if num_months > 0 else 1  # Ensure it returns at least 1 to avoid division by zero
 
    
 
@@ -139,10 +144,10 @@ class Debts(BaseModel):
 
 class CreditCard(BaseModel):
     DAY_OF_CHARGE = [
-        ('type1', '2'),
-        ('type2', '10'),
-        ('type3', '15'),
-        ('type4', 'none'),
+        ('2', '2'),
+        ('10', '10'),
+        ('15', '15'),
+        ('none', 'none'),
     ]
     CARD_NAME = [
         ('no_card', 'no_card'),
@@ -178,13 +183,13 @@ class CreditCard(BaseModel):
             expenses_sum += expense.price
         return expenses_sum
 
-#credit card status
+
     @property
     def rate(self):
         if (self.amount_to_charge < self.line_of_credit):
-            return True
+            return 'חיובי'
         else:
-            return False
+            return 'שלילי'
 
 
     # until the end of the previous month - calc the expenses

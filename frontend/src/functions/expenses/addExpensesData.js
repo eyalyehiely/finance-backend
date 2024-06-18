@@ -10,7 +10,7 @@ export default function fetchExpensesData(token) {
     const price = document.getElementById('price').value;
     const credit_card = document.getElementById('credit_card')?.value || '';
 
-    axios.post('http://localhost:8000/api/add_expense/', {
+    axios.post('http://localhost:8000/api/expenses/add_expense/', {
       name: name,
       payment_method: payment_method,
       expense_type: expense_type,

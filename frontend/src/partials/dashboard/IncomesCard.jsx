@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Icon from '../../images/icon-01.svg';
 import axios from 'axios';
 
-function DashboardCard01() {
+function IncomesCard() {
   const [amount, setAmount] = useState(null);
   const token = localStorage.getItem('authTokens') ? JSON.parse(localStorage.getItem('authTokens')).access : null;
 
@@ -12,7 +12,7 @@ function DashboardCard01() {
       event.preventDefault();
     }
 
-    axios.post('http://localhost:8000/api/fetch_user_incomes/', {}, {
+    axios.post('http://localhost:8000/api/incomes/fetch_user_incomes/', {}, {
       headers: {
         'content-type': 'application/json',
         Authorization: `Bearer ${token}`,
@@ -66,5 +66,5 @@ function DashboardCard01() {
   );
 }
 
-export default DashboardCard01;
+export default IncomesCard;
 
