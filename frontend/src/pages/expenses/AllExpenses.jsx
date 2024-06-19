@@ -48,7 +48,7 @@ function AllExpenses() {
                 <SearchForm placeholder="Search by invoice ID…" />
                 {/* Create invoice button */}
                 
-                {/* <Button variant="success" onClick={AddExpense}>+</Button> */}
+
                 <AddExpense  />
 
 

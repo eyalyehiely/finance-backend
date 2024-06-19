@@ -1,18 +1,15 @@
 import json
 from django.core.mail import send_mail
-from django.shortcuts import render
-from django.http import  JsonResponse
+from rest_framework.response import Response
 from rest_framework import viewsets, permissions, status
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from rest_framework_simplejwt.tokens import RefreshToken
-from finance.settings import redis_client
 from .serializers import *
 from redis import Redis
 import logging
 from django.contrib.auth import authenticate,login as auth_login
 from finance.settings import DEFAULT_FROM_EMAIL
-from rest_framework.views import APIView
 from rest_framework_simplejwt.views import TokenObtainPairView
 from .serializers import MyTokenObtainPairSerializer
 from users.serializers import CustomUserSerializer
@@ -38,7 +35,7 @@ def signin(request):
 
         if not CustomUser.objects.filter(username=username).exists():
             logger.debug('No user found')
-            return JsonResponse({'status': 'error', 'message': 'Invalid Username'}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'status': 'error', 'message': 'Invalid Username'}, status=status.HTTP_400_BAD_REQUEST)
 
 
         # Authenticate user
@@ -49,14 +46,14 @@ def signin(request):
             refresh['username'] = user.username
             access = refresh.access_token
             logger.debug(f'{username} logged in')
-            return JsonResponse({
+            return Response({
                 'status': 200,
                 'refresh': str(refresh),
                 'access':str(access)
             },status=200)
         else:
             logger.debug('Error logging in')
-            return JsonResponse({'status': 'error', 'message': 'Invalid username or password'}, status=401)
+            return Response({'status': 'error', 'message': 'Invalid username or password'}, status=401)
 
 
 
@@ -103,21 +100,27 @@ def signup(request):
 
 # ------------------------------password handling------------------------------------------------------
 
+
+
 @api_view(['POST'])
 def reset_password(request):
-    data = json.loads(request.body)
+    data = request.data  # Use request.data instead of json.loads(request.body)
     username = data.get('username', '')
     email = data.get('email', '')
 
     try:
-        user = CustomUser.objects.filter(username=username).exists()
-        if user:
+        user_exists = CustomUser.objects.filter(username=username).exists()
+        if user_exists:
             # Generate and send password reset email
-            send_password_reset_email(email=email)
-            return JsonResponse({'status': 'email sent'}, status=200)
-    except CustomUser.DoesNotExist:
-        return JsonResponse({'status': 'user not found'}, status=401)
-
+            send_password_reset_email(email)
+            logger.debug('Email to {username} sent successfully')
+            return Response({'status': 'email sent'}, status=200)
+        else:
+            logger.debug('User {username} not found')
+            return Response({'status': 'user not found'}, status=401)
+    except Exception as e:
+        logger.debug('Error , {e}')
+        return Response({'status': 'error', 'message': str(e)}, status=500)
 
 def send_password_reset_email(email):
     link = f"\n\n[Change Password](http://127.0.0.1:5173/change_password)\n\n"
@@ -133,8 +136,8 @@ def send_password_reset_email(email):
         f"please contact our support team immediately.\n\n"
         f"Thank you,\n[Your Application Team]"
     )
-    logger.debug('password reset email send successfully')
     send_mail(subject, message, DEFAULT_FROM_EMAIL, [email], fail_silently=False)
+
 
 #changing password
 @api_view(['POST'])
@@ -147,9 +150,9 @@ def change_password(request):
         user.set_password(new_password)
         user.save()
         logger.debug('Password updated successfully')
-        return JsonResponse({'success': 'Password updated successfully'})
+        return Response({'success': 'Password updated successfully'})
     except CustomUser.DoesNotExist:
-        return JsonResponse({'error': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
+        return Response({'error': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
 
 
 

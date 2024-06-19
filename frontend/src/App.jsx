@@ -13,7 +13,6 @@ import './charts/ChartjsConfig';
 import Dashboard from './pages/Dashboard';
 import Fintech from './pages/Fintech';
 import AllExpenses from './pages/expenses/AllExpenses';
-import AddExpense from './pages/expenses/AddExpense';
 import ExpensesTable from './pages/expenses/ExpensesTable';
 import AllDebts from './pages/expenses/AllDebts';
 import AddDebt from './pages/expenses/AddDebt';
@@ -44,6 +43,7 @@ import TooltipPage from './pages/component/TooltipPage';
 import AccordionPage from './pages/component/AccordionPage';
 import IconsPage from './pages/component/IconsPage';
 import ChangePassword from './pages/changePasswordPage.jsx'
+import Calander from './pages/Calendar'
 // import ProtectedRoute from './protectedRoute';
 
 
@@ -99,6 +99,7 @@ function App() {
         <Route path="/change_password" element={<ChangePassword />} />
 
         {/* components */}
+        <Route path="/calender" element={<Calander />} />
         <Route path="/component/button" element={<ButtonPage />} />
         <Route path="/component/form" element={<FormPage />} />
         <Route path="/component/dropdown" element={<DropdownPage />} />

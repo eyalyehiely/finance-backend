@@ -1,5 +1,4 @@
 import datetime
-from django.http import  JsonResponse
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from .serializers import RevenueSerializer
@@ -37,7 +36,7 @@ def fetch_user_incomes(request):
         revenues_amount = sum([data.amount for data in current_month_revenues])
         savings_amount = round(sum([(data.amount + data.earnings) for data in current_month_savings]), 3)
         
-        return JsonResponse({
+        return Response({
             'status': 200,
             'month_revenues': revenues_amount,
             'month_savings':savings_amount
@@ -45,7 +44,7 @@ def fetch_user_incomes(request):
         
     except Exception as e:
         print(f"Error: {str(e)}")  # Debug: Print the error message
-        return JsonResponse({
+        return Response({
             'status': 500,
             'message': 'An error occurred while fetching data.',
             'error': str(e)
@@ -63,7 +62,7 @@ def get_all_incomes(request):
         serializer = RevenueSerializer(incomes,many=True)
         return Response({
         'status':200,
-        'all_incomes':serializer.data,
+        'all_incomes':serializer.data
         })
         
     except Exception as e:
@@ -101,13 +100,13 @@ def add_income(request):
         )
         revenue.save()
         logger.debug('Income added')
-        return JsonResponse({'successful': 'Income added'})
+        return Response({'successful': 'Income added'})
         
     except CustomUser.DoesNotExist:
-        return JsonResponse({'error': 'User does not exist'}, status=404)
+        return Response({'error': 'User does not exist'}, status=404)
     except Exception as e:
         logger.debug(f'Income not added: {str(e)}')
-        return JsonResponse({'error': str(e)}, status=500)
+        return Response({'error': str(e)}, status=500)
     
 
 #delete
@@ -139,7 +138,7 @@ def edit_income(request, income_id):
         # Check if the amount is not empty
         amount =float(amount)
         if not amount:
-            return JsonResponse({'error': 'Amount field cannot be empty'}, status=400)
+            return Response({'error': 'Amount field cannot be empty'}, status=400)
 
         # Parse dates from request data
         date_obj = datetime.datetime.strptime(date, "%Y-%m-%d")
@@ -155,9 +154,9 @@ def edit_income(request, income_id):
         income.updated_at = timezone.now()
         income.save()
 
-        return JsonResponse({'status':200,'message': 'income updated'})
+        return Response({'status':200,'message': 'income updated'})
 
     except CustomUser.DoesNotExist:
-        return JsonResponse({'error': 'User does not exist'}, status=404)
+        return Response({'error': 'User does not exist'}, status=404)
     except Exception as e:
-        return JsonResponse({'error': str(e)}, status=500)
+        return Response({'error': str(e)}, status=500)

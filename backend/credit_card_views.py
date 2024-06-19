@@ -65,14 +65,13 @@ def delete_credit_card(request, credit_card_id):
         return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
-#get all credit cards per user
+#get all  credit cards per user 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def get_credit_card(request):
     user_id= request.user.id
     try:
-        
-        credit_cards = CreditCard.objects.filter(user_id=user_id)
+        credit_cards = CreditCard.objects.filter(user_id=user_id,)
         serializer = CreditCardSerializer(credit_cards,many=True)
         return Response({
         'status':200,

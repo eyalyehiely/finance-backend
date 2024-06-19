@@ -9,7 +9,7 @@ from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 class SavingsSerializer(serializers.ModelSerializer):
     total_saving_amount = serializers.SerializerMethodField()
     earnings = serializers.SerializerMethodField()
-    amount_to_charge =  serializers.SerializerMethodField()
+
 
     class Meta:
         model = Savings
@@ -21,8 +21,7 @@ class SavingsSerializer(serializers.ModelSerializer):
     def get_earnings(self, obj):
         return round(obj.earnings, 2)
     
-    def get_amount_to_charge(self, obj):
-        return round(obj.amount_to_charge, 2)
+    
 
 
 
@@ -38,7 +37,7 @@ class DebtSerializer(serializers.ModelSerializer):
     class Meta:
         model = Debts
         fields = '__all__' 
-        read_only_fields = ['created_at','updated_at']
+
         
 
 

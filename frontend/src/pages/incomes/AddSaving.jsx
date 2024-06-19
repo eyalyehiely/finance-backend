@@ -1,116 +1,144 @@
-import React, { useState} from 'react';
-import Sidebar from '../../partials/Sidebar';
-import Header from '../../partials/Header';
-import {NavLink} from 'react-router-dom';
-import addSaving from '/src/functions/savings/addSaving.js'
-import Rights from '/src/components/Rights';
-
+import 'bootstrap/dist/css/bootstrap.min.css';
+import React, { useState, useEffect } from 'react';
+import Button from 'react-bootstrap/Button';
+import Modal from 'react-bootstrap/Modal';
+import Form from 'react-bootstrap/Form';
+import fetchSavingsData from '../../functions/savings/fetchSavingsData'
+import addSaving from '../../functions/savings/addSaving';
 
 function AddSaving() {
-  const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [status, setStatus] = useState('no');
+  const [show, setShow] = useState(false);
+  const [savings, setSavings] = useState([]);
+  const [data, setData] = useState({
+    saving_type: '',
+    amount: '',
+    interest: '',
+    starting_date: '',
+    finish_date: '',
+  });
+
   const token = localStorage.getItem('authTokens') ? JSON.parse(localStorage.getItem('authTokens')).access : null;
 
-  
+  useEffect(() => {
+    if (token) {
+      fetchSavingsData(token, setSavings);
+    }
+  }, [token]);
 
+  const handleClose = () => {
+    setShow(false);
+    setData({
+      saving_type: '',
+      amount: '',
+      interest: '',
+      starting_date: '',
+      finish_date: '',
+    });
+  };
+
+  const handleShow = () => setShow(true);
+
+  const handleChange = (e) => {
+    setData({
+      ...data,
+      [e.target.name]: e.target.value,
+    });
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    addSaving(token)
+    addSaving(token, setSavings, data, handleClose);
   };
 
   return (
-    <div className="flex h-[100dvh] overflow-hidden" dir="rtl">
-      {/* Sidebar */}
-      <Sidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
+    <>
+      <Button onClick={handleShow} variant="outline-primary">
+        <span>
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-plus-lg" viewBox="0 0 16 16">
+            <path fillRule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2" />
+          </svg>
+        </span>
+      </Button>
 
-      {/* Content area */}
-      <div className="relative flex flex-col flex-1 overflow-y-auto overflow-x-hidden bg-white dark:bg-slate-900">
-        {/* Site header */}
-        <Header sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
+      <Modal show={show} onHide={handleClose} centered dir="rtl">
+        <Modal.Header>
+          <Modal.Title>פרטי חסכון</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form onSubmit={handleSubmit}>
+            <Form.Group controlId="formSavingType">
+              <Form.Label>סוג הכנסה</Form.Label>
+              <Form.Control
+                as="select"
+                name="saving_type"
+                value={data.saving_type}
+                onChange={handleChange}
+              >
+                <option value=""></option>
+                <option value="health">בריאות</option>
+                <option value="business">עסקים</option>
+                <option value="regular">רגיל</option>
+                <option value="education">השכלה</option>
+                <option value="other">אחר</option>
+              </Form.Control>
+            </Form.Group>
 
-        <main className="grow">
-          <div className="px-4 sm:px-6 lg:px-8 py-8 w-full max-w-9xl mx-auto">
-            {/* Page header */}
-            <div className="mb-8">
-              <h1 className="text-2xl md:text-3xl text-slate-800 dark:text-slate-100 font-bold">הוסף חסכון </h1>
-            </div>
-            <button className="btn bg-indigo-500 hover:bg-indigo-600 text-white">
-                  <NavLink
-                    end
-                    to="/incomes/all-savings"
-                    className={({ isActive }) =>
-                      'block transition duration-150 truncate ' + (isActive ? 'text-indigo-500' : 'text-slate-400 hover:text-slate-200')
-                    }
-                    
-                  >
-                    <span className="hidden xs:block ml-2 text-white">חזור 
-                      {/* <svg className="w-4 h-4 fill-current opacity-50 shrink-0" viewBox="0 0 16 16">
-                    <path d="M15 7H9V1c0-.6-.4-1-1-1S7 .4 7 1v6H1c-.6 0-1 .4-1 1s.4 1 1 1h6v6c0 .6.4 1 1 1s1-.4 1-1V9h6c.6 0 1-.4 1-1s-.4-1-1-1z" />
-                  </svg> */}
-                    </span>
-                  </NavLink>
-              </button>
-            <div className="border-t border-slate-200 dark:border-slate-700">
-              {/* Components */}
-              <form action="AddSaving" method="post" onSubmit={handleSubmit}>
-                <div className="space-y-8 mt-8">
-                  {/* Input Types */}
-                  <div>
-                    <div className="grid gap-5 md:grid-cols-3">
-                      
-                      <div>
-                        <div className="flex items-center justify-between">
-                          <label className="block text-sm font-medium mb-1" htmlFor="saving_type">סוג החסכון<span className="text-rose-500">*</span></label>
-                        </div>
-                        <select id='saving_type' name='saving_type' className="form-input w-full" required
-                            onChange={(e) => setStatus(e.target.value)}>
-                           <option value=""></option>
-                            <option value="health">בריאות</option>
-                            <option value="business">עסקים</option>
-                            <option value="regular">רגיל</option>
-                            <option value="education">השכלה</option>
-                            <option value="other">אחר</option>
-                        </select>
-                      </div>
+            <Form.Group controlId="formAmount">
+              <Form.Label>סכום</Form.Label>
+              <Form.Control
+                type="number"
+                name="amount"
+                value={data.amount}
+                onChange={handleChange}
+              />
+            </Form.Group>
 
-                      <div>
-                        <label className="block text-sm font-medium mb-1" htmlFor="amount">סכום<span className="text-rose-500">*</span></label>
-                        <input id="amount" name="amount" className="form-input w-full" type="number" required placeholder='₪' />
-                      </div>
 
-                      <div>
-                        <label className="block text-sm font-medium mb-1" htmlFor="interest">ריבית<span className="text-rose-500">*</span></label>
-                        <input id="interest" name="interest" className="form-input w-full" type="number" required placeholder='₪' />
-                      </div>
+            <Form.Group controlId="formInterest">
+              <Form.Label>ריבית</Form.Label>
+              <Form.Control
+                type="number"
+                name="interest"
+                value={data.interest}
+                onChange={handleChange}
+              />
+            </Form.Group>
 
-                      <div>
-                        <label className="block text-sm font-medium mb-1" htmlFor="starting_date">תאריך התחלה<span className="text-rose-500">*</span></label>
-                        <input id="starting_date" name='starting_date' className="form-input w-full" type="date" required />
-                      </div>
 
-                      <div>
-                        <label className="block text-sm font-medium mb-1" htmlFor="finish_date">תאריך סיום משוער<span className="text-rose-500">*</span></label>
-                        <input id="finish_date" name='finish_date' className="form-input w-full" type="date" required />
-                      </div>
+            <Form.Group controlId="formStartingData">
+              <Form.Label>תאריך התחלה</Form.Label>
+              <Form.Control
+                type="date"
+                name="starting_date"
+                value={data.starting_date}
+                onChange={handleChange}
+              />
+            </Form.Group>
 
-                    </div>
-                  </div>
 
-                  <div className="col-12">
-                      <button type = "submit" className="btn bg-emerald-500 hover:bg-emerald-600 text-white">הוסף !</button>
-                    </div>
-                </div>
-              </form>
-            </div>
-          </div>
-        </main>
-      </div>
-      <Rights/>
-    </div>
+            <Form.Group controlId="formFinishData">
+              <Form.Label>תאריך סיום</Form.Label>
+              <Form.Control
+                type="date"
+                name="finish_date"
+                value={data.finish_date}
+                onChange={handleChange}
+              />
+            </Form.Group>
+
+            <Button variant="success" type="submit" className="mt-3">
+              שמור
+            </Button>
+          </Form>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleClose}>
+            סגור
+          </Button>
+        </Modal.Footer>
+      </Modal>
+    </>
   );
 }
 
 export default AddSaving;
-
-

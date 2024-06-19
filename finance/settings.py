@@ -199,15 +199,21 @@ STATICFILES_DIRS = [
 # STATIC_ROOT = os.path.join(BASE_DIR, 'mosaic-react/src')
 
 
-#Mailing
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+# Uncomment the following line for sending actual emails
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'  # For debugging
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'eyalwork0@gmail.com'
 EMAIL_HOST_PASSWORD = 'kanw zgwa xeot cxfx'
 DEFAULT_FROM_EMAIL = 'eyalwork0@gmail.com'
+
+
+
+
 
 
 # social authentication
@@ -217,11 +223,6 @@ AUTHENTICATION_BACKENDS = [
 # LOGIN_URL = '/signin/'
 # LOGIN_REDIRECT_URL = '/signin/'
 # ACCOUNT_LOGOUT_REDIRECT_URL = '/login'
-
-DEFAULT_REDIS_PORT = 6379
-DEFAULT_REDIS_HOST = 'localhost'
-DEFAULT_EXPIRATION = 3600
-redis_client = Redis(host=DEFAULT_REDIS_HOST, port=DEFAULT_REDIS_PORT)
 
 # logs
 LOGGING = {

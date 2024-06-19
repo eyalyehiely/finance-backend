@@ -1,5 +1,4 @@
 import React, {useState} from 'react';
-// import axios from 'axios'
 import Sidebar from '../../partials/Sidebar';
 import Header from '../../partials/Header';
 import SearchForm from '../../partials/actions/SearchForm';
@@ -7,9 +6,10 @@ import DeleteButton from '../../partials/actions/DeleteButton';
 import DateSelect from '../../components/DateSelect';
 import FilterButton from '../../components/DropdownFilter';
 import PaginationClassic from '../../components/PaginationClassic';
-import {NavLink,} from 'react-router-dom';
 import SavingsTable from './SavingsTable';
 import Rights from '/src/components/Rights';
+import AddSaving from '../../pages/incomes/AddSaving'
+
 
 
 function AllSavings() {
@@ -46,23 +46,8 @@ function AllSavings() {
                 {/* Search form */}
                 <SearchForm placeholder="Search by invoice ID…" />
                 {/* Create invoice button */}
-                <button className="btn bg-indigo-500 hover:bg-indigo-600 text-white">
-                  <NavLink
-                    end
-                    to="/incomes/add-saving"
-                    className={({ isActive }) =>
-                      'block transition duration-150 truncate ' + (isActive ? 'text-indigo-500' : 'text-slate-400 hover:text-slate-200')
-                    }
-                    
-                  >
-                    <span className="hidden xs:block ml-2 text-white">הוסף 
-                      <svg className="w-4 h-4 fill-current opacity-50 shrink-0" viewBox="0 0 16 16">
-                    <path d="M15 7H9V1c0-.6-.4-1-1-1S7 .4 7 1v6H1c-.6 0-1 .4-1 1s.4 1 1 1h6v6c0 .6.4 1 1 1s1-.4 1-1V9h6c.6 0 1-.4 1-1s-.4-1-1-1z" />
-                  </svg>
-                    </span>
-                  </NavLink>
-              </button>
-
+               
+              <AddSaving />
 
               </div>
 

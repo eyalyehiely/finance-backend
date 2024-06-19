@@ -1,5 +1,4 @@
 import datetime
-
 from rest_framework.response import Response
 from .serializers import *
 import logging

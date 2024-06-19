@@ -3,7 +3,6 @@ import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import AuthImage from '../images/auth-image.jpg';
 import Button from 'react-bootstrap/Button'
-
 import Rights from '/src/components/Rights';
 
 

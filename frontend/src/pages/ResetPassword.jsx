@@ -1,9 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-
+import axios from 'axios';
+import Button from 'react-bootstrap/Button';
+import swal from 'sweetalert';
 import AuthImage from '../images/auth-image.jpg';
 import AuthDecoration from '../images/auth-decoration.png';
-import axios from "axios";
 
 function ResetPassword() {
 
@@ -12,42 +13,42 @@ function ResetPassword() {
     const username = document.getElementById('username').value;
     const email = document.getElementById('email').value;
 
-    axios.post('http://localhost:8000/api/reset_password/', {
-      email:email,
-      username:username,
-
-
-    }).then((response)=>{
+    axios.post('http://localhost:8000/api/auth/reset_password/', {
+      email: email,
+      username: username,
+    }).then((response) => {
       if (response.status === 200) {
-        console.log(response.data)
         swal({
-          title: " קישור נשלח בהצלחה",
+          title: "קישור נשלח בהצלחה",
           icon: "success",
           button: "אישור",
-        })
-        window.location.href = '/signin'
-      }else{
-        console.log('Error', response.data.error);
-            alert('No user found');
+        }).then(() => {
+          window.location.href = '/signin';
+        });
+      } else {
+        swal({
+          title: "משתמש לא נמצא",
+          icon: "warning",
+          button: "אישור",
+        });
       }
-
-  }).catch(error => {
-    console.error('Error occurred:', error);
-    alert('An error occurred while logging in. Please try again later.');
-  });
-}
-
-
+    }).catch(error => {
+      console.error('Error occurred:', error);
+      swal({
+        title: "שגיאה",
+        text: "משהו השתבש, אנא נסה שוב",
+        icon: "warning",
+        button: "אישור",
+      });
+    });
+  }
 
   return (
-    <main className="bg-white dark:bg-slate-900">
-
+    <main className="bg-white dark:bg-slate-900" dir="rtl">
       <div className="relative md:flex">
-
         {/* Content */}
         <div className="md:w-1/2">
           <div className="min-h-[100dvh] h-full flex flex-col after:flex-1">
-
             {/* Header */}
             <div className="flex-1">
               <div className="flex items-center justify-between h-16 px-4 sm:px-6 lg:px-8">
@@ -78,27 +79,20 @@ function ResetPassword() {
               {/* Form */}
               <form onSubmit={fetchData}>
                 <div className="space-y-4">
-
                   <div>
-                    <label className="block text-sm font-medium mb-1" htmlFor="username">שם משתמש <span
-                        className="text-rose-500">*</span></label>
-                    <input id="username" className="form-input w-full" type="text"/>
+                    <label className="block text-sm font-medium mb-1" htmlFor="username">שם משתמש <span className="text-rose-500">*</span></label>
+                    <input id="username" className="form-input w-full" type="text" required />
                   </div>
-
                   <div>
-                    <label className="block text-sm font-medium mb-1" htmlFor="email">כתובת מייל <span
-                        className="text-rose-500">*</span></label>
-                    <input id="email" className="form-input w-full" type="email"/>
+                    <label className="block text-sm font-medium mb-1" htmlFor="email">כתובת מייל <span className="text-rose-500">*</span></label>
+                    <input id="email" className="form-input w-full" type="email" required />
                   </div>
                 </div>
                 <div className="flex justify-end mt-6">
-                  <button className="btn bg-indigo-500 hover:bg-indigo-600 text-white whitespace-nowrap"
-                          type='submit'>שלח קישור
-                  </button>
+                  <Button type="submit" variant="primary">שלח קישור</Button>
                 </div>
               </form>
             </div>
-
           </div>
         </div>
 
@@ -107,9 +101,7 @@ function ResetPassword() {
           <img className="object-cover object-center w-full h-full" src={AuthImage} width="760" height="1024" alt="Authentication" />
           <img className="absolute top-1/4 left-0 -translate-x-1/2 ml-8 hidden lg:block" src={AuthDecoration} width="218" height="224" alt="Authentication decoration" />
         </div>
-
       </div>
-
     </main>
   );
 }
