@@ -70,7 +70,7 @@ function App() {
         {/* expenses */}
         <Route path="/expenses/all-expenses" element={<AllExpenses />} />
         <Route path="/expenses/expenses-table" element={<ExpensesTable />} />
-        <Route path="/expenses/add-expenses" element={<AddExpense />} />
+
         {/* <Route path="/expenses/add-expenses" element={<ProtectedRoute element={AddExpense} />} /> */}
 
 

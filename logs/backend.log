@@ -432,3 +432,13 @@ DEBUG 2024-06-18 14:27:09,728 credit_card_views 32104 6157447168 Credit card not
 DEBUG 2024-06-18 15:17:42,387 credit_card_views 32104 6157447168 Credit card not added: {'day_of_charge': [ErrorDetail(string='"2" is not a valid choice.', code='invalid_choice')]}
 DEBUG 2024-06-18 15:20:24,561 credit_card_views 32666 6161002496 Credit card added successfully.
 DEBUG 2024-06-18 18:19:27,375 credit_card_views 36386 6178746368 Credit card added successfully.
+DEBUG 2024-06-19 13:52:56,707 expenses_views 50341 6177124352 expense not added: ['“” value has an invalid format. It must be in YYYY-MM-DD HH:MM[:ss[.uuuuuu]][TZ] format.']
+DEBUG 2024-06-19 13:53:03,156 expenses_views 50341 6177124352 expense not added: ['“” value has an invalid format. It must be in YYYY-MM-DD HH:MM[:ss[.uuuuuu]][TZ] format.']
+DEBUG 2024-06-19 14:52:15,719 expenses_views 50341 6126645248 expense added
+DEBUG 2024-06-19 14:53:23,301 expenses_views 50341 6160297984 expense added
+DEBUG 2024-06-19 14:54:02,178 expenses_views 50341 6143471616 expense not added: ['“” value has an invalid format. It must be in YYYY-MM-DD HH:MM[:ss[.uuuuuu]][TZ] format.']
+DEBUG 2024-06-19 14:55:00,297 expenses_views 50341 6143471616 expense not added: ['“” value has an invalid format. It must be in YYYY-MM-DD HH:MM[:ss[.uuuuuu]][TZ] format.']
+DEBUG 2024-06-19 14:55:22,249 expenses_views 50341 6143471616 expense added
+DEBUG 2024-06-19 14:56:31,989 expenses_views 50341 6143471616 expense added
+DEBUG 2024-06-19 15:17:12,731 expenses_views 53484 6251147264 expense added
+DEBUG 2024-06-19 15:19:38,088 credit_card_views 53484 6183841792 Credit card added successfully.

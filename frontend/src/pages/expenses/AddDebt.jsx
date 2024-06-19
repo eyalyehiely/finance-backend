@@ -17,36 +17,7 @@ function AddDebt() {
     getCreditCardData(token,setCreditCards);
   }, []);
 
-  function isCreditCard() {
-    if (status === 'credit_card') {
-      return (
-        <div>
-          <div>
-            <label className="block text-sm font-medium mb-1" htmlFor="card_name">שם האשראי<span className="text-rose-500">*</span></label>
-            <div className="relative">
-              <select id='card_name' name='card_name' className="form-input w-full" required>
-                <option value=""></option>
-                {creditCards.length > 0 ? (
-                  creditCards.map((creditCard) => (
-                    <option id='card_name' key={creditCard.id} value={creditCard.name}>{creditCard.name}</option>
-                  ))
-                ) : (
-                  <option value="">אין אשראי זמין</option>
-                )}
-              </select>
-              <div className="absolute inset-0 right-auto flex items-center pointer-events-none">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-credit-card" viewBox="0 0 16 16">
-                  <path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2zm2-1a1 1 0 0 0-1 1v1h14V4a1 1 0 0 0-1-1zm13 4H1v5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1z"/>
-                  <path d="M2 10a1 1 0 0 1 1-1h1a1 1 0 0 1 1 1v1a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1z"/>
-                </svg>
-              </div>
-            </div>
-          </div>
-        </div>
-      );
-    }
-    return null;
-  }
+ 
 
   const handleSubmit = (e) => {
     e.preventDefault();

@@ -23,8 +23,9 @@ export default function deleteExpense(token,id) {
             icon: "success",
             button: "אישור",
           }).then(() => {
-            fetchExpensesData(token,setExpenses); // Refresh the data after deletion
             window.location.reload()
+            fetchExpensesData(token,setExpenses); // Refresh the data after deletion
+            
           });
         }).catch((error) => {
           console.error("Error deleting expense:", error);

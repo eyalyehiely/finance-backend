@@ -2,8 +2,8 @@ import React,{ useState }  from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import AuthImage from '../images/auth-image.jpg';
-import AuthDecoration from '../images/auth-decoration.png';
-import { jwtDecode } from "jwt-decode";
+import Button from 'react-bootstrap/Button'
+
 import Rights from '/src/components/Rights';
 
 
@@ -118,9 +118,7 @@ function Signin() {
                        ? שכחת סיסמא
                     </Link>
                   </div>
-                  <button type="submit" className="btn bg-indigo-500 hover:bg-indigo-600 text-white ml-3">
-                    התחבר
-                  </button>
+                  <Button type="submit" variant="primary"> התחבר</Button>
                 </div>
               </form>
 

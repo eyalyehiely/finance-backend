@@ -1,164 +1,194 @@
+import 'bootstrap/dist/css/bootstrap.min.css';
 import React, { useState, useEffect } from 'react';
-import Sidebar from '../../partials/Sidebar';
-import Header from '../../partials/Header';
-import Rights from '/src/components/Rights';
-import { NavLink } from 'react-router-dom';
-import fetchExpensesData from '../../functions/expenses/addExpensesData';
-import getCreditCardData from '/src/functions/credit_cards/getCreditCardData.js';
-
+import Button from 'react-bootstrap/Button';
+import Modal from 'react-bootstrap/Modal';
+import Form from 'react-bootstrap/Form';
+import fetchExpensesData from '../../functions/expenses/fetchExpensesData';
+import addExpensesData from '../../functions/expenses/addExpensesData';
+import getCrediCardData from '../../functions/credit_cards/getCreditCardData';
 
 function AddExpense() {
-  const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [status, setStatus] = useState('no');
+  const [show, setShow] = useState(false);
+  const [expenses, setExpenses] = useState([]);
   const [creditCards, setCreditCards] = useState([]);
+  const [data, setData] = useState({
+    name: '',
+    payment_method: '',
+    expense_type: '',
+    date_and_time: '',
+    category: '',
+    price: '',
+    credit_card: '',
+  });
+
   const token = localStorage.getItem('authTokens') ? JSON.parse(localStorage.getItem('authTokens')).access : null;
 
   useEffect(() => {
-    getCreditCardData(token,setCreditCards);
-  }, []);
-
-  function isCreditCard() {
-    if (status === 'credit_card') {
-      return (
-        <div>
-          <div>
-            <label className="block text-sm font-medium mb-1" htmlFor="credit_card">שם האשראי<span className="text-rose-500">*</span></label>
-            <div className="relative">
-              <select id='credit_card' name='credit_card' className="form-input w-full" required>
-                <option value=""></option>
-                {creditCards.length > 0 ? (
-                  creditCards.map((creditCard) => (
-                    <option key={creditCard.id} value={creditCard.name}>{creditCard.name}</option>
-                  ))
-                ) : (
-                  <option value="">אין אשראי זמין</option>
-                )}
-              </select>
-              <div className="absolute inset-0 right-auto flex items-center pointer-events-none">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-credit-card" viewBox="0 0 16 16">
-                  <path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2zm2-1a1 1 0 0 0-1 1v1h14V4a1 1 0 0 0-1-1zm13 4H1v5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1z"/>
-                  <path d="M2 10a1 1 0 0 1 1-1h1a1 1 0 0 1 1 1v1a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1z"/>
-                </svg>
-              </div>
-            </div>
-          </div>
-        </div>
-      );
+    if (token) {
+      fetchExpensesData(token, setExpenses);
+      getCrediCardData(token, setCreditCards);
     }
-    return null;
-  }
+  }, [token]);
+
+  const handleClose = () => {
+    setShow(false);
+    setData({
+      name: '',
+      payment_method: '',
+      expense_type: '',
+      date_and_time: '',
+      category: '',
+      price: '',
+      credit_card: '',
+    });
+  };
+
+  const handleShow = () => setShow(true);
+
+  const handleChange = (e) => {
+    setData({
+      ...data,
+      [e.target.name]: e.target.value,
+    });
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    fetchExpensesData(token);
+    addExpensesData(token, setExpenses, data, handleClose);
+  };
+
+  const isCreditCard = () => {
+    if (data.payment_method === 'credit_card') {
+      return (
+        <Form.Group controlId="formCreditCard">
+          <Form.Label>שם הכרטיס</Form.Label>
+          <Form.Control
+            as="select"
+            name="credit_card"
+            value={data.credit_card}
+            onChange={handleChange}
+          >
+            {creditCards.map((card, index) => (
+              <option key={index} value={card.name}>{card.name}</option>
+            ))}
+          </Form.Control>
+        </Form.Group>
+      );
+    }
+    return null;
   };
 
   return (
-    <div className="flex h-[100vh] overflow-hidden" dir="rtl">
-      {/* Sidebar */}
-      <Sidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
+    <>
+      <Button onClick={handleShow} variant="outline-primary">
+        <span>
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-plus-lg" viewBox="0 0 16 16">
+            <path fillRule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2" />
+          </svg>
+        </span>
+      </Button>
 
-      {/* Content area */}
-      <div className="relative flex flex-col flex-1 overflow-y-auto overflow-x-hidden bg-white dark:bg-slate-900">
-        {/* Site header */}
-        <Header sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
+      <Modal show={show} onHide={handleClose} centered dir="rtl">
+        <Modal.Header>
+          <Modal.Title>פרטי ההוצאה</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form onSubmit={handleSubmit}>
+            <Form.Group controlId="formExpenseName">
+              <Form.Label>שם ההוצאה</Form.Label>
+              <Form.Control
+                type="input"
+                name="name"
+                value={data.name}
+                onChange={handleChange}
+              />
+            </Form.Group>
 
-        <main className="grow">
-          <div className="px-4 sm:px-6 lg:px-8 py-8 w-full max-w-9xl mx-auto">
-            {/* Page header */}
-            <div className="mb-8">
-              <h1 className="text-2xl md:text-3xl text-slate-800 dark:text-slate-100 font-bold">הוסף הוצאה</h1>
-            </div>
-            <button className="btn bg-indigo-500 hover:bg-indigo-600 text-white">
-              <NavLink
-                end
-                to="/expenses/all-expenses"
-                className={({ isActive }) =>
-                  'block transition duration-150 truncate ' + (isActive ? 'text-indigo-500' : 'text-slate-400 hover:text-slate-200')
-                }
+            <Form.Group controlId="formExpenseType">
+              <Form.Label>סוג ההוצאה</Form.Label>
+              <Form.Control
+                as="select"
+                name="expense_type"
+                value={data.expense_type}
+                onChange={handleChange}
               >
-                <span className="hidden xs:block ml-2 text-white">חזור</span>
-              </NavLink>
-            </button>
-            <div className="border-t border-slate-200 dark:border-slate-700">
-              {/* Components */}
-              <form action="AddExpense" method="post" onSubmit={handleSubmit}>
-                <div className="space-y-8 mt-8">
-                  {/* Input Types */}
-                  <div>
-                    <div className="grid gap-5 md:grid-cols-3">
-                      <div>
-                        <label className="block text-sm font-medium mb-1" htmlFor="name">שם ההוצאה<span className="text-rose-500">*</span></label>
-                        <input id="name" name='name' className="form-input w-full" type="text" required />
-                      </div>
+                <option value=""></option>
+                <option value="regular_expense">הוצאה רגילה</option>
+                <option value="iregular_expense">הוצאה לא רגילה</option>
+              </Form.Control>
+            </Form.Group>
 
-                      <div>
-                        <div className="flex items-center justify-between">
-                          <label className="block text-sm font-medium mb-1" htmlFor="payment_method">דרך תשלום<span className="text-rose-500">*</span></label>
-                        </div>
-                        <select id='payment_method' name='payment_method' className="form-input w-full" required
-                          onChange={(e) => setStatus(e.target.value)}>
-                          <option value=""></option>
-                          <option value="credit_card">כרטיס אשראי</option>
-                          <option value="direct_debit">הוראת קבע</option>
-                          <option value="transaction">העברה בנקאית</option>
-                          <option value="cash">מזומן</option>
-                          <option value="check">צ׳ק</option>
-                        </select>
-                      </div>
-                      {isCreditCard()}
-                      <div>
-                        <label className="block text-sm font-medium mb-1" htmlFor="date_and_time">תאריך ההוצאה<span className="text-rose-500">*</span></label>
-                        <input id="date_and_time" name='date_and_time' className="form-input w-full" type="datetime-local" required />
-                      </div>
+            <Form.Group controlId="formPaymentMethod">
+              <Form.Label>דרך תשלום</Form.Label>
+              <Form.Control
+                as="select"
+                name="payment_method"
+                value={data.payment_method}
+                onChange={handleChange}
+              >
+                <option value=""></option>
+                <option value="credit_card">כרטיס אשראי</option>
+                <option value="direct_debit">הוראת קבע</option>
+                <option value="transaction">העברה בנקאית</option>
+                <option value="cash">מזומן</option>
+                <option value="check">צ׳ק</option>
+              </Form.Control>
+            </Form.Group>
 
-                      <div>
-                        <label className="block text-sm font-medium mb-1" htmlFor="expense_type"> סוג ההוצאה<span className="text-rose-500">*</span></label>
-                        <div className="relative">
-                          <select id='expense_type' name='expense_type' className="form-input w-full" required>
-                            <option value=""></option>
-                            <option value="regular_expense">הוצאה רגילה</option>
-                            <option value="iregular_expense">הוצאה לא רגילה</option>
-                          </select>
-                        </div>
-                      </div>
-                      <div>
-                        <label className="block text-sm font-medium mb-1" htmlFor="category">קטגוריה<span className="text-rose-500">*</span></label>
-                        <div className="relative">
-                          <select id='category' name='category' className="form-input w-full" required>
-                            <option value=""></option>
-                            <option value="supermarket">סופר</option>
-                            <option value="restaurant">מסעדה</option>
-                            <option value="tech">טכנולוגיה</option>
-                            <option value="dress_and_shoes">הלבשה והנעלה</option>
-                            <option value="fuel">דלק</option>
-                            <option value="loan">הלוואה</option>
-                            <option value="debt">חוב</option>
-                            <option value="gift">מתנה</option>
-                          </select>
-                        </div>
-                      </div>
+            {isCreditCard()}
 
-                      <div>
-                        <label className="block text-sm font-medium mb-1" htmlFor="price">מחיר<span className="text-rose-500">*</span></label>
-                        <input id="price" name="price" className="form-input w-full" type="number" required placeholder='₪' />
-                      </div>
+            <Form.Group controlId="formCategory">
+              <Form.Label>קטגוריה</Form.Label>
+              <Form.Control
+                as="select"
+                name="category"
+                value={data.category}
+                onChange={handleChange}
+              >
+                <option value=""></option>
+                <option value="supermarket">סופר</option>
+                <option value="restaurant">מסעדה</option>
+                <option value="tech">טכנולוגיה</option>
+                <option value="dress_and_shoes">הלבשה והנעלה</option>
+                <option value="fuel">דלק</option>
+                <option value="loan">הלוואה</option>
+                <option value="debt">חוב</option>
+                <option value="gift">מתנה</option>
+              </Form.Control>
+            </Form.Group>
 
-                      <div className="col-12">
-                        <button type="submit" className="btn bg-emerald-500 hover:bg-emerald-600 text-white">הוסף!</button>
-                      </div>
+            <Form.Group controlId="formPrice">
+              <Form.Label>סכום</Form.Label>
+              <Form.Control
+                type="number"
+                name="price"
+                value={data.price}
+                onChange={handleChange}
+              />
+            </Form.Group>
 
+            <Form.Group controlId="formDateAndTime">
+              <Form.Label>תאריך ההוצאה</Form.Label>
+              <Form.Control
+                type="datetime-local"
+                name="date_and_time"
+                value={data.date_and_time}
+                onChange={handleChange}
+              />
+            </Form.Group>
 
-                    </div>
-                  </div>
-                </div>
-              </form>
-            </div>
-          </div>
-        </main>
-      </div>
-      <Rights/>
-    </div>
+            <Button variant="success" type="submit" className="mt-3">
+              שמור
+            </Button>
+          </Form>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleClose}>
+            סגור
+          </Button>
+        </Modal.Footer>
+      </Modal>
+    </>
   );
 }
 

@@ -5,7 +5,7 @@ function LogoutButton(){
     
     try {
         localStorage.removeItem('authTokens')
-        axios.get('http://localhost:8000/api/logout/'),{} // Adjust URL as per your Django backend
+        axios.get('http://localhost:8000/api/auth/logout/'),{} // Adjust URL as per your Django backend
         console.log('User logged out successfully.');
         
     } catch (error) {
