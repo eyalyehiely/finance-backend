@@ -1,70 +1,66 @@
-import React,{ useState }  from 'react';
+import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import AuthImage from '../images/auth-image.jpg';
-import Button from 'react-bootstrap/Button'
+import Button from 'react-bootstrap/Button';
 import Rights from '/src/components/Rights';
-
-
+import swal from 'sweetalert';
 
 function Signin() {
   const navigate = useNavigate();
-  const [user,setUser] = useState(null)
-  const [authTokens,setAuthTokens] = useState(null)
-
-  
+  const [showPassword, setShowPassword] = useState(false);
 
   const fetchData = async (event) => {
     event.preventDefault();
     const username = document.getElementById('username').value;
     const password = document.getElementById('password').value;
 
-    
+    try {
       const response = await axios.post('http://localhost:8000/api/token/', {
-       
         username,
         password
-
       });
-      let data = await response.json
 
       console.log('Response:', response.data);
 
-      // Check if the status is 'ok'
       if (response.status === 200) {
-        // setAuthTokens(data)
-        // (JSON.stringify(setUser(jwtDecode(data))))
-        localStorage.setItem('authTokens',JSON.stringify(response.data))
+        localStorage.setItem('authTokens', JSON.stringify(response.data));
         swal({
-          title: "שלום ",
+          title: "שלום",
           text: "התחברות בוצעה בהצלחה",
           icon: "success",
           button: "אישור",
-        }).then(()=>{
+        }).then(() => {
           navigate('/');
-        })
-        
+        });
       } else {
         console.log('Error:', response.data.message);
         swal({
-          title: "Ⅹ!שגיאה ",
-          text: {"!שגיאת BACKEND":response.data.message},
+          title: "Ⅹ!שגיאה",
+          text: {"!שגיאת BACKEND": response.data.message},
           icon: "warning",
           button: "אישור",
-        })
+        });
       }
-    
-    
-  }
+    } catch (error) {
+      console.error('Error:', error);
+      swal({
+        title: "Ⅹ!שגיאה",
+        text: "שגיאת BACKEND",
+        icon: "warning",
+        button: "אישור",
+      });
+    }
+  };
 
   return (
-    <main className="bg-white dark:bg-slate-900" dir = "rtl">
+    <main className="bg-white dark:bg-slate-900" dir="rtl">
       <div className="relative md:flex">
         <div className="md:w-1/2">
           <div className="min-h-[100dvh] h-full flex flex-col after:flex-1">
             <div className="flex-1">
               <div className="flex items-center justify-between h-16 px-4 sm:px-6 lg:px-8">
-                <Link className="block" >
+                <Link className="block">
                   <svg width="32" height="32" viewBox="0 0 32 32">
                     <defs>
                       <linearGradient x1="28.538%" y1="20.229%" x2="100%" y2="108.156%" id="logo-a">
@@ -108,13 +104,17 @@ function Signin() {
                     <label className="block text-sm font-medium mb-1" htmlFor="password">
                       סיסמה <span className="text-rose-500">*</span>
                     </label>
-                    <input id="password" className="form-input w-full" type="password" required />
+                    <input id="password" className="form-input w-full" type={showPassword ? 'text' : 'password'} required />
+                    <div className="mt-2">
+                      <input type="checkbox" id="showPassword" checked={showPassword} onChange={() => setShowPassword(!showPassword)} />
+                      <label htmlFor="showPassword" className="ml-2">הצג סיסמה</label>
+                    </div>
                   </div>
                 </div>
                 <div className="flex items-center justify-between mt-6">
                   <div className="mr-1">
                     <Link className="text-sm underline hover:no-underline" to="/reset-password">
-                       ? שכחת סיסמא
+                      ? שכחת סיסמא
                     </Link>
                   </div>
                   <Button type="submit" variant="primary"> התחבר</Button>
@@ -123,7 +123,7 @@ function Signin() {
 
               <div className="pt-5 mt-6 border-t border-slate-200 dark:border-slate-700">
                 <div className="text-sm">
-                ? האם אין לך חשבון {' '}
+                  ? האם אין לך חשבון {' '}
                   <Link className="font-medium text-indigo-500 hover:text-indigo-600 dark:hover:text-indigo-400" to="/signup">
                     הרשם כאן
                   </Link>
@@ -141,13 +141,11 @@ function Signin() {
             height="1024"
             alt="Authentication"
           />
-         
         </div>
       </div>
-      <Rights/>
+      <Rights />
     </main>
   );
 }
 
 export default Signin;
-

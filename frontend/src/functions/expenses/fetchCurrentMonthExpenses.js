@@ -1,7 +1,7 @@
 import axios from "axios";
 
 
-export default function fetchCurrentMonthExpenses(token,setAmount) {
+export default function fetchCurrentMonthExpenses(token,setExpenses) {
     // event.preventDefault();
     
     axios.post('http://localhost:8000/api/expenses/fetch_user_expenses/',{},{
@@ -12,7 +12,7 @@ export default function fetchCurrentMonthExpenses(token,setAmount) {
   }).then(response => {
         if (response.data.status ===200) {
             console.log({'all_expenses':response.data.all_expenses});
-            setAmount(response.data.all_expenses); 
+            setExpenses(response.data.all_expenses); 
         } else {
             console.log('Error:', response.data.message);
             // alert(response.data.message);

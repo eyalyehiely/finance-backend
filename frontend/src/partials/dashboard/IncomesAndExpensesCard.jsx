@@ -7,20 +7,20 @@ import fetchCurrentMonthIncomes from '../../functions/incomes/fatchCurrentMonthI
 
 
 function IncomesAndExpensesCard() {
-  const [expensesAmount, setAmount] = useState(null);
+  const [expenses, setExpenses] = useState(null);
   const [incomes, setIncomes] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const token = localStorage.getItem('authTokens') ? JSON.parse(localStorage.getItem('authTokens')).access : null;
 
 
-const difference = incomes - expensesAmount
+const difference = incomes - expenses
   const chartData = {
     labels: ['הוצאות', 'הכנסות','הפרש'],
     datasets: [
       {
         data: [
-          expensesAmount || 0, // Data for expenses
+          expenses || 0, // Data for expenses
           incomes || 0, //Data for incomes
           difference || 0, //Data for difference
         ],
@@ -42,7 +42,7 @@ const difference = incomes - expensesAmount
     ],
   };
   useEffect(() => {
-    fetchCurrentMonthExpenses(token,setAmount); // Call fetchData when the component mounts
+    fetchCurrentMonthExpenses(token,setExpenses); // Call fetchData when the component mounts
   }, []);
   useEffect(() => {
     fetchCurrentMonthIncomes(token,setLoading,setIncomes,setError); // Call fetchData when the component mounts

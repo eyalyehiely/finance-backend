@@ -73,10 +73,11 @@ def signup(request):
 
         user.set_password(request.data['password'])  # Set and hash password
         user.username = request.data.get('email', '') #email
-        user.first_name = request.data.get('first_name','')
+        user.first_name = request.data.get('first_name', '')
         user.last_name = request.data.get('last_name', '')
         user.gender = request.data.get('gender', '')  
         user.life_status = request.data.get('life_status', '')  
+        user.num_of_chidren = int(request.data.get('num_of_children',''))
         user.phone_number = request.data.get('phone_number', '')
         user.birth_date = request.data.get('birth_date', '')
         user.profession = request.data.get('profession', '')  
