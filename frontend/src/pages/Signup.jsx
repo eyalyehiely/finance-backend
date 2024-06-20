@@ -1,79 +1,63 @@
-import React, {useState,} from 'react';
-import { Link,useNavigate, } from 'react-router-dom';
+import React, {useState} from 'react';
+import {Link} from 'react-router-dom';
 import AuthImage from '../images/finance.avif';
 import AuthDecoration from '../images/auth-decoration.png';
 import axios from "axios";
 import GetAdress from './component/GetAdress';
 import Rights from '/src/components/Rights';
+import Button from 'react-bootstrap/Button'
 
 
 function Signup() {
   const [status, setStatus] = useState('single')
-  const [isBusinessOwner, setIsBusinessOwner] = useState(false);
-  // const [familyOptions, setFamilyOptions] = useState([]);
-  // useEffect(() => {
-  //    axios.post('http://localhost:8000/api/get_family/').then((response) => {
-  //           setFamilyOptions(response.data);
-  //         }).catch((err) => {
-  //           console.log('err', err)
-  //         });
-  // }, []);
   function is_marriage() {
     if (status === 'marriage') {
       return (
           <div>
             {/* family_status */}
-            <label className="block text-sm font-medium mb-1" htmlFor="life_status">
-              משפחה <span className="text-rose-500">*</span>
-            </label>
+            
             <div> {/* first name */}
-              <label className="block text-sm font-medium mb-1" id="family_name">שם המשפחה<span
+              <label className="block text-sm font-medium mb-1" id="children">מספר ילדים<span
                   className="text-rose-500">*</span></label>
-              <input id="family_name" className="form-input w-full" type="text" required/>
+                  <select name="" id="children">
+                    <option value=""></option>
+                    <option value={0}>0</option>
+                    <option value={1}>1</option>
+                    <option value={2}>2</option>
+                    <option value={3}>3</option>
+                    <option value={4}>4</option>
+                    <option value={5}>5</option>
+                    <option value={6}>6</option>
+                    <option value={7}>7</option>
+                  </select>
             </div>
           </div>
       );
     }
   }
       GetAdress()
-    function is_business() {
-      if (isBusinessOwner) {
-        return (
-            <div>
-              <div> {/* business name */}
-                <label className="block text-sm font-medium mb-1" id="business_name">שם העסק<span
-                    className="text-rose-500">*</span></label>
-                <input id="business_name" className="form-input w-full" type="text" required/>
-              </div>
-            </div>
-        );
-
-    }
-  }
-
-
-
+  
 
     function fetchData() {
       const first_name = document.getElementById('first_name').value
       const last_name = document.getElementById('last_name').value
       const gender = document.getElementById('gender').value
       const life_status = document.getElementById('life_status').value
+      const num_of_children = document.getElementById('num_of_children').value
       const email = document.getElementById('email').value
-      const username = document.getElementById('username').value
       const password = document.getElementById('password').value
       const birth_date = document.getElementById('birth_date').value;
       const profession = document.getElementById('profession').value
       const phone_number = document.getElementById('phone_number').value
       const address = document.getElementById('address').value
 
-      axios.post('http://localhost:8000/api/signup/', {
+      axios.post('http://localhost:8000/api/auth/signup/', {
         first_name: first_name,
         last_name: last_name,
         gender: gender,
         life_status: life_status,
+        num_of_children:num_of_children,
         email: email,
-        username: username,
         password: password,
         birth_date: birth_date,
         profession: profession,
@@ -86,11 +70,15 @@ function Signup() {
           icon: "success",
           button: "אישור",
         }).then(()=>{
-          location.href='/signin'
+          location.href='/'
         })
       }).catch((response) => {
         console.log(response.data);
-        alert('Error, please try again')
+        swal({
+          title: "שגיאה",
+          icon: "warning",
+          button: "אישור",
+        })
       })
     }
 
@@ -189,11 +177,6 @@ function Signup() {
                         <input id="email" className="form-input w-full" type="email" required/>
                       </div>
 
-                      <div>{/* username */}
-                        <label className="block text-sm font-medium mb-1" htmlFor="username">שם משתמש<span
-                            className="text-rose-500">*</span></label>
-                        <input id="username" className="form-input w-full" type="text" required/>
-                      </div>
 
                       <div>{/* password */}
                         <label className="block text-sm font-medium mb-1" htmlFor="password">סיסמה <span
@@ -225,24 +208,10 @@ function Signup() {
                         <input id="address" className="form-input w-full" type='text' required/>
                       </div>
 
-                      <div className="flex items-center mb-4"> {/* business */}
-                        <input id="business"
-                               className="form-checkbox h-4 w-4 text-indigo-600 transition duration-150 ease-in-out"
-                               type="checkbox" 
-                               onChange={(e) => setIsBusinessOwner(e.target.value)}/>
-                        <label className="ml-2 block text-sm font-medium text-gray-900" htmlFor="business">
-                          האם בבעלותך עסק ? 
-                        </label>
-                      </div>
-
-                      {is_business()}
-
                     </div>
                     <div className="flex items-center justify-between mt-6">
-                      <button type='submit'
-                              className="btn bg-indigo-500 hover:bg-indigo-600 text-white ml-3 whitespace-nowrap">הרשם
-                        כאן
-                      </button>
+                     
+                      <Button type="submit" variant="primary">הרשם כאן</Button>
                     </div>
                   </form>
 

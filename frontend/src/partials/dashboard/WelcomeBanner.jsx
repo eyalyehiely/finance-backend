@@ -6,7 +6,7 @@ import { jwtDecode } from 'jwt-decode';
 
 function WelcomeBanner() {
 
-const username = jwtDecode(localStorage.getItem('authTokens')).username
+const first_name = jwtDecode(localStorage.getItem('authTokens')).first_name
 
 
 
@@ -56,7 +56,7 @@ const username = jwtDecode(localStorage.getItem('authTokens')).username
 
       {/* Content */}
       <div dir="rtl" className="relative">
-        <h2 className="text-2xl md:text-3xl text-slate-800 dark:text-slate-100 font-bold mb-1"> <Note/> {username} 👋 </h2>
+        <h2 className="text-2xl md:text-3xl text-slate-800 dark:text-slate-100 font-bold mb-1"> <Note/> {first_name} 👋 </h2>
 
 
 

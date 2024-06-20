@@ -10,7 +10,7 @@ from .family_models import Family
 # )
 
 class CustomUserAdmin(admin.ModelAdmin):
-    list_display = ('id','username','password', 'email', 'first_name', 'last_name','family', 'gender', 'life_status', 'phone_number', 'birth_date', 'profession', 'address','date_joined')
+    list_display = ('id','username','password', 'first_name', 'last_name','family', 'gender', 'life_status','num_of_children', 'phone_number', 'birth_date', 'profession', 'address','date_joined')
     actions=['edit_user','search_user',]
 
 admin.site.register(CustomUser, CustomUserAdmin)

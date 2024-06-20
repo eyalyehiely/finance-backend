@@ -44,6 +44,9 @@ import AccordionPage from './pages/component/AccordionPage';
 import IconsPage from './pages/component/IconsPage';
 import ChangePassword from './pages/changePasswordPage.jsx'
 import Calander from './pages/Calendar'
+import AccountPanel from './partials/settings/AccountPanel'
+import SettingsSidebar from './partials/settings/SettingsSidebar'
+import FeedbackPanel from './partials/settings/FeedbackPanel'
 // import ProtectedRoute from './protectedRoute';
 
 
@@ -97,7 +100,7 @@ function App() {
         <Route path="/change_password/:email" element={<ChangePassword />} />
 
         {/* components */}
-        <Route path="/calender" element={<Calander />} />
+        <Route path="/calendar" element={<Calander />} />
         <Route path="/component/button" element={<ButtonPage />} />
         <Route path="/component/form" element={<FormPage />} />
         <Route path="/component/dropdown" element={<DropdownPage />} />
@@ -111,9 +114,15 @@ function App() {
         <Route path="/component/tooltip" element={<TooltipPage />} />
         <Route path="/component/accordion" element={<AccordionPage />} />
         <Route path="/component/icons" element={<IconsPage />} />
+
+
+        <Route path="/settings/account" element={<AccountPanel/>} />
+        <Route path="/settings/" element={<SettingsSidebar/>} />
+        <Route path="/settings/feedback" element={<FeedbackPanel/>} />
       </Routes>
     </>
   );
+  
 }
 
 export default App;

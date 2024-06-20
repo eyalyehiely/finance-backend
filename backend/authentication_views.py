@@ -26,7 +26,7 @@ logger = logging.getLogger('backend')
 class MyTokenObtainPairView(TokenObtainPairView):
     serializer_class = MyTokenObtainPairSerializer
 
-
+# username is 
 @api_view(['POST'])
 def signin(request):
         data = json.loads(request.body)
@@ -41,11 +41,11 @@ def signin(request):
 
 
         # Authenticate user
-        user = authenticate(request, username=username, password=password)
+        user = authenticate(request,username=username, password=password)
         if user is not None:
             auth_login(request, user)
             refresh = RefreshToken.for_user(user)
-            refresh['username'] = user.username
+            refresh['first_name'] = user.first_name
             access = refresh.access_token
             logger.debug(f'{username} logged in')
             return Response({
@@ -72,10 +72,9 @@ def signup(request):
         user = serializer.save()  # Save the user object created by the serializer
 
         user.set_password(request.data['password'])  # Set and hash password
-        user.username = request.data.get('username', '')
+        user.username = request.data.get('email', '') #email
         user.first_name = request.data.get('first_name','')
         user.last_name = request.data.get('last_name', '')
-        user.email = request.data.get('email', '')
         user.gender = request.data.get('gender', '')  
         user.life_status = request.data.get('life_status', '')  
         user.phone_number = request.data.get('phone_number', '')
@@ -84,10 +83,10 @@ def signup(request):
         user.address = request.data.get('address', '')  
         
         user.save()  
-        send_mail_for_signup(user.email)
+        send_mail_for_signup(user.username) # got email
         # Create a new token for the user
         refresh = RefreshToken.for_user(user)
-        refresh['username'] = user.username
+        refresh['first_name'] = user.first_name
         access = refresh.access_token 
 
         return Response({
@@ -115,7 +114,7 @@ def reset_password(request):
     email = data.get('email', '')
 
     try:
-        user_exists = CustomUser.objects.filter( email=email).exists()
+        user_exists = CustomUser.objects.filter(username=email).exists()
         if user_exists:
             send_password_reset_email(email)
             logger.debug(f'Email to {email} sent successfully')

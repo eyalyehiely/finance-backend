@@ -3,9 +3,11 @@ import uuid
 
 
 
+
 class Family(models.Model):
     family_id = models.UUIDField(default=uuid.uuid4, primary_key=True)
     family_name = models.CharField(max_length=100)
+
     created_at = models.DateTimeField()
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -20,9 +22,7 @@ class Family(models.Model):
         for card in credit_cards:
             credit_card_expenses += card.amount_to_charge
 
-        # loans = Loans.objects.filter(family_id=self.family_id)
-        # for loan in loans:
-        #     loans_expenses += loan.month_payment
+      
 
         debts = Debts.objects.filter(family_id=self.family_id)
         for debt in debts:
