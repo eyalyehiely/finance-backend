@@ -5,7 +5,7 @@ import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
 import fetchExpensesData from '../../functions/expenses/fetchExpensesData';
 import addExpensesData from '../../functions/expenses/addExpensesData';
-import getCrediCardData from '../../functions/credit_cards/getCreditCardData';
+import getActiveCreditCards from '../../functions/credit_cards/getActiveCreditCards';
 
 function AddExpense() {
   const [show, setShow] = useState(false);
@@ -26,7 +26,7 @@ function AddExpense() {
   useEffect(() => {
     if (token) {
       fetchExpensesData(token, setExpenses);
-      getCrediCardData(token, setCreditCards);
+      getActiveCreditCards(token, setCreditCards);
     }
   }, [token]);
 
@@ -67,16 +67,24 @@ function AddExpense() {
             name="credit_card"
             value={data.credit_card}
             onChange={handleChange}
+            required
           >
-            {creditCards.map((card, index) => (
-              <option key={index} value={card.name}>{card.name}</option>
-            ))}
+            {creditCards.length > 0 ? (
+              creditCards.map((card, index) => (
+                <option key={index} value={card.name}>
+                  {card.name}
+                </option>
+              ))
+            ) : (
+              <option>אין כרטיסים זמינים</option>
+            )}
           </Form.Control>
         </Form.Group>
       );
     }
-    return null;
+    return null; // If payment_method is not 'credit_card', render nothing
   };
+  
 
   return (
     <>
@@ -101,6 +109,7 @@ function AddExpense() {
                 name="name"
                 value={data.name}
                 onChange={handleChange}
+                required
               />
             </Form.Group>
 
@@ -111,6 +120,7 @@ function AddExpense() {
                 name="expense_type"
                 value={data.expense_type}
                 onChange={handleChange}
+                required
               >
                 <option value=""></option>
                 <option value="regular_expense">הוצאה רגילה</option>
@@ -125,6 +135,7 @@ function AddExpense() {
                 name="payment_method"
                 value={data.payment_method}
                 onChange={handleChange}
+                required
               >
                 <option value=""></option>
                 <option value="credit_card">כרטיס אשראי</option>
@@ -144,6 +155,7 @@ function AddExpense() {
                 name="category"
                 value={data.category}
                 onChange={handleChange}
+                required
               >
                 <option value=""></option>
                 <option value="supermarket">סופר</option>
@@ -164,6 +176,7 @@ function AddExpense() {
                 name="price"
                 value={data.price}
                 onChange={handleChange}
+                required
               />
             </Form.Group>
 
@@ -174,6 +187,7 @@ function AddExpense() {
                 name="date_and_time"
                 value={data.date_and_time}
                 onChange={handleChange}
+                required
               />
             </Form.Group>
 

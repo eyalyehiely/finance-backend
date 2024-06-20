@@ -134,6 +134,8 @@ function EditCard({ card }) {
                 name="last_four_digits"
                 value={data.last_four_digits}
                 onChange={handleChange}
+                maxLength={4}
+                minLength={4}
               />
             </Form.Group>
             

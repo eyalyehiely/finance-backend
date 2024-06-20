@@ -17,6 +17,7 @@ from redis import Redis
 from dotenv import load_dotenv
 from datetime import timedelta
 from django.conf import global_settings
+import certifi
 
 load_dotenv()
 SITE_ID =1
@@ -199,11 +200,7 @@ STATICFILES_DIRS = [
 # STATIC_ROOT = os.path.join(BASE_DIR, 'mosaic-react/src')
 
 
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-# Uncomment the following line for sending actual emails
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'  # For debugging
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
@@ -213,6 +210,8 @@ DEFAULT_FROM_EMAIL = 'eyalwork0@gmail.com'
 
 
 
+
+os.environ['SSL_CERT_FILE'] = certifi.where()
 
 
 

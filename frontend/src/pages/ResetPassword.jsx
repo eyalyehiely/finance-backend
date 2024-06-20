@@ -3,19 +3,17 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import Button from 'react-bootstrap/Button';
 import swal from 'sweetalert';
-import AuthImage from '../images/auth-image.jpg';
-import AuthDecoration from '../images/auth-decoration.png';
+
 
 function ResetPassword() {
 
   function fetchData(event) {
     event.preventDefault();
-    const username = document.getElementById('username').value;
+
     const email = document.getElementById('email').value;
 
     axios.post('http://localhost:8000/api/auth/reset_password/', {
       email: email,
-      username: username,
     }).then((response) => {
       if (response.status === 200) {
         swal({
@@ -53,7 +51,7 @@ function ResetPassword() {
             <div className="flex-1">
               <div className="flex items-center justify-between h-16 px-4 sm:px-6 lg:px-8">
                 {/* Logo */}
-                <Link className="block" to="/">
+                <Link className="block" >
                   <svg width="32" height="32" viewBox="0 0 32 32">
                     <defs>
                       <linearGradient x1="28.538%" y1="20.229%" x2="100%" y2="108.156%" id="logo-a">
@@ -80,10 +78,6 @@ function ResetPassword() {
               <form onSubmit={fetchData}>
                 <div className="space-y-4">
                   <div>
-                    <label className="block text-sm font-medium mb-1" htmlFor="username">שם משתמש <span className="text-rose-500">*</span></label>
-                    <input id="username" className="form-input w-full" type="text" required />
-                  </div>
-                  <div>
                     <label className="block text-sm font-medium mb-1" htmlFor="email">כתובת מייל <span className="text-rose-500">*</span></label>
                     <input id="email" className="form-input w-full" type="email" required />
                   </div>
@@ -97,10 +91,10 @@ function ResetPassword() {
         </div>
 
         {/* Image */}
-        <div className="hidden md:block absolute top-0 bottom-0 right-0 md:w-1/2" aria-hidden="true">
+        {/* <div className="hidden md:block absolute top-0 bottom-0 right-0 md:w-1/2" aria-hidden="true" dir=>
           <img className="object-cover object-center w-full h-full" src={AuthImage} width="760" height="1024" alt="Authentication" />
           <img className="absolute top-1/4 left-0 -translate-x-1/2 ml-8 hidden lg:block" src={AuthDecoration} width="218" height="224" alt="Authentication decoration" />
-        </div>
+        </div> */}
       </div>
     </main>
   );

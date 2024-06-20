@@ -69,6 +69,7 @@ function AddIncome() {
                 name="source"
                 value={data.source}
                 onChange={handleChange}
+                required
               >
                 <option value=""></option>
                 <option value="salary">משכורת</option>
@@ -84,6 +85,7 @@ function AddIncome() {
                 name="amount"
                 value={data.amount}
                 onChange={handleChange}
+                required
               />
             </Form.Group>
 
@@ -94,6 +96,7 @@ function AddIncome() {
                 name="date"
                 value={data.date}
                 onChange={handleChange}
+                required
               />
             </Form.Group>
 

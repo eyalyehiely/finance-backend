@@ -81,22 +81,20 @@ function App() {
 
         {/* credit cards */}
         <Route path="/creditcards/all-cards" element={<CreditCards />} />
-        <Route path="/creditcards/add-credit-card" element={<AddCreditCard />} />
 
         {/* savings */}
         <Route path="/incomes/all-savings" element={<AllSavings />} />
-        <Route path="/incomes/add-saving" element={<AddSaving />} />
+
 
         {/* incomes */}
         <Route path="/incomes/all-incomes" element={<AllIncomes />} />
-        <Route path="/incomes/add-income" element={<AddIncome />} />
 
        
         {/* authentication */}
         <Route path="/signin" element={<Signin />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/reset-password" element={<ResetPassword />} />
-        <Route path="/change_password" element={<ChangePassword />} />
+        <Route path="/change_password/:email" element={<ChangePassword />} />
 
         {/* components */}
         <Route path="/calender" element={<Calander />} />

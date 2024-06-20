@@ -61,13 +61,19 @@ class DebtSerializer(serializers.ModelSerializer):
 
 class CreditCardSerializer(serializers.ModelSerializer):
     DAY_CHOICES = (
-        (1, '2'),
-        (2, '10'),
-        (3, '15'),
-
+        (2, '2'),
+        (10, '10'),
+        (15, '15'),
     )
+    STATUS_CHOICES = (
+        ('Active', 'Active'),
+        ('Blocked', 'Blocked'),
+    )
+
     day_of_charge = serializers.ChoiceField(choices=DAY_CHOICES)
+    status = serializers.ChoiceField(choices=STATUS_CHOICES)
     last_four_digits = serializers.CharField(max_length=4)
+    amount_to_charge = serializers.CharField()
     
     class Meta:
         model = CreditCard
@@ -80,6 +86,12 @@ class CreditCardSerializer(serializers.ModelSerializer):
         if len(value) != 4 or not value.isdigit():
             raise serializers.ValidationError("last_four_digits must be exactly 4 digits.")
         return value
+    
+    def get_amount_to_charge(self, obj):
+         return round(obj.amount_to_charge, 2)
+
+
+
 
 
 class ExpenseSerializer(serializers.ModelSerializer):

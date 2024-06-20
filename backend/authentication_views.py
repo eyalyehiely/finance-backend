@@ -14,6 +14,8 @@ from rest_framework_simplejwt.views import TokenObtainPairView
 from .serializers import MyTokenObtainPairSerializer
 from users.serializers import CustomUserSerializer
 from django.contrib.auth import logout as logut_method
+import os
+import certifi
 
 
 
@@ -82,7 +84,7 @@ def signup(request):
         user.address = request.data.get('address', '')  
         
         user.save()  
-
+        send_mail_for_signup(user.email)
         # Create a new token for the user
         refresh = RefreshToken.for_user(user)
         refresh['username'] = user.username
@@ -102,51 +104,69 @@ def signup(request):
 
 
 
+
+
+os.environ['SSL_CERT_FILE'] = certifi.where()
+
+
 @api_view(['POST'])
 def reset_password(request):
-    data = request.data  # Use request.data instead of json.loads(request.body)
-    username = data.get('username', '')
+    data = request.data
     email = data.get('email', '')
 
     try:
-        user_exists = CustomUser.objects.filter(username=username).exists()
+        user_exists = CustomUser.objects.filter( email=email).exists()
         if user_exists:
-            # Generate and send password reset email
             send_password_reset_email(email)
-            logger.debug('Email to {username} sent successfully')
+            logger.debug(f'Email to {email} sent successfully')
             return Response({'status': 'email sent'}, status=200)
         else:
-            logger.debug('User {username} not found')
-            return Response({'status': 'user not found'}, status=401)
+            logger.debug(f'User {email} not found')
+            return Response({'status': 'user not found'}, status=404)
     except Exception as e:
-        logger.debug('Error , {e}')
+        logger.debug(f'Error: {e}')
         return Response({'status': 'error', 'message': str(e)}, status=500)
 
+
 def send_password_reset_email(email):
-    link = f"\n\n[Change Password](http://127.0.0.1:5173/change_password)\n\n"
+    link = f"\n\n(http://localhost:5173/change_password/{email})\n\n"
     subject = "Reset Your Password"
     message = (
         f"Dear User,\n\n"
-        f"You recently requested to reset your password for [finance app]. "
+        f"You recently requested to reset your password for CashControl. "
         f"Please use the following link to reset your password. "
         f"This link is only valid for the next 24 hours."
-        f"{link}" 
+        f"{link}"
         f"If you did not request a password reset, please ignore this email. "
         f"If you continue to receive this email or believe it was sent in error, "
         f"please contact our support team immediately.\n\n"
-        f"Thank you,\n[Your Application Team]"
+        f"Thank you,\nCashControl Team"
     )
     send_mail(subject, message, DEFAULT_FROM_EMAIL, [email], fail_silently=False)
 
 
+
+def send_mail_for_signup(email):
+    subject = "Welcome to Our Community!"
+    message = (
+        "Dear User,\n\n"
+        "Thank you for signing up and joining our community! We are thrilled to have you with us and excited for you to explore all the features and benefits our platform offers.\n\n"
+        "Your registration marks the beginning of a journey filled with valuable resources, engaging content, and opportunities to connect with like-minded individuals. We are committed to providing you with the best experience and support, and we look forward to assisting you in any way we can.\n\n"
+        "Welcome aboard, and thank you for choosing us!\n\n"
+        "Best regards,\n"
+        "CashControl Team"
+    )
+    send_mail(subject, message, DEFAULT_FROM_EMAIL, [email], fail_silently=False)
+
+
+
 #changing password
 @api_view(['POST'])
-def change_password(request):
+def change_password(request,email):
     data = json.loads(request.body)
-    username = data.get('username', '')
     new_password = data.get('new_password', '')
     try:
-        user = CustomUser.objects.get(username=username)
+        user = CustomUser.objects.get(email=email)
         user.set_password(new_password)
         user.save()
         logger.debug('Password updated successfully')

@@ -29,10 +29,16 @@ def add_credit_card(request):
     try:
         user_id = request.user.id
         user = CustomUser.objects.get(id=user_id)
-        request.data['user_id'] = user.id
+        request.data['user_id'] = user_id
         request.data['family_id'] = user.family_id
         request.data['created_at'] = timezone.now().date()
         request.data['day_of_charge'] = int(request.data['day_of_charge'])
+
+        status = request.data.get('status', None)
+        if not status:
+            return Response({'error': {'status': ['This field is required.']}}, status=400)
+        if status not in dict(CreditCardSerializer.STATUS_CHOICES):
+            return Response({'error': {'status': [f'"{status}" is not a valid choice.']}}, status=400)
 
         serializer = CreditCardSerializer(data=request.data)
         if serializer.is_valid():
@@ -154,6 +160,31 @@ def get_chosen_credit_card(request,card_id):
     except CreditCard.DoesNotExist:
         return Response({"error": "Credit card not found"}, status=status.HTTP_404_NOT_FOUND)
 
+
+
+
+
+
+#get all active credit cards per user 
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def get_active_credit_card(request):
+    user_id= request.user.id
+    try:
+        credit_cards = CreditCard.objects.filter(user_id=user_id,status='Active')
+        serializer = CreditCardSerializer(credit_cards,many=True)
+        return Response({
+        'status':200,
+        'credit_cards':serializer.data,
+        })
+        
+    except Exception as e:
+        print(f"Error: {str(e)}")  # Debug: Print the error message
+        return Response({
+            'status': 500,
+            'message': 'An error occurred while fetching data.',
+            'error': str(e)
+        }, status=500)
 # -------------------------------------------------------------------------------
     # TODO: fix this view
 @api_view(['PUT'])

@@ -73,6 +73,7 @@ function AddSaving() {
                 name="saving_type"
                 value={data.saving_type}
                 onChange={handleChange}
+                required
               >
                 <option value=""></option>
                 <option value="health">בריאות</option>
@@ -90,6 +91,7 @@ function AddSaving() {
                 name="amount"
                 value={data.amount}
                 onChange={handleChange}
+                required
               />
             </Form.Group>
 
@@ -101,6 +103,7 @@ function AddSaving() {
                 name="interest"
                 value={data.interest}
                 onChange={handleChange}
+                required
               />
             </Form.Group>
 
@@ -112,6 +115,7 @@ function AddSaving() {
                 name="starting_date"
                 value={data.starting_date}
                 onChange={handleChange}
+                required
               />
             </Form.Group>
 
@@ -123,6 +127,7 @@ function AddSaving() {
                 name="finish_date"
                 value={data.finish_date}
                 onChange={handleChange}
+                required
               />
             </Form.Group>
 

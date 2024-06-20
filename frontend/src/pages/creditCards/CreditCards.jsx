@@ -1,13 +1,13 @@
 import React, { useState,useEffect } from 'react';
 import Sidebar from '../../partials/Sidebar';
 import Header from '../../partials/Header';
-import { NavLink} from 'react-router-dom';
 import CreditCardLogo from '../component/CreditCardLogo';
 import Rights from '../../components/Rights';
 import getCreditCardData from '../../functions/credit_cards/getCreditCardData'
 import deleteCard from '../../functions/credit_cards/deleteCard'
 import EditCard from './EditCard'
 import Button from 'react-bootstrap/esm/Button';
+import AddCreditCard from './AddCreditCard';
 
 function CreditCards() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -16,9 +16,6 @@ function CreditCards() {
   // const [logo, setLogo] = useState([]);
   const token = localStorage.getItem('authTokens') ? JSON.parse(localStorage.getItem('authTokens')).access : null;
 
-
- 
-  
 
   useEffect(() => {
     getCreditCardData(token,setCreditCards);
@@ -45,22 +42,9 @@ function CreditCards() {
                 </div>
                 <div className='items-center'>
                 {/* Add card button */}
-                <button className="btn bg-indigo-500 hover:bg-indigo-600 text-white ">
-                  <NavLink
-                    end
-                    to="/creditcards/add-credit-card"
-                    className={({ isActive }) =>
-                      'block transition duration-150 truncate ' + (isActive ? 'text-indigo-500' : 'text-slate-400 hover:text-slate-200')
-                    }
-                    
-                  >
-                    <span className="hidden xs:block ml-2 text-white">
-                      <svg className="w-4 h-4 fill-current  shrink-0" viewBox="0 0 16 16">
-                    <path d="M15 7H9V1c0-.6-.4-1-1-1S7 .4 7 1v6H1c-.6 0-1 .4-1 1s.4 1 1 1h6v6c0 .6.4 1 1 1s1-.4 1-1V9h6c.6 0 1-.4 1-1s-.4-1-1-1z" />
-                  </svg>
-                    </span>
-                  </NavLink>
-              </button>
+                
+                 <AddCreditCard/>
+             
               </div>
               </div>
 
@@ -306,36 +290,3 @@ function CreditCards() {
 
 export default CreditCards;
 
-
-
-
-
-
-
-
-
-
-
-
-// function chosenCreditCard(){
-  //   const card_id = document.getElementById('credit_card').value || '';
-  //   axios.get(`http://localhost:8000/api/get_chosen_credit_card/${card_id}/`, {},{
-  //     headers: {
-  //       'content-type': 'application/json',
-  //       Authorization: `Bearer ${token}`,
-  //     }
-  //   }).then((response)=>{
-  //     setChosenCard(response.data.chosen_credit_card)
-  //     console.log(response.data.chosen_credit_card);
-    
-  //   }).catch((error) => {
-  //       console.error("Error fetching chosen credit card:", error);
-  //       swal({
-  //         title: "Ⅹ!שגיאה",
-  //         text: "שגיאת מערכת",
-  //         icon: "warning",
-  //         button: "אישור",
-  //       });
-  //   });
- 
-  // }

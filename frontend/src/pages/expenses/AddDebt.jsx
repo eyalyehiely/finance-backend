@@ -77,6 +77,7 @@ function AddDebt() {
                 name="type"
                 value={data.type}
                 onChange={handleChange}
+                required
               >
                 <option value=""></option>
                 <option value="mortgage">משכנתא</option>
@@ -95,6 +96,7 @@ function AddDebt() {
                 name="name"
                 value={data.name}
                 onChange={handleChange}
+                required
               />
             </Form.Group>
 
@@ -105,6 +107,7 @@ function AddDebt() {
                 name="amount"
                 value={data.amount}
                 onChange={handleChange}
+                required
               />
             </Form.Group>
 
@@ -115,6 +118,7 @@ function AddDebt() {
                 name="line_of_debt"
                 value={data.line_of_debt}
                 onChange={handleChange}
+                required
               />
             </Form.Group>
 
@@ -125,6 +129,7 @@ function AddDebt() {
                 name="interest"
                 value={data.interest}
                 onChange={handleChange}
+                required
               />
             </Form.Group>
 
@@ -135,6 +140,7 @@ function AddDebt() {
                 name="starting_date"
                 value={data.starting_date}
                 onChange={handleChange}
+                required
               />
             </Form.Group>
 
@@ -145,6 +151,7 @@ function AddDebt() {
                 name="finish_date"
                 value={data.finish_date}
                 onChange={handleChange}
+                required
               />
             </Form.Group>
 

@@ -24,7 +24,7 @@ urlpatterns = [
     path('auth/signin/', signin, name='signin'),
     path('auth/signup/', signup, name='signup'),
     path('auth/reset_password/', reset_password, name='reset_password'),
-    path('auth/change_password/', change_password, name='change_password'),
+    path('auth/change_password/<str:email>', change_password, name='change_password'),
     path('auth/logout/', logout, name='logout'),
 
     #tokens-----------------------------------------------
@@ -49,6 +49,7 @@ urlpatterns = [
     
     # credit_cards------------------------------------------------------
     path('cards/get_credit_card/',get_credit_card, name = 'get_credit_card'),
+    path('cards/get_active_credit_card/',get_active_credit_card, name = 'get_active_credit_card'),
     path('cards/delete_credit_card/<uuid:credit_card_id>/', delete_credit_card, name='delete_credit_card'),
     path('cards/add_credit_card/',add_credit_card, name = 'add_credit_card'),
     path('cards/edit_card/<uuid:card_id>/', edit_card, name='edit_card'),
