@@ -178,7 +178,7 @@ class CreditCard(BaseModel):
     @property
     def amount_to_charge(self):
         expenses_sum = 0.0
-        expenses = Expenses.objects.filter(family_id=self.family_id, payment_method = 'credit_card')
+        expenses = Expenses.objects.filter(user_id=self.user_id, payment_method = 'credit_card',credit_card=self.id)
         for expense in expenses:
             expenses_sum += expense.price
         return expenses_sum

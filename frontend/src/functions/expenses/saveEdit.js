@@ -12,7 +12,7 @@ export default function saveEdit(token, editedExpense, editingExpenseId, setExpe
     payment_method: editedExpense.payment_method || '',
     date_and_time: editedExpense.date_and_time || '',
     name: editedExpense.name || '',
-    price: editedExpense.price ? editedExpense.price.replace(/,/g, '') : '',
+    price: editedExpense.price ? String(editedExpense.price).replace(/,/g, '') : '',
     credit_card: editedExpense.credit_card || '',
   };
 
