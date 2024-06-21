@@ -52,18 +52,8 @@ function CreditCards() {
               <div className="mb-5">
                 <ul className="flex flex-wrap -m-1">
                   <li className="m-1">
-                    <button className="inline-flex items-center justify-center text-sm font-medium leading-5 rounded-full px-3 py-1 border border-transparent shadow-sm bg-indigo-500 text-white duration-150 ease-in-out">כל הכרטיסים {creditCards.length} </button>
+                    <span className="inline-flex items-center justify-center text-sm font-medium leading-5 rounded-full px-3 py-1 border border-transparent shadow-sm bg-indigo-500 text-white duration-150 ease-in-out">כל הכרטיסים {creditCards.length} </span>
                   </li>
-                  {/* <li className="m-1">
-                    <button className="inline-flex items-center justify-center text-sm font-medium leading-5 rounded-full px-3 py-1 border border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600 shadow-sm bg-white dark:bg-slate-800 text-slate-500 dark:text-slate-400 duration-150 ease-in-out">
-                      Physical Cards
-                    </button>
-                  </li>
-                  <li className="m-1">
-                    <button className="inline-flex items-center justify-center text-sm font-medium leading-5 rounded-full px-3 py-1 border border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600 shadow-sm bg-white dark:bg-slate-800 text-slate-500 dark:text-slate-400 duration-150 ease-in-out">
-                      Virtual Cards
-                    </button>
-                  </li> */}
                 </ul>
               </div>
 
@@ -78,45 +68,24 @@ function CreditCards() {
                     <div className="grid grid-cols-12 items-center gap-x-2">
                       {/* Card decorate */}
                       <div className="col-span-6 order-1 sm:order-none sm:col-span-3 flex items-center space-x-4 lg:sidebar-expanded:col-span-6 xl:sidebar-expanded:col-span-3">
-                        <svg className="shrink-0" width="32" height="24" xmlns="http://www.w3.org/2000/svg">
-                          <defs>
-                            <linearGradient x1="1.829%" y1="100%" x2="100%" y2="2.925%" id="c1-a">
-                              <stop stopColor="#475569" offset="0%" />
-                              <stop stopColor="#1E293B" offset="100%" />
-                              <stop stopColor="#9FA1FF" offset="100%" />
-                            </linearGradient>
-                          </defs>
-                          <g fill="none" fillRule="evenodd">
-                            <rect fill="url(#c1-a)" width="32" height="24" rx="3" />
-                            <ellipse fill="#E61C24" fillRule="nonzero" cx="12.522" cy="12" rx="5.565" ry="5.647" />
-                            <ellipse fill="#F99F1B" fillRule="nonzero" cx="19.432" cy="12" rx="5.565" ry="5.647" />
-                            <path
-                              d="M15.977 7.578A5.667 5.667 0 0 0 13.867 12c0 1.724.777 3.353 2.11 4.422A5.667 5.667 0 0 0 18.087 12a5.667 5.667 0 0 0-2.11-4.422Z"
-                              fill="#F26622"
-                              fillRule="nonzero"
-                            />
-                          </g>
-                        </svg>
+                        <CreditCardLogo cardName={card.name}/>
+
                         <div>
                           <div className="text-sm font-medium text-slate-800 dark:text-slate-100">{card.name}</div>
                           <div className="text-xs">**{card.last_four_digits}</div>
                         </div>
                       </div>
-                      {/* Name */}
-                      {/* <div className="col-span-6 order-2 sm:order-none sm:col-span-3 text-left sm:text-center lg:sidebar-expanded:hidden xl:sidebar-expanded:block">
-                        <div className="text-sm font-medium text-slate-800 dark:text-slate-100 truncate">Dominik Lamakani</div>
-                      </div> */}
-                      {/* Card limits */}
                       
                       <div className="col-span-6 order-1 sm:order-none sm:col-span-4 text-right sm:text-center lg:sidebar-expanded:col-span-6 xl:sidebar-expanded:col-span-4">
                         <div className="text-sm">₪{card.amount_to_charge} / ₪{card.line_of_credit}</div>
                       </div>
                       {/* Card status */}
                       <div className="col-span-6 order-2 sm:order-none sm:col-span-2 text-right lg:sidebar-expanded:hidden xl:sidebar-expanded:block">
-                        <div className="text-xs inline-flex font-medium bg-emerald-100 dark:bg-emerald-400/30 text-emerald-600 dark:text-emerald-400 rounded-full text-center px-2.5 py-1">
+                        <div className={`text-xs inline-flex font-medium ${card.status === 'Blocked' ? 'bg-red-100 dark:bg-red-400/30 text-red-600 dark:text-red-400' : 'bg-emerald-100 dark:bg-emerald-400/30 text-emerald-600 dark:text-emerald-400'} rounded-full text-center px-2.5 py-1`}>
                           {card.status}
                         </div>
                       </div>
+
                     </div>
                   </div>
                   <div
@@ -193,13 +162,10 @@ function CreditCards() {
                         </div>
                       </div>
 
-                      {/* Mastercard logo */}
-                       {/* <svg className="absolute bottom-0 right-0" width="48" height="28" viewBox="0 0 48 28">
-                        <circle fill="#F59E0B" cx="34" cy="14" r="14" fillOpacity=".8" />
-                        <circle fill="#F43F5E" cx="14" cy="14" r="14" fillOpacity=".8" />
-                      </svg> */}
-                       
-                      <CreditCardLogo cardName={card.name}/>
+                       <div>
+                        <CreditCardLogo cardName={card.name}/>
+                       </div>
+                      
 
                     </div>
                   </div>
