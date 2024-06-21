@@ -25,13 +25,45 @@ function Signup() {
   const [showPassword, setShowPassword] = useState(false);
 
   const { first_name, last_name, gender, life_status, num_of_children, email, password, birth_date, profession, phone_number, address } = formData;
-
+  const [addresses, setAddresses] = useState('');
+  const [addressResults, setAddressResults] = useState([]);
+  const [selectedAddress, setSelectedAddress] = useState('');
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.id]: e.target.value });
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+
+    const handleAddressSearch = async (query) => {
+      if (!query) {
+        setAddressResults([]);
+        return;
+      }
+  
+      try {
+        const response = await axios.get(`https://data.gov.il/api/3/action/datastore_search?resource_id=a7296d1a-f8c9-4b70-96c2-6ebb4352f8e3&limit=5&q=${query}`);
+        setAddressResults(response.data.result.records);
+      } catch (error) {
+        console.error('Error fetching address data:', error);
+        setAddressResults([]);
+      }
+    };
+  
+    useEffect(() => {
+      handleAddressSearch(address);
+    }, [address]);
+
+
+
+
+
+
+
+
+
+
 
     axios.post('http://localhost:8000/api/auth/signup/', formData)
       .then((response) => {
@@ -158,7 +190,7 @@ function Signup() {
                     <input id="password" className="form-input w-full" type={showPassword ? 'text' : 'password'} value={password} onChange={handleChange} required />
                     <div className="mt-2">
                       <input type="checkbox" id="showPassword" checked={showPassword} onChange={() => setShowPassword(!showPassword)} />
-                      <label htmlFor="showPassword" className="ml-2">הצג סיסמה</label>
+                      <label htmlFor="showPassword" className="text-sm font-medium mb-1"> הצג סיסמה  </label>
                     </div>
                   </div>
 
@@ -181,7 +213,6 @@ function Signup() {
                     <label className="block text-sm font-medium mb-1" htmlFor="address"> כתובת <span className="text-rose-500">*</span></label>
                     <input id="address" className="form-input w-full" type='text' value={address} onChange={handleChange} required />
                   </div>
-
                 </div>
 
                 <div className="flex items-center justify-between mt-6">

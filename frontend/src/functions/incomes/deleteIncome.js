@@ -23,7 +23,9 @@ export default function deleteIncome(id,token) {
             icon: "success",
             button: "אישור",
           }).then(() => {
+            window.location.reload()
             fetchIncomesData(token,setIncomes); // Refresh the data after deletion
+           
           });
         }).catch((error) => {
           console.error("Error deleting income:", error);

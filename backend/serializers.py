@@ -6,6 +6,7 @@ from users.models import Family
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
 
+
 class SavingsSerializer(serializers.ModelSerializer):
     total_saving_amount = serializers.SerializerMethodField()
     earnings = serializers.SerializerMethodField()

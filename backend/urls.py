@@ -26,6 +26,7 @@ urlpatterns = [
     path('auth/reset_password/', reset_password, name='reset_password'),
     path('auth/change_password/<str:email>', change_password, name='change_password'),
     path('auth/logout/', logout, name='logout'),
+    path('auth/fetch_current_user_data/',fetch_current_user_data, name='fetch_current_user_data'),
 
     #tokens-----------------------------------------------
     path('token/', MyTokenObtainPairView.as_view(), name='token_obtain_pair'),

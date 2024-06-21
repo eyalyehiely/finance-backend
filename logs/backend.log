@@ -492,3 +492,15 @@ DEBUG 2024-06-20 15:32:38,763 credit_card_views 65986 6133116928 Credit card not
 DEBUG 2024-06-20 15:36:26,469 credit_card_views 65986 6133116928 Credit card not added: {'status': [ErrorDetail(string='"" is not a valid choice.', code='invalid_choice')]}
 DEBUG 2024-06-20 16:00:18,600 credit_card_views 66182 6201110528 Credit card added successfully.
 DEBUG 2024-06-20 16:06:18,037 authentication_views 66351 6258307072 Email to eyalwork0@gmail.com sent successfully
+DEBUG 2024-06-21 14:02:58,959 incomes_views 73719 6141292544 Income not added: 'str' object has no attribute 'strftime'
+DEBUG 2024-06-21 14:03:50,959 incomes_views 73719 6141292544 Income not added: 'str' object has no attribute 'strftime'
+DEBUG 2024-06-21 14:06:08,150 incomes_views 73805 6189674496 Income not added: module 'datetime' has no attribute 'strptime'
+DEBUG 2024-06-21 14:06:20,006 incomes_views 73816 6156005376 Income not added: module 'django.utils.timezone' has no attribute 'strptime'
+DEBUG 2024-06-21 14:07:26,596 incomes_views 73842 6157135872 Income not added: module 'datetime' has no attribute 'strptime'
+DEBUG 2024-06-21 14:07:56,031 incomes_views 73855 6128693248 Income not added: ['“21-06-2024” value has an invalid date format. It must be in YYYY-MM-DD format.']
+DEBUG 2024-06-21 14:08:12,092 incomes_views 73861 6134853632 Income added
+DEBUG 2024-06-21 14:09:07,723 incomes_views 73888 6132674560 Income added
+DEBUG 2024-06-21 14:10:59,504 incomes_views 73941 6131003392 Income added
+DEBUG 2024-06-21 14:15:01,216 incomes_views 74069 6210416640 Income not added: module 'datetime' has no attribute 'strptime'
+DEBUG 2024-06-21 14:17:24,109 incomes_views 74206 6199635968 Income added
+DEBUG 2024-06-21 14:17:44,611 incomes_views 74206 6216462336 Income added

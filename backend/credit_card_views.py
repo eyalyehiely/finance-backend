@@ -1,6 +1,4 @@
-from django.shortcuts import get_object_or_404
-import jwt,datetime,json
-from django.http import  JsonResponse
+from rest_framework.response import Response
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from .serializers import *
@@ -8,7 +6,7 @@ import logging
 from django.utils import timezone
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
-from django.contrib.auth.decorators import login_required
+
 from rest_framework import status
 
 
@@ -125,14 +123,14 @@ def edit_card(request, card_id):
         card.updated_at = timezone.now()
         card.save()
 
-        return JsonResponse({'status': 200, 'message': 'card updated'})
+        return Response({'status': 200, 'message': 'card updated'})
 
     except CustomUser.DoesNotExist:
-        return JsonResponse({'error': 'User does not exist'}, status=404)
+        return Response({'error': 'User does not exist'}, status=404)
     except CreditCard.DoesNotExist:
-        return JsonResponse({'error': 'card does not exist'}, status=404)
+        return Response({'error': 'card does not exist'}, status=404)
     except Exception as e:
-        return JsonResponse({'error': str(e)}, status=500)
+        return Response({'error': str(e)}, status=500)
 
 
 #get chosen card

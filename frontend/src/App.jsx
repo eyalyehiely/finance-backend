@@ -18,14 +18,8 @@ import AllDebts from './pages/expenses/AllDebts';
 import AddDebt from './pages/expenses/AddDebt';
 import DebtTable from './pages/expenses/DebtTable';
 import CreditCards from './pages/creditCards/CreditCards';
-import AddCreditCard from './pages/creditCards/AddCreditCard';
 import AllIncomes from './pages/incomes/Allincomes';
-
-import AddIncome from './pages/incomes/AddIncome';
 import AllSavings from './pages/incomes/AllSavings';
-import AddSaving from './pages/incomes/AddSaving';
-
-
 import Signin from './pages/Signin';
 import Signup from './pages/Signup';
 import ResetPassword from './pages/ResetPassword';
@@ -45,7 +39,6 @@ import IconsPage from './pages/component/IconsPage';
 import ChangePassword from './pages/changePasswordPage.jsx'
 import Calander from './pages/Calendar'
 import AccountPanel from './partials/settings/AccountPanel'
-import SettingsSidebar from './partials/settings/SettingsSidebar'
 import FeedbackPanel from './partials/settings/FeedbackPanel'
 // import ProtectedRoute from './protectedRoute';
 
@@ -117,7 +110,6 @@ function App() {
 
 
         <Route path="/settings/account" element={<AccountPanel/>} />
-        <Route path="/settings/" element={<SettingsSidebar/>} />
         <Route path="/settings/feedback" element={<FeedbackPanel/>} />
       </Routes>
     </>

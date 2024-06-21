@@ -3,7 +3,7 @@ from django.core.mail import send_mail
 from rest_framework.response import Response
 from rest_framework import viewsets, permissions, status
 from rest_framework.response import Response
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view,permission_classes
 from rest_framework_simplejwt.tokens import RefreshToken
 from .serializers import *
 from redis import Redis
@@ -16,6 +16,7 @@ from users.serializers import CustomUserSerializer
 from django.contrib.auth import logout as logut_method
 import os
 import certifi
+from rest_framework.permissions import IsAuthenticated
 
 
 
@@ -184,9 +185,66 @@ def logout(request):
 
 
 
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def fetch_current_user_data(request):
+    user_id = request.user.id
+    try:
+        user = CustomUser.objects.get(id=user_id)
+        serializer = CustomUserSerializer(user)
+        return Response({
+        'status':200,
+        'user':serializer.data,
+        })
+        
+    except Exception as e:
+        print(f"Error: {str(e)}")  # Debug: Print the error message
+        return Response({
+            'status': 500,
+            'message': 'An error occurred while fetching data.',
+            'error': str(e)
+        }, status=500)
+
+
+#edit
+@api_view(['PUT'])
+@permission_classes([IsAuthenticated])
+def edit_user(request, card_id):
+    try:
+        user_id = request.user.id
+        user = CustomUser.objects.get(id=user_id)
+
+        # Retrieve data from the request
+        name = request.data.get('name', '')
+        day_of_charge = request.data.get('day_of_charge', '')
+        credit_type = request.data.get('credit_type', '')
+        line_of_credit = request.data.get('line_of_credit', '')
+        last_four_digits = request.data.get('last_four_digits', '')
+        status = request.data.get('status', '')
 
 
 
+        # Retrieve and update the card
+        card = CreditCard.objects.get(id=card_id)
+        card.user = user  
+        card.family = Family(user.family)  
+        card.name = name
+        card.day_of_charge = day_of_charge
+        card.credit_type = credit_type
+        card.line_of_credit = line_of_credit
+        card.last_four_digits = last_four_digits
+        card.status = status
+        card.updated_at = timezone.now()
+        card.save()
+
+        return Response({'status': 200, 'message': 'card updated'})
+
+    except CustomUser.DoesNotExist:
+        return Response({'error': 'User does not exist'}, status=404)
+    except CreditCard.DoesNotExist:
+        return Response({'error': 'card does not exist'}, status=404)
+    except Exception as e:
+        return Response({'error': str(e)}, status=500)
 
 
 class SavingsViewSet(viewsets.ModelViewSet):

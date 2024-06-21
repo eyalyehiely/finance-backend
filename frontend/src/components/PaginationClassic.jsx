@@ -1,5 +1,4 @@
 import React from 'react';
-import expenses from '../pages/expenses/AllExpenses'
 function PaginationClassic() {
   return (
     <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">

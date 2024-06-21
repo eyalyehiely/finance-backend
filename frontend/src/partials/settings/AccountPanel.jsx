@@ -1,91 +1,161 @@
-import React, { useState } from 'react';
+import * as React from 'react';
+import { useState, useEffect } from 'react';
+import Sidebar from '../../partials/Sidebar';
+import Header from '../../partials/Header';
+import Rights from '../../components/Rights';
+import Avatar from '@mui/material/Avatar';
+import Button from '@mui/material/Button';
+import Card from '@mui/material/Card';
+import CardActions from '@mui/material/CardActions';
+import CardContent from '@mui/material/CardContent';
+import CardHeader from '@mui/material/CardHeader';
+import Divider from '@mui/material/Divider';
+import Grid from '@mui/material/Grid';
+import Typography from '@mui/material/Typography';
+import getCurrentUserData from '../../functions/users/getCurrentUserData';
 
-import Image from '../../images/user-avatar-80.png';
+
 
 function AccountPanel() {
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [user, setUser] = useState({});
+  const token = localStorage.getItem('authTokens') ? JSON.parse(localStorage.getItem('authTokens')).access : null;
 
-  const [sync, setSync] = useState(false);
+  useEffect(() => {
+    getCurrentUserData(token, setUser);
+  }, [token]);
 
   return (
-    <div className="grow">
-      {/* Panel body */}
-      <div className="p-6 space-y-6">
-        <h2 className="text-2xl text-slate-800 dark:text-slate-100 font-bold mb-5">My Account</h2>
-        {/* Picture */}
-        <section>
-          <div className="flex items-center">
-            <div className="mr-4">
-              <img className="w-20 h-20 rounded-full" src={Image} width="80" height="80" alt="User upload" />
+    <div className="flex h-[100vh] overflow-hidden" dir="rtl">
+      {/* Sidebar */}
+      <Sidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
+
+      {/* Content area */}
+      <div className="relative flex flex-col flex-1 overflow-y-auto overflow-x-hidden bg-white dark:bg-slate-900">
+        {/* Site header */}
+        <Header sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
+
+        {/* Main content */}
+        <div className="p-6 space-y-6">
+          {/* Account Info */}
+          <section>
+            <Card>
+              <CardContent>
+                <Grid container spacing={2} alignItems="center">
+                  <Grid item>
+                    <Avatar src={user.avatar} sx={{ height: '80px', width: '80px' }} />
+                  </Grid>
+                  <Grid item xs>
+                    <Typography variant="h5">{user.first_name}</Typography>
+                    <Typography color="text.secondary" variant="body2">
+                      {user.address}, {user.age}
+                    </Typography>
+                  </Grid>
+                </Grid>
+              </CardContent>
+              <Divider />
+              <CardActions>
+                <Button fullWidth variant="text">
+                  העלאת תמונה
+                  {/* Upload picture */}
+                </Button>
+              </CardActions>
+            </Card>
+          </section>
+
+          {/* Business Profile */}
+          <section>
+            <Card>
+              <CardHeader title="פרטים אישיים" />
+              <CardContent>
+                <Grid container spacing={3}>
+                  <Grid item md={4} sm={6} xs={12}>
+                    <Typography variant="body1">
+                      <strong>שם פרטי:</strong> {user.first_name}
+                    </Typography>
+                  </Grid>
+                  <Grid item md={4} sm={6} xs={12}>
+                    <Typography variant="body1">
+                      <strong>שם משפחה:</strong> {user.last_name}
+                    </Typography>
+                  </Grid>
+                  <Grid item md={4} sm={6} xs={12}>
+                    <Typography variant="body1">
+                      <strong>מספר ילדים:</strong> {user.num_of_children}
+                    </Typography>
+                  </Grid>
+                  <Grid item md={4} sm={6} xs={12}>
+                    <Typography variant="body1">
+                      <strong>מגדר:</strong> {user.gender === 'male' ? 'זכר' : user.gender === 'female' ? 'נקבה' : 'אחר'}
+                    </Typography>
+                  </Grid>
+                  <Grid item md={4} sm={6} xs={12}>
+                    <Typography variant="body1">
+                      <strong>אימייל:</strong> {user.username}
+                    </Typography>
+                  </Grid>
+                  <Grid item md={4} sm={6} xs={12}>
+                    <Typography variant="body1">
+                      <strong>תאריך לידה:</strong> {user.birth_date}
+                    </Typography>
+                  </Grid>
+                  <Grid item md={4} sm={6} xs={12}>
+                    <Typography variant="body1">
+                      <strong>מקצוע:</strong> {user.profession}
+                    </Typography>
+                  </Grid>
+                  <Grid item md={4} sm={6} xs={12}>
+                    <Typography variant="body1">
+                      <strong>כתובת:</strong> {user.address}
+                    </Typography>
+                  </Grid>
+                </Grid>
+              </CardContent>
+            </Card>
+          </section>
+
+          {/* Email */}
+          <section>
+            <Card>
+              <CardHeader title="אימייל" />
+              <CardContent>
+                <Grid container spacing={2} alignItems="center">
+                  <Grid item xs>
+                    <Typography variant="body1">
+                      <strong>דואר אלקטרוני:</strong> {user.email}
+                    </Typography>
+                  </Grid>
+                  <Grid item>
+                    <Button variant="outlined" color="primary">
+                      שינוי
+                      {/* Change */}
+                    </Button>
+                  </Grid>
+                </Grid>
+              </CardContent>
+            </Card>
+          </section>
+
+          {/* Password */}
+          {/* Add your password section here if needed */}
+
+          {/* Panel footer */}
+          <footer>
+            <div className="flex flex-col px-6 py-5 border-t border-slate-200 dark:border-slate-700">
+              <div className="flex self-end">
+                <Button variant="contained" color="primary" className="ml-3">
+                  שמירת שינויים
+                  {/* Save Changes */}
+                </Button>
+              </div>
             </div>
-            <button className="btn-sm bg-indigo-500 hover:bg-indigo-600 text-white">Change</button>
-          </div>
-        </section>
-        {/* Business Profile */}
-        <section>
-          <h2 className="text-xl leading-snug text-slate-800 dark:text-slate-100 font-bold mb-1">Business Profile</h2>
-          <div className="text-sm">Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit.</div>
-          <div className="sm:flex sm:items-center space-y-4 sm:space-y-0 sm:space-x-4 mt-5">
-            <div className="sm:w-1/3">
-              <label className="block text-sm font-medium mb-1" htmlFor="name">Business Name</label>
-              <input id="name" className="form-input w-full" type="text" />
-            </div>
-            <div className="sm:w-1/3">
-              <label className="block text-sm font-medium mb-1" htmlFor="business-id">Business ID</label>
-              <input id="business-id" className="form-input w-full" type="text" />
-            </div>
-            <div className="sm:w-1/3">
-              <label className="block text-sm font-medium mb-1" htmlFor="location">Location</label>
-              <input id="location" className="form-input w-full" type="text" />
-            </div>
-          </div>
-        </section>
-        {/* Email */}
-        <section>
-          <h2 className="text-xl leading-snug text-slate-800 dark:text-slate-100 font-bold mb-1">Email</h2>
-          <div className="text-sm">Excepteur sint occaecat cupidatat non proident sunt in culpa qui officia.</div>
-          <div className="flex flex-wrap mt-5">
-            <div className="mr-2">
-              <label className="sr-only" htmlFor="email">Business email</label>
-              <input id="email" className="form-input" type="email" />
-            </div>
-            <button className="btn border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600 shadow-sm text-indigo-500">Change</button>
-          </div>
-        </section>
-        {/* Password */}
-        <section>
-          <h2 className="text-xl leading-snug text-slate-800 dark:text-slate-100 font-bold mb-1">Password</h2>
-          <div className="text-sm">You can set a permanent password if you don't want to use temporary login codes.</div>
-          <div className="mt-5">
-            <button className="btn border-slate-200 dark:border-slate-700 shadow-sm text-indigo-500">Set New Password</button>
-          </div>
-        </section>
-        {/* Smart Sync */}
-        <section>
-          <h2 className="text-xl leading-snug text-slate-800 dark:text-slate-100 font-bold mb-1">Smart Sync update for Mac</h2>
-          <div className="text-sm">With this update, online-only files will no longer appear to take up hard drive space.</div>
-          <div className="flex items-center mt-5">
-            <div className="form-switch">
-              <input type="checkbox" id="toggle" className="sr-only" checked={sync} onChange={() => setSync(!sync)} />
-              <label className="bg-slate-400 dark:bg-slate-700" htmlFor="toggle">
-                <span className="bg-white shadow-sm" aria-hidden="true"></span>
-                <span className="sr-only">Enable smart sync</span>
-              </label>
-            </div>
-            <div className="text-sm text-slate-400 dark:text-slate-500 italic ml-2">{sync ? 'On' : 'Off'}</div>
-          </div>
-        </section>
-      </div>
-      {/* Panel footer */}
-      <footer>
-        <div className="flex flex-col px-6 py-5 border-t border-slate-200 dark:border-slate-700">
-          <div className="flex self-end">
-            <button className="btn dark:bg-slate-800 border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600 text-slate-600 dark:text-slate-300">Cancel</button>
-            <button className="btn bg-indigo-500 hover:bg-indigo-600 text-white ml-3">Save Changes</button>
-          </div>
+          </footer>
         </div>
-      </footer>
+        <Rights />
+      </div>
     </div>
   );
 }
 
 export default AccountPanel;
+

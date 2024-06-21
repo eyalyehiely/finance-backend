@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import DoughnutChart from '../../charts/DoughnutChart';
 import Icon from '../../images/icon-03.svg';
 import fetchCurrentMonthExpenses from '../../functions/expenses/fetchCurrentMonthExpenses';
-import fetchCurrentMonthIncomes from '../../functions/incomes/fatchCurrentMonthIncomes'
+import fetchCurrentMonthIncomes from '../../functions/incomes/fetchCurrentMonthIncomes'
 
 
 
@@ -66,3 +66,7 @@ const difference = incomes - expenses
 }
 
 export default IncomesAndExpensesCard;
+
+
+
+
