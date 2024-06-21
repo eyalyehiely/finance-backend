@@ -504,3 +504,4 @@ DEBUG 2024-06-21 14:10:59,504 incomes_views 73941 6131003392 Income added
 DEBUG 2024-06-21 14:15:01,216 incomes_views 74069 6210416640 Income not added: module 'datetime' has no attribute 'strptime'
 DEBUG 2024-06-21 14:17:24,109 incomes_views 74206 6199635968 Income added
 DEBUG 2024-06-21 14:17:44,611 incomes_views 74206 6216462336 Income added
+DEBUG 2024-06-22 01:55:46,007 expenses_views 84660 6205288448 expense added

@@ -6,7 +6,6 @@ function IncomesCard() {
   const [amount, setAmount] = useState(null);
   const token = localStorage.getItem('authTokens') ? JSON.parse(localStorage.getItem('authTokens')).access : null;
 
-
   function fetchData(event = null) {
     if (event) {
       event.preventDefault();
@@ -56,10 +55,14 @@ function IncomesCard() {
         </header>
         <h2 dir="rtl" className="text-lg font-semibold text-slate-800 dark:text-slate-100 mb-2">הכנסות (החודש)</h2>
         <div dir="rtl" className="flex items-start">
-          {amount !== null && (
-            <div className="text-3xl font-bold text-slate-800 dark:text-slate-100 mr-2">{amount}₪</div>
+          {amount !== null ? (
+            <>
+              <div className="text-3xl font-bold text-slate-800 dark:text-slate-100 mr-2">{amount}₪</div>
+              <div className="text-sm font-semibold text-white px-1.5 bg-emerald-500 rounded-full">+49%</div>
+            </>
+          ) : (
+            <div className="text-lg font-semibold text-slate-800 dark:text-slate-100 mr-2">אין נתונים</div>
           )}
-          <div className="text-sm font-semibold text-white px-1.5 bg-emerald-500 rounded-full">+49%</div>
         </div>
       </div>
     </div>
@@ -67,4 +70,3 @@ function IncomesCard() {
 }
 
 export default IncomesCard;
-

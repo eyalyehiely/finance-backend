@@ -75,8 +75,7 @@ function Signup() {
         }).then(() => {
           window.location.href = '/';
         });
-      })
-      .catch((error) => {
+      }).catch((error) => {
         console.error(error);
         swal({
           title: "שגיאה",

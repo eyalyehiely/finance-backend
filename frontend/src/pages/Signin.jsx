@@ -37,7 +37,7 @@ function Signin() {
         console.log('Error:', response.data.message);
         swal({
           title: "Ⅹ!שגיאה",
-          text: {"!שגיאת BACKEND": response.data.message},
+          text: {"!שגיאת frontend": response.data.message},
           icon: "warning",
           button: "אישור",
         });
@@ -45,8 +45,8 @@ function Signin() {
     } catch (error) {
       console.error('Error:', error);
       swal({
-        title: "Ⅹ!שגיאה",
-        text: "שגיאת BACKEND",
+        title: "!שגיאה",
+        text: "שם משתמש או סיסמה לא תקינים",
         icon: "warning",
         button: "אישור",
       });

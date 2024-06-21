@@ -69,7 +69,7 @@ def delete_credit_card(request, credit_card_id):
         return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
-#get all  credit cards per user 
+#get all credit cards per user 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def get_credit_card(request):
@@ -133,33 +133,6 @@ def edit_card(request, card_id):
         return Response({'error': str(e)}, status=500)
 
 
-#get chosen card
-@api_view(['GET'])
-@permission_classes([IsAuthenticated])
-def get_chosen_credit_card(request,card_id):
-    user_id= request.user.id
-    try:
-        
-        credit_cards = CreditCard.objects.filter(user_id=user_id)
-        serializer = CreditCardSerializer(credit_cards)
-        return Response({
-        'status':200,
-        'chosen_card':serializer.data,
-        })
-        
-    except Exception as e:
-        print(f"Error: {str(e)}")  # Debug: Print the error message
-        return Response({
-            'status': 500,
-            'message': 'An error occurred while fetching data.',
-            'error': str(e)
-        }, status=500)
-    
-    except CreditCard.DoesNotExist:
-        return Response({"error": "Credit card not found"}, status=status.HTTP_404_NOT_FOUND)
-
-
-
 
 
 
@@ -183,18 +156,10 @@ def get_active_credit_card(request):
             'message': 'An error occurred while fetching data.',
             'error': str(e)
         }, status=500)
-# -------------------------------------------------------------------------------
-    # TODO: fix this view
-@api_view(['PUT'])
-@permission_classes([IsAuthenticated])
-def reset_credit_card_transactions(self):
-    today = timezone.now()
-    day_of_month = today.day
-    time = day_of_month.strftime("%00:%00")
-    if day_of_month == 1 & time:
-        CreditCard.credit_left = CreditCard.line_of_credit
-        CreditCard.debit_left = 0
-        CreditCard.amount_to_charge = 0
+
+
+
+
 
 
 

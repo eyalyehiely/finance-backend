@@ -77,7 +77,7 @@ function CreditCards() {
                       </div>
                       
                       <div className="col-span-6 order-1 sm:order-none sm:col-span-4 text-right sm:text-center lg:sidebar-expanded:col-span-6 xl:sidebar-expanded:col-span-4">
-                        <div className="text-sm">₪{card.amount_to_charge} / ₪{card.line_of_credit}</div>
+                        <div className="text-sm">₪{card.total_amount} / ₪{card.line_of_credit}</div>
                       </div>
                       {/* Card status */}
                       <div className="col-span-6 order-2 sm:order-none sm:col-span-2 text-right lg:sidebar-expanded:hidden xl:sidebar-expanded:block">
@@ -216,7 +216,7 @@ function CreditCards() {
                   </div>
 
                   {/* Edit / Delete */}
-                  <div className="flex items-center space-x-3 mt-6">
+                  <div className="flex items-center space-x-8 mt-6">
                   <EditCard card={card} />
   
                   <div className="w-1/2 ml-3">
@@ -228,7 +228,6 @@ function CreditCards() {
                     </Button>
                   </div>
                 </div>
-
 
           </div>
         </div>
@@ -255,4 +254,14 @@ function CreditCards() {
 }
 
 export default CreditCards;
+
+
+
+
+
+
+
+
+
+
 

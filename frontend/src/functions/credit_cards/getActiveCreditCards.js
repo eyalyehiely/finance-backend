@@ -1,7 +1,7 @@
 import axios from 'axios'
 import swal from 'sweetalert';
 
-export default function getCreditCardData(token,setCreditCards) {
+export default function getActiveCreditCardData(token,setCreditCards) {
     axios.post('http://localhost:8000/api/cards/get_active_credit_card/', {},{
       headers: {
         'Content-Type': 'application/json',

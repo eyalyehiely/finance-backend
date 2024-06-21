@@ -76,7 +76,7 @@ function ExpensesKindsCard() {
       </header>
       {error && <div className="text-red-600 p-4">{error}</div>}
       {loading ? (
-        <div className="text-center p-4">Loading...</div>
+        <div className="text-center p-4">אין נתונים</div>
       ) : (
         <DoughnutChart data={chartData} width={389} height={260} />
       )}

@@ -46,7 +46,7 @@ urlpatterns = [
     path('incomes/delete_income/<uuid:income_id>/', delete_income, name='delete_income'),
     path('incomes/edit_income/<uuid:income_id>/', edit_income, name='edit_income'),
     path('incomes/add_income/',add_income, name='add_income'),
-    path('incomes/get_chosen_credit_card/<uuid:card_id>/', get_chosen_credit_card, name='get_chosen_credit_card'),
+    # path('incomes/get_chosen_credit_card/<uuid:card_id>/', get_chosen_credit_card, name='get_chosen_credit_card'),
     
     # credit_cards------------------------------------------------------
     path('cards/get_credit_card/',get_credit_card, name = 'get_credit_card'),
@@ -67,13 +67,8 @@ urlpatterns = [
     path('savings/edit_saving/<uuid:saving_id>/', edit_saving, name='edit_saving'),
 
 
-
-    path('reset_credit_card_transactions/',reset_credit_card_transactions,name = 'reset_credit_card_transactions'),
-
-
     
 
- ]
-#TODO: fix swagger route
+]
 
 
