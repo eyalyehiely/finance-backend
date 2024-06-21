@@ -13,6 +13,7 @@ import Divider from '@mui/material/Divider';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import getCurrentUserData from '../../functions/users/getCurrentUserData';
+import EditUser from '../../pages/settings/EditUser';
 
 
 
@@ -50,6 +51,9 @@ function AccountPanel() {
                     <Typography color="text.secondary" variant="body2">
                       {user.address}, {user.age}
                     </Typography>
+                  </Grid>
+                  <Grid item>
+                    <EditUser/>
                   </Grid>
                 </Grid>
               </CardContent>
@@ -91,7 +95,7 @@ function AccountPanel() {
                   </Grid>
                   <Grid item md={4} sm={6} xs={12}>
                     <Typography variant="body1">
-                      <strong>אימייל:</strong> {user.username}
+                      <strong>אימייל:</strong> {user.email}
                     </Typography>
                   </Grid>
                   <Grid item md={4} sm={6} xs={12}>
@@ -117,39 +121,19 @@ function AccountPanel() {
           {/* Email */}
           <section>
             <Card>
-              <CardHeader title="אימייל" />
+              <CardHeader title="תמיכה ויצירת קשר" />
               <CardContent>
                 <Grid container spacing={2} alignItems="center">
                   <Grid item xs>
                     <Typography variant="body1">
-                      <strong>דואר אלקטרוני:</strong> {user.email}
+                      <strong>צריך עזרה? , </strong> 
+                      <a href="mailto:eyalwork0@gmail.com">לחץ כאן</a>
                     </Typography>
-                  </Grid>
-                  <Grid item>
-                    <Button variant="outlined" color="primary">
-                      שינוי
-                      {/* Change */}
-                    </Button>
                   </Grid>
                 </Grid>
               </CardContent>
             </Card>
           </section>
-
-          {/* Password */}
-          {/* Add your password section here if needed */}
-
-          {/* Panel footer */}
-          <footer>
-            <div className="flex flex-col px-6 py-5 border-t border-slate-200 dark:border-slate-700">
-              <div className="flex self-end">
-                <Button variant="contained" color="primary" className="ml-3">
-                  שמירת שינויים
-                  {/* Save Changes */}
-                </Button>
-              </div>
-            </div>
-          </footer>
         </div>
         <Rights />
       </div>

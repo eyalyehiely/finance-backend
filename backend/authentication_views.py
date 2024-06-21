@@ -209,40 +209,47 @@ def fetch_current_user_data(request):
 #edit
 @api_view(['PUT'])
 @permission_classes([IsAuthenticated])
-def edit_user(request, card_id):
+def edit_user(request):
     try:
         user_id = request.user.id
         user = CustomUser.objects.get(id=user_id)
 
         # Retrieve data from the request
-        name = request.data.get('name', '')
-        day_of_charge = request.data.get('day_of_charge', '')
-        credit_type = request.data.get('credit_type', '')
-        line_of_credit = request.data.get('line_of_credit', '')
-        last_four_digits = request.data.get('last_four_digits', '')
-        status = request.data.get('status', '')
+        first_name = request.data.get('first_name', '')
+        last_name = request.data.get('last_name', '')
+        email = request.data.get('email', '')
+        gender = request.data.get('gender', '')
+        life_status = request.data.get('life_status', '')
+        num_of_children = request.data.get('num_of_children', '')
+        phone_number = request.data.get('phone_number', '')
+        birth_date = request.data.get('birth_date', '')
+        profession = request.data.get('profession', '')
+        address = request.data.get('address', '')
 
 
+        # Retrieve and update the user
+        user = CustomUser.objects.get(id=user_id)
+        user.user = user  
+        user.family = Family(user.family)  
+        user.first_name = first_name
+        user.last_name = last_name
+        user.email = email
+        user.gender = gender
+        user.life_status = life_status
+        user.num_of_children = num_of_children
+        user.phone_number = phone_number
+        user.birth_date = birth_date
+        user.profession = profession
+        user.address = address
+        user.updated_at = timezone.now()
 
-        # Retrieve and update the card
-        card = CreditCard.objects.get(id=card_id)
-        card.user = user  
-        card.family = Family(user.family)  
-        card.name = name
-        card.day_of_charge = day_of_charge
-        card.credit_type = credit_type
-        card.line_of_credit = line_of_credit
-        card.last_four_digits = last_four_digits
-        card.status = status
-        card.updated_at = timezone.now()
-        card.save()
+        user.save()
 
-        return Response({'status': 200, 'message': 'card updated'})
+        return Response({'status': 200, 'message': 'user updated'})
 
     except CustomUser.DoesNotExist:
         return Response({'error': 'User does not exist'}, status=404)
-    except CreditCard.DoesNotExist:
-        return Response({'error': 'card does not exist'}, status=404)
+    
     except Exception as e:
         return Response({'error': str(e)}, status=500)
 

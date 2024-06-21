@@ -8,7 +8,6 @@ from .family_models import Family
 
 
 
-
 class CustomUser(AbstractUser):
     GENDER_CHOICES = [
         ('male', 'זכר'),

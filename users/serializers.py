@@ -10,7 +10,7 @@ class CustomUserSerializer(serializers.ModelSerializer):
     age = serializers.SerializerMethodField()
     class Meta:
         model = CustomUser
-        fields = ['id', 'email', 'first_name', 'last_name', 'gender', 'life_status', 'family', 'phone_number', 'birth_date','age', 'profession', 'address', 'updated_at']
+        fields = ['id', 'email', 'first_name', 'last_name', 'gender', 'life_status','num_of_children', 'family', 'phone_number', 'birth_date','age', 'profession', 'address', 'updated_at']
 
     def get_age(self,obj):
         return obj.age
