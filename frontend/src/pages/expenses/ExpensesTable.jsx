@@ -454,18 +454,20 @@ function ExpensesTable() {
           </tbody>
         </table>
       </div>
-      {editedExpense.payment_method === 'credit_card' &&  (
+      {editedExpense.payment_method === 'credit_card' && (
         <Modal show={true} onHide={cancelEdit} dir="rtl">
-          <Modal.Header >
+          <Modal.Header>
             <Modal.Title>בחר כרטיס אשראי</Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <Form.Group>
-              <Form.Label>כרטיס אשראי</Form.Label>
+              <Form.Label></Form.Label>
               <Form.Control
                 as="select"
+                id='credit_card'
                 value={editedExpense.credit_card || ''}
                 onChange={(e) => handleEditChange(e, 'credit_card')}
+                required
               >
                 <option value=""></option>
                 {creditCards.map((card) => (

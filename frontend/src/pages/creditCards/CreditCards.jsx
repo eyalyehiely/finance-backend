@@ -8,18 +8,44 @@ import deleteCard from '../../functions/credit_cards/deleteCard'
 import EditCard from './EditCard'
 import Button from 'react-bootstrap/esm/Button';
 import AddCreditCard from './AddCreditCard';
+import axios from 'axios';
+
+
+
+
+
 
 function CreditCards() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [creditCards, setCreditCards] = useState([]);
+  const [expenses,setExpenses] = useState([]);
   // const [chosenCard, setChosenCard] = useState([]);
   // const [logo, setLogo] = useState([]);
   const token = localStorage.getItem('authTokens') ? JSON.parse(localStorage.getItem('authTokens')).access : null;
+
+    axios.post('http://localhost:8000/api/expenses/fetch_user_expenses/',{},{
+      headers: {
+        'content-type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      }
+    }).then(response => {
+        if (response.data.status === 200) {
+          setExpenses(response.data.credit_card);
+        } else {
+          console.log('error');
+        }
+      })
+      .catch(error => {
+        console.error('There was an error!', error);
+      });
+  
 
 
   useEffect(() => {
     getCreditCardData(token,setCreditCards);
   }, [token]);
+
+
   return (
     <div className="flex h-[100dvh] overflow-hidden" dir = "rtl">
       {/* Sidebar */}
@@ -206,11 +232,11 @@ function CreditCards() {
                       <div className="flex justify-between text-sm mb-2">
                         <div>הוצאות החודש בכרטיס זה</div>
                         <div className="italic">
-                        ₪{card.amount_to_charge} <span className="text-slate-400 dark:text-slate-500">/</span> ₪{card.line_of_credit}
+                        ₪{expenses} <span className="text-slate-400 dark:text-slate-500">/</span> ₪{card.line_of_credit}
                         </div>
                       </div>
                       <div className="relative w-full h-2 bg-slate-300 dark:bg-slate-700">
-                        <div className="absolute inset-0 bg-emerald-500" aria-hidden="true" style={{ width: `${(card.amount_to_charge/ card.line_of_credit) * 100}%` }} />
+                        <div className="absolute inset-0 bg-emerald-500" aria-hidden="true" style={{ width: `${(expenses/ card.line_of_credit) * 100}%` }} />
                       </div>
                     </div>
                   </div>

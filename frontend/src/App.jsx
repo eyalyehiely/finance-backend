@@ -40,7 +40,7 @@ import ChangePassword from './pages/changePasswordPage.jsx'
 import Calander from './pages/Calendar'
 import AccountPanel from './partials/settings/AccountPanel'
 import FeedbackPanel from './partials/settings/FeedbackPanel'
-// import ProtectedRoute from './protectedRoute';
+import ProtectedRoute from './components/protectedRoute';
 
 
 
@@ -80,6 +80,7 @@ function App() {
 
         {/* savings */}
         <Route path="/incomes/all-savings" element={<AllSavings />} />
+        
 
 
         {/* incomes */}
