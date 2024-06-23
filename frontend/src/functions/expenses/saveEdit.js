@@ -32,6 +32,7 @@ export default function saveEdit(token, editedExpense, editingExpenseId, setExpe
         });
         setExpenses(expenses => expenses.map(expense => expense.id === editingExpenseId ? response.data.expense : expense));
         fetchExpensesData(token, setExpenses);
+        window.location.reload()
       } else {
         console.log('Error:', response.data.message);
         alert(response.data.message); // Adjust error handling as needed

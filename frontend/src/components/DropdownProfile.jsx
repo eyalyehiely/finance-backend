@@ -4,9 +4,12 @@ import Transition from '../utils/Transition';
 import LogoutButton from './LogOut';
 import { jwtDecode } from 'jwt-decode';
 import UserAvatar from '../images/user-avatar-32.png';
+import getCurrentUserData from '../../src/functions/users/getCurrentUserData';
 
 const token = localStorage.getItem('authTokens') ? JSON.parse(localStorage.getItem('authTokens')).access : null;
 const first_name = token ? jwtDecode(token).first_name : null;
+
+
 
 console.log('first_name:', first_name); // Debug: Check the first_name
 
@@ -15,6 +18,7 @@ function DropdownProfile({
 }) {
 
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [user,setUser] = useState([])
 
   const trigger = useRef(null);
   const dropdown = useRef(null);
@@ -40,6 +44,9 @@ function DropdownProfile({
     return () => document.removeEventListener('keydown', keyHandler);
   });
 
+  useEffect(() => {
+    getCurrentUserData(token, setUser);
+  }, [token]);
   return (
     <div className="relative inline-flex">
       <button
@@ -75,7 +82,7 @@ function DropdownProfile({
         >
           <div className="pt-0.5 pb-2 px-3 mb-1 border-b border-slate-200 dark:border-slate-700">
             <div className="font-medium text-slate-800 dark:text-slate-100">{first_name}</div>
-            <div className="text-xs text-slate-500 dark:text-slate-400 italic">Administrator</div>
+            <div className="text-xs text-slate-500 dark:text-slate-400 italic">{user.profession}</div>
           </div>
           <ul>
             <li>
@@ -84,7 +91,7 @@ function DropdownProfile({
                 to="/settings"
                 onClick={() => setDropdownOpen(!dropdownOpen)}
               >
-                Settings
+                הגדרות
               </Link>
             </li>
 
@@ -94,7 +101,7 @@ function DropdownProfile({
                 to="/signin"
                 onClick={() => LogoutButton()}
               >
-                Sign Out
+                התנתק
               </Link>
             </li>
           </ul>
