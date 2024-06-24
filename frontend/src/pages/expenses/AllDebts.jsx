@@ -77,11 +77,11 @@ function AllDebts() {
               {/* Right side */}
               <div className="grid grid-flow-col sm:auto-cols-max justify-end sm:justify-start gap-2">
                 {/* Delete button */}
-                <DeleteButton selectedItems={selectedItems} />
+                {/* <DeleteButton selectedItems={selectedItems} /> */}
                 {/* Dropdown */}
-                <DateSelect />
+                {/* <DateSelect /> */}
                 {/* Filter button */}
-                <FilterButton align="left" />
+                {/* <FilterButton align="left" /> */}
               </div>
 
             </div>

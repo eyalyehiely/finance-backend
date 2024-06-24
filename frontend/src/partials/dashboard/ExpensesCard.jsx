@@ -26,6 +26,7 @@ function ExpensesCard() {
                             <div className="text-sm font-semibold text-white px-1.5 bg-amber-500 rounded-full">-14%</div>
                         </div>
                     </div>
+                    
                 </div>
             ) : (
                 <span>אין הוצאות</span>
