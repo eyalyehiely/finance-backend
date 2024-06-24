@@ -240,3 +240,18 @@ def edit_expense(request, expense_id):
         return Response({'error': 'User does not exist'}, status=404)
     except Exception as e:
         return Response({'error': str(e)}, status=500)
+
+
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def search_expense(request, input):
+    try:
+        current_user_id = request.user.id
+        user_expenses = Expenses.objects.filter(user_id_id=current_user_id)
+        filtered_expenses = user_expenses.filter(name__icontains=input)
+        expenses_list = list(filtered_expenses.values())
+        return Response({'expenses': expenses_list})
+    except Exception as e:
+        return Response({'Error': str(e)})

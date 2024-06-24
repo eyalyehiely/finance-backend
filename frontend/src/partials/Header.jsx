@@ -54,7 +54,7 @@ function Header({
               </button>
               <SearchModal id="search-modal" searchId="search" modalOpen={searchModalOpen} setModalOpen={setSearchModalOpen} />
             </div>
-            <Notifications align="right" />
+            {/* <Notifications align="right" /> */}
             <Help align="right" />
             <ThemeToggle />
             {/*  Divider */}

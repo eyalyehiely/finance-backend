@@ -94,7 +94,7 @@ function App() {
         <Route path="/change_password/:email" element={<ChangePassword />} />
 
         {/* components */}
-        <Route path="/calendar" element={<Calander />} />
+        {/* <Route path="/calendar" element={<Calander />} /> */}
         <Route path="/component/button" element={<ButtonPage />} />
         <Route path="/component/form" element={<FormPage />} />
         <Route path="/component/dropdown" element={<DropdownPage />} />
@@ -109,9 +109,7 @@ function App() {
         <Route path="/component/accordion" element={<AccordionPage />} />
         <Route path="/component/icons" element={<IconsPage />} />
 
-
         <Route path="/settings/account" element={<AccountPanel/>} />
-        <Route path="/settings/feedback" element={<FeedbackPanel/>} />
       </Routes>
     </>
   );
