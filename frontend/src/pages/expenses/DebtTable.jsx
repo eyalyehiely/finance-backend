@@ -8,6 +8,8 @@ import saveEdit from '/src/functions/debts/saveEdit.js';  // Implement this func
 function DebtTable() {
   const [debts, setDebts] = useState([]);
   const [editingDebtId, setEditingDebtId] = useState(null);
+  const [filteredDebts, setFilteredDebts] = useState([]);
+  const [searchQuery, setSearchQuery] = useState('');
   const [editedDebt, setEditedDebt] = useState({}); 
   const token = localStorage.getItem('authTokens') ? JSON.parse(localStorage.getItem('authTokens')).access : null;
 
@@ -15,12 +17,36 @@ function DebtTable() {
     fetchDebtData(token, setDebts);  
   }, [token]);   
 console.log(debts.length);
+  // const handleEditChange = (event, field) => {
+  //   setEditedDebt({
+  //     ...editedDebt,
+  //     [field]: event.target.value
+  //   });
+  // };
+  useEffect(() => {
+    if (searchQuery) {
+      const query = searchQuery.toLowerCase();
+      setFilteredDebts(
+        debts.filter((debt) =>
+          debt.name.toLowerCase().includes(query) ||
+          debt.type.toLowerCase().includes(query) ||
+          debt.amount.toString().includes(query) ||
+          new Date(debt.starting_date).toLocaleString().includes(query)||
+          new Date(debt.finish_date).toLocaleString().includes(query)
+        )
+      );
+    } else {
+      setFilteredDebts(debts);
+    }
+  }, [searchQuery, debts]);
+
   const handleEditChange = (event, field) => {
     setEditedDebt({
       ...editedDebt,
-      [field]: event.target.value
+      [field]: event.target.value,
     });
   };
+
 
   const startEdit = (debt) => {
     setEditingDebtId(debt.id);
@@ -40,7 +66,18 @@ console.log(debts.length);
   return (
     <div className="bg-white dark:bg-slate-800 shadow-lg rounded-sm border border-slate-200 dark:border-slate-700 relative" dir="rtl">
       <header className="px-5 py-4">
-        <h2 className="font-semibold text-slate-800 dark:text-slate-100">חובות <span className="text-slate-400 dark:text-slate-500 font-medium">{debts.length}</span></h2>
+        <h2 className="font-semibold text-slate-800 dark:text-slate-100">חובות <span className="text-slate-400 dark:text-slate-500 font-medium">{filteredDebts.length}</span></h2>
+        <div className="my-4">
+          <input
+            type="text"
+            placeholder="חפש חוב..."
+            className="form-control" 
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            
+          />
+          
+        </div>
       </header>
       <div className="overflow-x-auto" dir="rtl">
         <table className="table-auto w-full dark:text-slate-300">
@@ -76,8 +113,8 @@ console.log(debts.length);
             </tr>
           </thead>
           <tbody className="text-sm font-medium divide-y divide-slate-100 dark:divide-slate-700">
-            {debts.length > 0 ? (
-              debts.map((debt, index) => (
+            {filteredDebts.length > 0 ? (
+              filteredDebts.map((debt, index) => (
                 <tr key={debt.id}>
                   <td className="p-2">
                     <div className="text-right">{index + 1}</div>

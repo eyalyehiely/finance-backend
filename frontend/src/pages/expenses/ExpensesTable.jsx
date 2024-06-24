@@ -84,6 +84,7 @@ function ExpensesTable() {
           />
           
         </div>
+        
       </header>
       <div className="overflow-x-auto" dir="rtl">
         <table className="table-auto w-full dark:text-slate-300">

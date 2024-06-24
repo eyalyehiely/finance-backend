@@ -10,8 +10,27 @@ function IncomesTable() {
   const [incomes, setIncomes] = useState([]);
   const [editingIncomesId, setEditingIncomesId] = useState(null);
   const [editedIncome, setEditedIncome] = useState({});
+  const [filteredIncomes, setFilteredIncomes] = useState([]);
+  const [searchQuery, setSearchQuery] = useState('');
+
+
+
   const token = localStorage.getItem('authTokens') ? JSON.parse(localStorage.getItem('authTokens')).access : null;
 
+  useEffect(() => {
+    if (searchQuery) {
+      const query = searchQuery.toLowerCase();
+      setFilteredIncomes(
+        incomes.filter((income) =>
+          income.source.toLowerCase().includes(query) ||
+          income.amount.toString().includes(query)||
+          new Date(income.date).toLocaleString().includes(query)
+        )
+      );
+    } else {
+      setFilteredIncomes(incomes);
+    }
+  }, [searchQuery, incomes]);
   
   useEffect(() => {
     fetchIncomesData(token,setIncomes);
@@ -46,7 +65,20 @@ function IncomesTable() {
   return (
     <div className="bg-white dark:bg-slate-800 shadow-lg rounded-sm border border-slate-200 dark:border-slate-700 relative" dir="rtl">
       <header className="px-5 py-4">
-        <h2 className="font-semibold text-slate-800 dark:text-slate-100">הכנסות <span className="text-slate-400 dark:text-slate-500 font-medium">{incomes.length}</span></h2>
+        <h2 className="font-semibold text-slate-800 dark:text-slate-100">הכנסות <span className="text-slate-400 dark:text-slate-500 font-medium">{filteredIncomes.length}</span></h2>
+        <div className="my-4">
+          <input
+            type="text"
+            placeholder="חפש הכנסה..."
+            className="form-control" 
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            
+          />
+          
+        </div>
+
+
       </header>
       <div className="overflow-x-auto" dir="rtl">
         <table className="table-auto w-full dark:text-slate-300">
@@ -73,8 +105,8 @@ function IncomesTable() {
             </tr>
           </thead>
           <tbody className="text-sm font-medium divide-y divide-slate-100 dark:divide-slate-700">
-            {incomes.length > 0 ? (
-              incomes.map((income, index) => (
+            {filteredIncomes.length > 0 ? (
+              filteredIncomes.map((income, index) => (
                 <tr key={income.id}>
                   <td className="p-2">
                     <div className="text-right">{index + 1}</div>

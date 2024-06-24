@@ -44,7 +44,7 @@ function AllSavings() {
               {/* Right: Actions */}
               <div className="grid grid-flow-col sm:auto-cols-max justify-end sm:justify-start gap-2">
                 {/* Search form */}
-                <SearchForm placeholder="Search by invoice ID…" />
+                {/* <SearchForm placeholder="Search by invoice ID…" /> */}
                 {/* Create invoice button */}
                
               <AddSaving />
@@ -79,9 +79,9 @@ function AllSavings() {
                 {/* Delete button */}
                 <DeleteButton selectedItems={selectedItems} />
                 {/* Dropdown */}
-                <DateSelect />
+                {/* <DateSelect /> */}
                 {/* Filter button */}
-                <FilterButton align="left" />
+                {/* <FilterButton align="left" /> */}
               </div>
 
             </div>

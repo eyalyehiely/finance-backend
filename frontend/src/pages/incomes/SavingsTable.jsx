@@ -10,10 +10,33 @@ import saveEdit from '../../functions/savings/saveEdit';
 function SavingsTable() {
   const [savings, setSavings] = useState([]);
   const [editingSavingsId, setEditingSavingsId] = useState(null);
+  const [filteredSavings, setFilteredSavings] = useState([]);
+  const [searchQuery, setSearchQuery] = useState('');
+
+
   const [editedSaving, setEditedSaving] = useState({});
   const token = localStorage.getItem('authTokens') ? JSON.parse(localStorage.getItem('authTokens')).access : null;
 
  
+  useEffect(() => {
+    if (searchQuery) {
+      const query = searchQuery.toLowerCase();
+      setFilteredSavings(
+        savings.filter((saving) =>
+          saving.saving_type.toLowerCase().includes(query) ||
+          saving.amount.toString().includes(query) ||
+          new Date(saving.starting_date).toLocaleString().includes(query)||
+          new Date(saving.finish_date).toLocaleString().includes(query)
+        )
+      );
+    } else {
+      setFilteredSavings(savings);
+    }
+  }, [searchQuery, savings]);
+
+
+
+
   useEffect(() => {
     fetchSavingsData(token, setSavings);
   }, [token]);
@@ -45,8 +68,20 @@ function SavingsTable() {
     <div className="bg-white dark:bg-slate-800 shadow-lg rounded-sm border border-slate-200 dark:border-slate-700 relative" dir="rtl">
       <header className="px-5 py-4">
         <h2 className="font-semibold text-slate-800 dark:text-slate-100">
-          חסכונות <span className="text-slate-400 dark:text-slate-500 font-medium">{savings.length}</span>
+          חסכונות <span className="text-slate-400 dark:text-slate-500 font-medium">{filteredSavings.length}</span>
         </h2>
+        <div className="my-4">
+          <input
+            type="text"
+            placeholder="חפש חסכון..."
+            className="form-control" 
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            
+          />
+          
+        </div>
+
       </header>
       <div className="overflow-x-auto" dir="rtl">
         <table className="table-auto w-full dark:text-slate-300">
@@ -79,8 +114,8 @@ function SavingsTable() {
             </tr>
           </thead>
           <tbody className="text-sm font-medium divide-y divide-slate-100 dark:divide-slate-700">
-            {savings.length > 0 ? (
-              savings.map((saving, index) => (
+            {filteredSavings.length > 0 ? (
+              filteredSavings.map((saving, index) => (
                 <tr key={saving.id}>
                   <td className="p-2">
                     <div className="text-right">{index + 1}</div>

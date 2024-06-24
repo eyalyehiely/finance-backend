@@ -44,7 +44,6 @@ function AllIncomes() {
               {/* Right: Actions */}
               <div className="grid grid-flow-col sm:auto-cols-max justify-end sm:justify-start gap-2">
                 {/* Search form */}
-                <SearchForm placeholder="Search by invoice ID…" />
                 {/* Create invoice button */}
 
                 <AddIncome />
