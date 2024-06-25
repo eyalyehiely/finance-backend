@@ -13,7 +13,7 @@ import Divider from '@mui/material/Divider';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import getCurrentUserData from '../../functions/users/getCurrentUserData';
-import EditUser from '../../pages/settings/EditUser';
+import EditUser from './EditUser';
 
 
 
@@ -59,10 +59,10 @@ function AccountPanel() {
               </CardContent>
               <Divider />
               <CardActions>
-                <Button fullWidth variant="text">
+                {/* <Button fullWidth variant="text">
                   העלאת תמונה
-                  {/* Upload picture */}
-                </Button>
+                  
+                </Button> */}
               </CardActions>
             </Card>
           </section>

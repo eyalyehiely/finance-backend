@@ -34,11 +34,7 @@ function AllExpenses() {
           <div className="px-4 sm:px-6 lg:px-8 py-8 w-full max-w-9xl mx-auto">
             {/* Page header */}
             <div className="sm:flex sm:justify-between sm:items-center mb-5">
-              {/* Left: Title */}
-              <div className="mb-4 sm:mb-0">
-                <h1 className="text-2xl md:text-3xl text-slate-800 dark:text-slate-100 font-bold">הוצאות ✨</h1>
-              </div>
-
+             
               {/* Right: Actions */}
               <div className="grid grid-flow-col sm:auto-cols-max justify-end sm:justify-start gap-2">
                 {/* Search form */}
@@ -48,25 +44,7 @@ function AllExpenses() {
               </div>
             </div>
 
-            {/* More actions */}
-            <div className="sm:flex sm:justify-between sm:items-center mb-5">
-              {/* Left side */}
-              <div className="mb-4 sm:mb-0">
-                <ul className="flex flex-wrap -m-1">
-                  {/* Additional buttons can be added here */}
-                </ul>
-              </div>
-
-              {/* Right side */}
-              <div className="grid grid-flow-col sm:auto-cols-max justify-end sm:justify-start gap-2">
-                {/* Delete button */}
-                {/* <DeleteButton selectedItems={selectedItems} />
-                {/* Dropdown */}
-                {/* <DateSelect /> */}
-                {/* Filter button */}
-                {/* <FilterButton align="left" /> */}
-              </div>
-            </div>
+            
 
             {/* Table */}
             <ExpensesTable selectedItems={handleSelectedItems} expenses={expenses} />

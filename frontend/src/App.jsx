@@ -18,7 +18,7 @@ import AllDebts from './pages/expenses/AllDebts';
 import AddDebt from './pages/expenses/AddDebt';
 import DebtTable from './pages/expenses/DebtTable';
 import CreditCards from './pages/creditCards/CreditCards';
-import AllIncomes from './pages/incomes/Allincomes';
+import AllIncomes from './pages/incomes/AllIncomes';
 import AllSavings from './pages/incomes/AllSavings';
 import Signin from './pages/Signin';
 import Signup from './pages/Signup';
@@ -38,7 +38,7 @@ import AccordionPage from './pages/component/AccordionPage';
 import IconsPage from './pages/component/IconsPage';
 import ChangePassword from './pages/changePasswordPage.jsx'
 import Calander from './pages/Calendar'
-import AccountPanel from './partials/settings/AccountPanel'
+import AccountPanel from './pages/settings/AccountPanel'
 import FeedbackPanel from './partials/settings/FeedbackPanel'
 import ProtectedRoute from './components/protectedRoute';
 

@@ -1,12 +1,38 @@
 import React, { useState, useEffect } from 'react';
-import Tooltip from '../../components/Tooltip';
 import getActiveCreditCards from '../../functions/credit_cards/getActiveCreditCards';
-// import LineOfCreditAlert from '../../components/LineOfCreditAlert';
+import axios from 'axios';
 
 function NotesCard() {
   const token = localStorage.getItem('authTokens') ? JSON.parse(localStorage.getItem('authTokens')).access : null;
   const [creditCards, setCreditCards] = useState([]);
   const [notes, setNotes] = useState('אין הודעות חדשות'); // Default note when no condition is met
+  const [expenses,setExpenses] = useState([]);
+
+  axios.post('http://localhost:8000/api/expenses/fetch_user_expenses/',{},{
+    headers: {
+      'content-type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    }
+  }).then(response => {
+      if (response.data.status === 200) {
+        setExpenses(response.data.credit_card);
+      } else {
+        console.log('error');
+      }
+    })
+    .catch(error => {
+      console.error('There was an error!', error);
+    });
+
+
+
+
+
+
+
+
+
+
 
   useEffect(() => {
     getActiveCreditCards(token, setCreditCards);
@@ -15,7 +41,8 @@ function NotesCard() {
   useEffect(() => {
     // Checking credit card conditions
     if (creditCards.length > 0) {
-      const hasExceededLimit = creditCards.some(card => card.line_of_credit * 0.75 > card.amount_to_charge);
+      const hasExceededLimit = creditCards.some(card => card.line_of_credit * 0.75 > expenses);
+      
       if (hasExceededLimit) {
         setNotes('הנך קרוב לחריגה בכרטיס האשראי');
         swal({

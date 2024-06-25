@@ -59,7 +59,7 @@ function SavingsCard() {
         <header className="flex justify-between items-start mb-2">
           {/* Icon */}
           <img src={Icon} width="32" height="32" alt="Icon 03" />
-          בהמשך - גרף חיזוי חסכונות 6 חודשיםקדימה
+          בהמשך - גרף חיזוי חסכונות 6 חודשים קדימה
         </header>
         <h2 dir="rtl" className="text-lg font-semibold text-slate-800 dark:text-slate-100 mb-2">חסכונות</h2>
         <div dir="rtl" className="flex items-start">
@@ -72,7 +72,7 @@ function SavingsCard() {
       </div>
       {/* Chart built with Chart.js 3 */}
       <div className="grow max-sm:max-h-[128px] xl:max-h-[128px]">
-        <BarChart data={chartData} />
+        {/* <BarChart data={chartData} /> */}
       </div>
     </div>
   );

@@ -23,7 +23,7 @@ function CreditCards() {
   // const [logo, setLogo] = useState([]);
   const token = localStorage.getItem('authTokens') ? JSON.parse(localStorage.getItem('authTokens')).access : null;
 
-    axios.post('http://localhost:8000/api/expenses/fetch_user_expenses/',{},{
+    axios.post(`http://localhost:8000/api/expenses/fetch_user_expenses/`,{},{
       headers: {
         'content-type': 'application/json',
         Authorization: `Bearer ${token}`,
@@ -103,7 +103,7 @@ function CreditCards() {
                       </div>
                       
                       <div className="col-span-6 order-1 sm:order-none sm:col-span-4 text-right sm:text-center lg:sidebar-expanded:col-span-6 xl:sidebar-expanded:col-span-4">
-                        <div className="text-sm">₪{card.total_amount} / ₪{card.line_of_credit}</div>
+                        <div className="text-sm">₪{expenses} / ₪{card.line_of_credit}</div>
                       </div>
                       {/* Card status */}
                       <div className="col-span-6 order-2 sm:order-none sm:col-span-2 text-right lg:sidebar-expanded:hidden xl:sidebar-expanded:block">
