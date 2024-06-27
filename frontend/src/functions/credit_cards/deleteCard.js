@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from '../axiosConfig'
 import swal from 'sweetalert'
 import getCreditCardData from './getCreditCardData';
 
@@ -11,7 +11,7 @@ export default function deleteCard(token,id) {
       dangerMode: true,
     }).then((willDelete) => {
       if (willDelete) {
-        axios.delete(`http://localhost:8000/api/cards/delete_credit_card/${id}/`, {
+        axios.delete(`/cards/delete_credit_card/${id}/`, {
           headers: {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${token}`,

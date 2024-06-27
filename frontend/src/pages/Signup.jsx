@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import axios from 'axios';
+import axios from '../../src/functions/axiosConfig'
 import swal from 'sweetalert';
 import AuthImage from '../images/finance.avif';
 import AuthDecoration from '../images/auth-decoration.png';
@@ -54,7 +54,7 @@ function Signup() {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    axios.post('http://localhost:8000/api/auth/signup/', formData)
+    axios.post('/auth/signup/', formData)
       .then((response) => {
         console.log(response.data);
         swal({

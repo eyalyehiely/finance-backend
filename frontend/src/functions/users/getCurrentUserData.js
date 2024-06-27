@@ -1,9 +1,9 @@
 
-import axios from 'axios'
+import axios from '../axiosConfig'
 import swal from 'sweetalert';
 
 export default function getCurrentUserData(token,setUser) {
-    axios.post('http://localhost:8000/api/auth/fetch_current_user_data/', {}, {
+    axios.post('/auth/fetch_current_user_data/', {}, {
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${token}`,

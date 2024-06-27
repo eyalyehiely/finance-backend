@@ -1,8 +1,8 @@
-import axios from 'axios';
+import axios from '../axiosConfig'
 import getCreditCardData from './getCreditCardData';
 
 export default function updateCreditCard(token, setCreditCards, editingCardId, data, handleClose) {
-  axios.put(`http://localhost:8000/api/cards/edit_card/${editingCardId}/`, data, {
+  axios.put(`cards/edit_card/${editingCardId}/`, data, {
     headers: {
       'content-type': 'application/json',
       Authorization: `Bearer ${token}`,

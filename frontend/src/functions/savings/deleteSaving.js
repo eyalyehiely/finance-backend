@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from '../axiosConfig'
 import swal from 'sweetalert'
 import fetchSavingsData from './fetchSavingsData';
 
@@ -11,7 +11,7 @@ export default function deleteSaving(id,token) {
       dangerMode: true,
     }).then((willDelete) => {
       if (willDelete) {
-        axios.delete(`http://localhost:8000/api/savings/delete_saving/${id}/`, {
+        axios.delete(`/savings/delete_saving/${id}/`, {
           headers: {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${token}`,

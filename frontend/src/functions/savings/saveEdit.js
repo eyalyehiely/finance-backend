@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from '../axiosConfig'
 import swal from 'sweetalert'
 import fetchSavingsData from './fetchSavingsData';
 
@@ -15,7 +15,7 @@ export default function saveEdit(token, editedSaving, editingSavingsId, setSavin
     starting_date : editedSaving.starting_date || '',
     finish_date : editedSaving.finish_date || '',
     }
-    axios.put(`http://localhost:8000/api/savings/edit_saving/${editingSavingsId}/`, editedData, {
+    axios.put(`/savings/edit_saving/${editingSavingsId}/`, editedData, {
     
     headers: {
         'content-type': 'application/json',

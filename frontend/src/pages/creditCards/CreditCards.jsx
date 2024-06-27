@@ -8,7 +8,7 @@ import deleteCard from '../../functions/credit_cards/deleteCard'
 import EditCard from './EditCard'
 import Button from 'react-bootstrap/esm/Button';
 import AddCreditCard from './AddCreditCard';
-import axios from 'axios';
+import axios from '../../functions/axiosConfig'
 
 
 
@@ -23,7 +23,7 @@ function CreditCards() {
   // const [logo, setLogo] = useState([]);
   const token = localStorage.getItem('authTokens') ? JSON.parse(localStorage.getItem('authTokens')).access : null;
 
-    axios.post(`http://localhost:8000/api/expenses/fetch_user_expenses/`,{},{
+    axios.post(`/expenses/fetch_user_expenses/`,{},{
       headers: {
         'content-type': 'application/json',
         Authorization: `Bearer ${token}`,

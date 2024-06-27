@@ -1,9 +1,9 @@
-import axios from 'axios';
+import axios from '../axiosConfig'
 import swal from 'sweetalert';
 import fetchSavingsData from './fetchSavingsData';
 
 export default function addSaving(token, setSavings, data, handleClose) {
-  axios.post('http://localhost:8000/api/savings/add_saving/', data, {
+  axios.post('/savings/add_saving/', data, {
     headers: {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${token}`,

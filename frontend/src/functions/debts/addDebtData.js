@@ -1,9 +1,9 @@
-import axios from 'axios';
+import axios from '../axiosConfig'
 import swal from 'sweetalert';
 import fetchDebtData from './fetchDebtData';
 
 export default function addDebtData(token, setDebts, data, handleClose) {
-  axios.post('http://localhost:8000/api/debts/add_debt/', data, {
+  axios.post('/debts/add_debt/', data, {
     headers: {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${token}`,

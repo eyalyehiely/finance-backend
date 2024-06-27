@@ -1,10 +1,7 @@
-// pages/expenses/AllExpenses.js
+
 import React, { useState } from 'react';
 import Sidebar from '../../partials/Sidebar';
 import Header from '../../partials/Header';
-import DeleteButton from '../../partials/actions/DeleteButton';
-import DateSelect from '../../components/DateSelect';
-import FilterButton from '../../components/DropdownFilter';
 import ExpensesTable from './ExpensesTable';
 import Rights from '../../components/Rights';
 import AddExpense from '../../pages/expenses/AddExpense';

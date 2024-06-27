@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from '../axiosConfig'
 import swal from 'sweetalert';
 import fetchDebtData from '/src/functions/debts/fetchDebtData.js';
 
@@ -18,7 +18,7 @@ export default function saveEdit(token, editedDebt, editingDebtId, setDebts) {
     finish_date: editedDebt.finish_date || '',
   };
 
-  axios.put(`http://localhost:8000/api/debts/edit_debt/${editingDebtId}/`, editedData, {
+  axios.put(`/debts/edit_debt/${editingDebtId}/`, editedData, {
     headers: {
       'content-type': 'application/json',
       Authorization: `Bearer ${token}`,

@@ -1,8 +1,8 @@
-import axios from "axios";
+import axios from '../axiosConfig'
 
 export default function fetchIncomesData(token,setLoading,setIncomes,setError) {
   setLoading(true);
-  axios.post('http://localhost:8000/api/incomes/fetch_user_incomes/',{},{
+  axios.post('/incomes/fetch_user_incomes/',{},{
     headers: {
       'content-type': 'application/json',
       Authorization: `Bearer ${token}`,

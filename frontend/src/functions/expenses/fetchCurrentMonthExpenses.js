@@ -1,10 +1,10 @@
-import axios from "axios";
+import axios from '../axiosConfig'
 
 
 export default function fetchCurrentMonthExpenses(token,setExpenses) {
     // event.preventDefault();
     
-    axios.post('http://localhost:8000/api/expenses/fetch_user_expenses/',{},{
+    axios.post('/expenses/fetch_user_expenses/',{},{
       headers: {
         'content-type': 'application/json',
         Authorization: `Bearer ${token}`,

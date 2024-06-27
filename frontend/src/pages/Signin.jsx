@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import axios from '../../src/functions/axiosConfig'
 import AuthImage from '../images/auth-image.jpg';
 import Button from 'react-bootstrap/Button';
 import Rights from '/src/components/Rights';
@@ -16,7 +16,7 @@ function Signin() {
     const password = document.getElementById('password').value;
 
     try {
-      const response = await axios.post('http://localhost:8000/api/token/', {
+      const response = await axios.post('/token/', {
         username,
         password
       });

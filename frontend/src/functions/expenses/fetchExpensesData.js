@@ -1,9 +1,9 @@
 
-import axios from 'axios'
+import axios from '../axiosConfig'
 import swal from 'sweetalert';
 
 export default function fetchExpensesData(token,setExpenses) {
-    axios.post('http://localhost:8000/api/expenses/get_all_expenses/', {}, {
+    axios.post('/expenses/get_all_expenses/', {}, {
       headers: {
         'content-type': 'application/json',
         Authorization: `Bearer ${token}`,

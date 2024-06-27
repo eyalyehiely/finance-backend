@@ -1,10 +1,6 @@
 import React, {useState} from 'react';
 import Sidebar from '../../partials/Sidebar';
 import Header from '../../partials/Header';
-import SearchForm from '../../partials/actions/SearchForm';
-import DeleteButton from '../../partials/actions/DeleteButton';
-import DateSelect from '../../components/DateSelect';
-import FilterButton from '../../components/DropdownFilter';
 import PaginationClassic from '../../components/PaginationClassic';
 import SavingsTable from './SavingsTable';
 import Rights from '/src/components/Rights';

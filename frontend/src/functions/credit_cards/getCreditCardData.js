@@ -1,8 +1,8 @@
-import axios from 'axios'
+import axios from '../axiosConfig'
 import swal from 'sweetalert';
 
 export default function getCreditCardData(token,setCreditCards) {
-    axios.post('http://localhost:8000/api/cards/get_credit_card/', {},{
+    axios.post('/cards/get_credit_card/', {},{
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`,

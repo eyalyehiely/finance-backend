@@ -1,4 +1,4 @@
-import axios from 'axios'
+import axios from '../axiosConfig'
 import swal from 'sweetalert';
 import fetchDebtData from './fetchDebtData';
 
@@ -11,7 +11,7 @@ export default function deleteDebt(id,token) {
       dangerMode: true,
     }).then((willDelete) => {
       if (willDelete) {
-        axios.delete(`http://localhost:8000/api/debts/delete_debt/${id}/`, {
+        axios.delete(`/debts/delete_debt/${id}/`, {
           headers: {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${token}`,

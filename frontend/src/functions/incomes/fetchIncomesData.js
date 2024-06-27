@@ -1,9 +1,9 @@
 
-import axios from 'axios'
+import axios from '../axiosConfig'
 import swal from 'sweetalert';
 
 export default function fetchIncomesData(token,setIncomes) {
-    axios.post('http://localhost:8000/api/incomes/get_all_incomes/', {}, {
+    axios.post('/incomes/get_all_incomes/', {}, {
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${token}`,

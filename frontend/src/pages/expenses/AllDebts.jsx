@@ -1,11 +1,7 @@
-import React, { useState, useEffect } from 'react';
-// import axios from 'axios'
+import React, { useState } from 'react';
+
 import Sidebar from '../../partials/Sidebar';
 import Header from '../../partials/Header';
-import SearchForm from '../../partials/actions/SearchForm';
-import DeleteButton from '../../partials/actions/DeleteButton';
-import DateSelect from '../../components/DateSelect';
-import FilterButton from '../../components/DropdownFilter';
 import DebtTable from './DebtTable';
 import PaginationClassic from '../../components/PaginationClassic';
 import Rights from '../../components/Rights';
