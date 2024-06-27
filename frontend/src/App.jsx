@@ -45,7 +45,6 @@ import ProtectedRoute from './components/protectedRoute';
 
 
 
-
 function App() {
 
   const location = useLocation();

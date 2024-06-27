@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.utils import timezone
 import datetime
-from .family_models import Family
+
 # from .business import Business
 
 
@@ -23,7 +23,6 @@ class CustomUser(AbstractUser):
 
     gender = models.CharField(max_length=10, choices=GENDER_CHOICES)
     life_status = models.CharField(max_length=50, choices=LIFE_STATUS_CHOICES)
-    family = models.ForeignKey(Family, on_delete=models.CASCADE,blank=True, null=True )
     num_of_children = models.IntegerField(blank=True, null=True)
     phone_number = models.CharField(max_length=10)
     birth_date = models.DateField(default=datetime.date.today)

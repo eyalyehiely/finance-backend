@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from rest_framework.authtoken.admin import User
 from .models import CustomUser
-from .family_models import Family
+
 
 
 
@@ -11,7 +11,7 @@ class CustomUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
         fields = ['id', 'email', 'first_name', 'last_name', 'gender', 'life_status',
-                  'num_of_children', 'family', 'phone_number', 'birth_date', 'age',
+                  'num_of_children', 'phone_number', 'birth_date', 'age',
                   'profession', 'address', 'updated_at']
         read_only_fields = ['id', 'updated_at']  # Make id and updated_at read-only
 
@@ -28,7 +28,3 @@ class CustomUserSerializer(serializers.ModelSerializer):
         return value
 
 
-class FamilySerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Family
-        fields = '__all__'

@@ -91,7 +91,6 @@ def add_income(request):
         # Create the income
         revenue = Revenues.objects.create(
             user_id=CustomUser(user_id),  # Assign the user instance directly
-            family_id=Family(user.family_id),
             source=source, 
             amount=amount,
             date=date,
@@ -147,7 +146,6 @@ def edit_income(request, income_id):
         # Create or update the income
         income, created = Revenues.objects.get_or_create(id=income_id)
         income.user_id = CustomUser(user_id)
-        income.family_id = Family(user.family_id)
         income.source = source
         income.amount = amount  # Convert amount to float
         income.date = date_obj

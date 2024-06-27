@@ -28,7 +28,6 @@ def add_credit_card(request):
         user_id = request.user.id
         user = CustomUser.objects.get(id=user_id)
         request.data['user_id'] = user_id
-        request.data['family_id'] = user.family_id
         request.data['created_at'] = timezone.now().date()
         request.data['day_of_charge'] = int(request.data['day_of_charge'])
 
@@ -113,7 +112,6 @@ def edit_card(request, card_id):
         # Retrieve and update the card
         card = CreditCard.objects.get(id=card_id)
         card.user = user  
-        card.family = Family(user.family)  
         card.name = name
         card.day_of_charge = day_of_charge
         card.credit_type = credit_type

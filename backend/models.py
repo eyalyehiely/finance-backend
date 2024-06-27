@@ -1,7 +1,7 @@
 from django.db import models
 from django.db.models import Sum
 
-from users.family_models import Family
+
 from users.models import CustomUser
 import datetime
 from django.utils import timezone
@@ -27,7 +27,6 @@ class Savings(BaseModel):
         ('other','אחר'),
     ]
     user_id = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='savings')
-    family_id = models.ForeignKey(Family, on_delete=models.CASCADE, related_name='savings',blank=True, null=True)
     saving_type = models.CharField(max_length=50, choices=SAVING_TYPES)
     interest = models.FloatField()
     amount = models.FloatField()
@@ -83,7 +82,6 @@ class Debts(BaseModel):
         
     ]
     user_id = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='debts')
-    family_id = models.ForeignKey(Family, on_delete=models.CASCADE, related_name='debts',blank=True, null=True)
     type = models.CharField(max_length=50, choices=DEBT_TYPES)
     name = models.TextField(max_length=100)
     amount = models.FloatField()
@@ -166,7 +164,6 @@ class CreditCard(BaseModel):
         ('Blocked', 'Blocked'),
     ]
     user_id = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='CreditCard')
-    family_id = models.ForeignKey(Family, on_delete=models.CASCADE, related_name='CreditCard',blank=True, null=True)
     name = models.TextField(max_length=50, choices=CARD_NAME)
     day_of_charge = models.CharField(max_length=50, choices=DAY_OF_CHARGE)
     credit_type = models.TextField(max_length=50, choices=CREDIT_TYPE)
@@ -197,7 +194,7 @@ class CreditCard(BaseModel):
     def depending_charges(self):
         current_month = timezone.now().month
         total_depending_charges = 0
-        expenses = Expenses.objects.filter(family_id=self.family_id, payment_method = 'credit_card')
+        expenses = Expenses.objects.filter(user_id=user.id, payment_method = 'credit_card')
         for expense in expenses:
             if (expense.created_at.month == current_month):
                 total_depending_charges += expense.price
@@ -246,7 +243,6 @@ class Expenses(BaseModel):
 
     ]
     user_id = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='expenses')
-    family_id = models.ForeignKey(Family, on_delete=models.CASCADE, related_name='expenses',blank=True, null=True)
     payment_method = models.CharField(max_length=50, choices=PAYMENT_METHODS)
     expense_type = models.CharField(max_length=50, choices=EXPENSES_TYPES)
     date_and_time = models.DateTimeField()
@@ -272,7 +268,6 @@ class Revenues(BaseModel):
         ('other', 'אחר'),
     ]
     user_id = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='revenue')
-    family_id = models.ForeignKey(Family, on_delete=models.CASCADE, related_name='revenue',blank=True, null=True)
     source = models.CharField(max_length=50, choices=SOURCES_TYPES)
     amount = models.FloatField()
     date = models.DateField()

@@ -9,7 +9,6 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import status
 from users.models import CustomUser
-from users.family_models import Family
 from .models import Debts
 
 
@@ -35,7 +34,6 @@ def add_debt(request):
         user_id= request.user.id
         user = CustomUser.objects.get(id=user_id)
         request.data['user_id'] = user.id
-        request.data['family_id'] = user.family_id
         request.data['created_at'] = timezone.now().date()
         serializer = DebtSerializer(data=request.data)
 
@@ -110,7 +108,6 @@ def edit_debt(request, debt_id):
         # Retrieve and update the debt
         debt = Debts.objects.get(id=debt_id)
         debt.user = user  
-        debt.family = Family(user.family)  
         debt.name = name
         debt.type = type
         debt.amount = float(amount)  

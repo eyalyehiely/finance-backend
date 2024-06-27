@@ -1,4 +1,4 @@
-import json
+import json,os,certifi,logging
 from django.core.mail import send_mail
 from rest_framework.response import Response
 from rest_framework import viewsets, permissions, status
@@ -7,21 +7,18 @@ from rest_framework.decorators import api_view,permission_classes
 from rest_framework_simplejwt.tokens import RefreshToken
 from .serializers import *
 from redis import Redis
-import logging
 from django.contrib.auth import authenticate,login as auth_login
 from finance.settings import DEFAULT_FROM_EMAIL
 from rest_framework_simplejwt.views import TokenObtainPairView
 from .serializers import MyTokenObtainPairSerializer
 from users.serializers import CustomUserSerializer
 from django.contrib.auth import logout as logut_method
-import os
-import certifi
 from rest_framework.permissions import IsAuthenticated
+from finance.settings import ALLOWED_HOSTS
 
 
 
-
-logger = logging.getLogger('backend')
+logger = logging.getLogger('users')
 
 
 class MyTokenObtainPairView(TokenObtainPairView):
@@ -83,7 +80,7 @@ def signup(request):
         user.birth_date = request.data.get('birth_date', '')
         user.profession = request.data.get('profession', '')  
         user.address = request.data.get('address', '')  
-        
+        logger.debug(f'user{user.username} created')
         user.save()  
         send_mail_for_signup(user.username) # got email
         # Create a new token for the user
@@ -96,7 +93,7 @@ def signup(request):
             'refresh': str(refresh),
             'access':str(access)
         })
-    
+    logger.debug(f'user not created')
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -130,7 +127,7 @@ def reset_password(request):
 
 
 def send_password_reset_email(email):
-    link = f"\n\n(http://localhost:5173/change_password/{email})\n\n"
+    link = f"\n\n({ALLOWED_HOSTS}/change_password/{email})\n\n"
     subject = "Reset Your Password"
     message = (
         f"Dear User,\n\n"
@@ -173,6 +170,7 @@ def change_password(request,email):
         logger.debug('Password updated successfully')
         return Response({'success': 'Password updated successfully'})
     except CustomUser.DoesNotExist:
+        logger.debug('User not found')
         return Response({'error': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
 
 
@@ -230,7 +228,6 @@ def edit_user(request):
         # Retrieve and update the user
         user = CustomUser.objects.get(id=user_id)
         user.user = user  
-        user.family = Family(user.family)  
         user.first_name = first_name
         user.last_name = last_name
         user.email = email

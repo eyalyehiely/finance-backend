@@ -120,7 +120,6 @@ def add_expense(request):
         # Create the expense
         expense = Expenses.objects.create(
             user_id=CustomUser(user_id),  # Assign the user instance directly
-            family_id=Family(user.family_id),
             payment_method=payment_method,
             expense_type=expense_type, 
             date_and_time=date_and_time,
@@ -223,7 +222,6 @@ def edit_expense(request, expense_id):
         # Create or update the expense
         expense, created = Expenses.objects.get_or_create(id=expense_id)
         expense.user_id = CustomUser(user_id)
-        expense.family_id = Family(user.family_id)
         expense.payment_method = payment_method
         expense.expense_type = expense.expense_type
         expense.date_and_time = start_date_obj

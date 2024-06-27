@@ -10,7 +10,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework import status
 from .models import Savings
 from users.models import CustomUser
-from users.family_models import Family
+
 
 
 
@@ -66,7 +66,6 @@ def add_saving(request):
         # Create the saving
         saving = Savings.objects.create(
             user_id=CustomUser(user_id),  # Assign the user instance directly
-            family_id= Family(user.family_id),
             saving_type=saving_type, 
             interest=interest,
             amount=amount,
@@ -124,7 +123,6 @@ def edit_saving(request, saving_id):
         # Create or update the saving
         saving, created = Savings.objects.get_or_create(id=saving_id)
         saving.user_id = CustomUser(user_id)
-        saving.family_id = Family(user.family_id)
         saving.saving_type = saving_type
         saving.interest = interest
         saving.amount = amount  # Convert amount to float

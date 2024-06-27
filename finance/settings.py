@@ -239,33 +239,32 @@ AUTHENTICATION_BACKENDS = [
 # logs
 LOGGING = {
     'version': 1,
-    # 'disable_existing_loggers': False,
     'loggers': {
         'backend': {
-            'handlers': ['backend_file'],  # Associate both console and file handlers
+            'handlers': ['backend_file'],
             'level': 'DEBUG',
         },
         'users': {
-            'handlers': ['users_file', 'example_file'],  # Associate both console and file handlers
+            'handlers': ['users_file'],
             'level': 'DEBUG',
         }
     },
     'handlers': {
         'backend_file': {
             'level': 'DEBUG',
-            'class': 'logging.FileHandler',  # File handler
+            'class': 'logging.FileHandler',
             'filename': './logs/backend.log',
             'formatter': 'simpleRe',
         },
         'users_file': {
             'level': 'DEBUG',
-            'class': 'logging.FileHandler',  # File handler
+            'class': 'logging.FileHandler',
             'filename': './logs/users.log',
             'formatter': 'simpleRe',
         },
         'example_file': {
-            'level': 'ERROR',  # An example to a specific logger in a file
-            'class': 'logging.FileHandler',  # File handler
+            'level': 'ERROR',
+            'class': 'logging.FileHandler',
             'filename': './logs/debug3.log',
             'formatter': 'simpleRe',
         }
@@ -276,7 +275,7 @@ LOGGING = {
             'style': '{',
         }
     }
-
 }
+
 
 CORS_ALLOW_ALL_ORIGIN = True

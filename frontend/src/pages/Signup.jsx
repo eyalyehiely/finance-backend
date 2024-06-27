@@ -7,6 +7,7 @@ import AuthImage from '../images/finance.avif';
 import AuthDecoration from '../images/auth-decoration.png';
 import Button from 'react-bootstrap/Button';
 import Rights from '../components/Rights';
+import getAdress from '../functions/users/getAdress';
 
 function Signup() {
   const [formData, setFormData] = useState({
@@ -32,24 +33,29 @@ function Signup() {
     setFormData({ ...formData, [e.target.id]: e.target.value });
   };
 
-  const handleAddressSearch = async (query) => {
-    if (!query) {
-      setAddressResults([]);
-      return;
-    }
-
-    try {
-      const response = await axios.get(`https://data.gov.il/api/3/action/datastore_search?resource_id=a7296d1a-f8c9-4b70-96c2-6ebb4352f8e3&limit=5&q=${query}`);
-      setAddressResults(response.data.result.records);
-    } catch (error) {
-      console.error('Error fetching address data:', error);
-      setAddressResults([]);
-    }
-  };
-
   useEffect(() => {
-    handleAddressSearch(address);
-  }, [address]);
+      getAdress(setAddressResults);
+    }
+  , []);
+
+  //const [filteredDebts, setFilteredDebts] = useState([]);
+  // const [searchQuery, setSearchQuery] = useState('');
+  //  useEffect(() => {
+  //   if (searchQuery) {
+  //     const query = searchQuery.toLowerCase();
+  //     setFilteredDebts(
+  //       debts.filter((debt) =>
+  //         debt.name.toLowerCase().includes(query) ||
+  //         debt.type.toLowerCase().includes(query) ||
+  //         debt.amount.toString().includes(query) ||
+  //         new Date(debt.starting_date).toLocaleString().includes(query)||
+  //         new Date(debt.finish_date).toLocaleString().includes(query)
+  //       )
+  //     );
+  //   } else {
+  //     setFilteredDebts(debts);
+  //   }
+  // }, [searchQuery, debts]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -204,9 +210,14 @@ function Signup() {
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium mb-1" htmlFor="address"> כתובת <span className="text-rose-500">*</span></label>
-                    <input id="address" className="form-input w-full" type='text' value={address} onChange={handleChange} required />
-                  </div>
+                    <label className="block text-sm font-medium mb-1" htmlFor="address">עיר מגורים <span className="text-rose-500">*</span></label>
+                    <select id="address" className="form-select w-full" value={formData.address} onChange={handleChange} required>
+                      <option value="">בחר עיר</option>
+                      {addressResults.map((address, index) => (
+                        <option key={index} value={address['שם_ישוב']}>{address['שם_ישוב']}</option>
+                      ))}
+                    </select>
+                  </div> 
                 </div>
 
                 <div className="flex items-center justify-between mt-6">
