@@ -5,7 +5,6 @@ import Header from '../partials/Header';
 import WelcomeBanner from '../partials/dashboard/WelcomeBanner';
 // import Datepicker from '../components/Datepicker';
 import DashboardCard01 from '../partials/dashboard/IncomesCard';
-import DashboardCard02 from '../partials/dashboard/ExpensesCard';
 import DashboardCard03 from '../partials/dashboard/SavingsCard';
 import DashboardCard04 from '../partials/dashboard/IncomesAndExpensesCard';
 import DashboardCard05 from '../partials/dashboard/NotesCard';
@@ -63,19 +62,14 @@ function Dashboard() {
               {/* הכנסות */}
               <DashboardCard01 />
 
-             
-              
-              {/* הוצאות */}
-              <DashboardCard02 />
+              {/* חלוקת הוצאות חודשית */}
+              <DashboardCard06 />
+
+              {/* הוצאות מול הכנסות */}
+              <DashboardCard04 />
 
                 {/* חסכונות */} 
               <DashboardCard03 />
-
-               {/* הוצאות מול הכנסות */}
-              <DashboardCard04 />
-
-              {/* חלוקת הוצאות חודשית */}
-              <DashboardCard06 />
 
               {/* שלושת ההוצאות הגדולות ביותר */}
               <DashboardCard07 />

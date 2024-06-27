@@ -1,8 +1,13 @@
+
 import React, { useState, useEffect } from 'react';
-import DoughnutChart from '../../charts/DoughnutChart';
-import axios from 'axios';
+import PieChart from '../../charts/PieChart';
+import axios from '../../functions/axiosConfig'
+import Icon from '../../images/icon-02.svg';
+import fetchCurrentMonthExpenses from '../../functions/expenses/fetchCurrentMonthExpenses';
 
 
+// Import utilities
+import { tailwindConfig } from '../../utils/Utils';
 
 function ExpensesKindsCard() {
   const [creditCard, setCreditCard] = useState(null);
@@ -11,11 +16,13 @@ function ExpensesKindsCard() {
   const [check, setCheck] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [amount, setAmount] = useState(null);
   const token = localStorage.getItem('authTokens') ? JSON.parse(localStorage.getItem('authTokens')).access : null;
+
 
   function fetchData() {
     setLoading(true);
-    axios.post('http://localhost:8000/api/expenses/fetch_user_expenses/',{},{
+    axios.post('/expenses/fetch_user_expenses/',{},{
       headers: {
         'content-type': 'application/json',
         Authorization: `Bearer ${token}`,
@@ -39,27 +46,34 @@ function ExpensesKindsCard() {
   }
 
 
+
+  
+  // const total = creditCard + debts + cash + check
   const chartData = {
     labels: ['כרטיסי אשראי', 'חובות', 'מזומן','צ׳קים'],
     datasets: [
       {
+        label: 'סכום:',
         data: [
           creditCard || 0, // Data for creditCard
           debts || 0,      // Data for debts
           cash  || 0,          // Placeholder data for the fourth dataset
           check || 0,
+
         ],
         backgroundColor: [
-          'rgb(75, 192, 192)', // Color for creditCard
-          'rgb(255, 99, 132)', // Color for debts
-          'rgb(54, 162, 235)', // Color for loans
-          'rgb(255, 205, 86)', // Color for the fourth dataset
+          tailwindConfig().theme.colors.emerald[400],
+          tailwindConfig().theme.colors.amber[400],
+          tailwindConfig().theme.colors.sky[400],
+          tailwindConfig().theme.colors.indigo[500],
+
         ],
         hoverBackgroundColor: [
-          'rgb(75, 192, 192)', // Hover color for creditCard
-          'rgb(255, 99, 132)', // Hover color for debts
-          'rgb(54, 162, 235)', // Hover color for loans
-          'rgb(255, 205, 86)', // Hover color for the fourth dataset
+          tailwindConfig().theme.colors.emerald[500],
+          tailwindConfig().theme.colors.amber[500],
+          tailwindConfig().theme.colors.sky[500],
+          tailwindConfig().theme.colors.indigo[600],
+
         ],
         borderWidth: 0,
       },
@@ -69,16 +83,24 @@ function ExpensesKindsCard() {
     fetchData(); // Call fetchData when the component mounts
   }, []);
 
+  useEffect(() => {
+    if (token) {
+        fetchCurrentMonthExpenses(token, setAmount);
+    }
+}, [token]); 
+
+
   return (
     <div className="flex flex-col col-span-full sm:col-span-6 xl:col-span-4 bg-white dark:bg-slate-800 shadow-lg rounded-sm border border-slate-200 dark:border-slate-700">
-      <header className="px-5 py-4 border-b border-slate-100 dark:border-slate-700">
-        <h2 dir = "rtl" className="text-lg font-semibold text-slate-800 dark:text-slate-100 mb-2">חלוקת הוצאות (חודשי)</h2>
+      <header className="px-5 py-4 border-b border-slate-100 dark:border-slate-700 flex items-center">
+      <img src={Icon} width="32" height="32" alt="Icon 02" />
       </header>
+      <h2  dir="rtl" className="text-lg font-semibold text-slate-800 dark:text-slate-100 mb-2"> הוצאות: {amount} ₪(חודשי)</h2>
       {error && <div className="text-red-600 p-4">{error}</div>}
       {loading ? (
         <div className="text-center p-4">אין נתונים</div>
       ) : (
-        <DoughnutChart data={chartData} width={389} height={260} />
+      <PieChart data={chartData} width={389} height={220} />
       )}
     </div>
   );

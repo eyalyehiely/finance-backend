@@ -194,7 +194,7 @@ class CreditCard(BaseModel):
     def depending_charges(self):
         current_month = timezone.now().month
         total_depending_charges = 0
-        expenses = Expenses.objects.filter(user_id=user.id, payment_method = 'credit_card')
+        expenses = Expenses.objects.filter(user_id=self.user_id, payment_method = 'credit_card')
         for expense in expenses:
             if (expense.created_at.month == current_month):
                 total_depending_charges += expense.price

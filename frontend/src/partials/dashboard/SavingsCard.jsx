@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import BarChart from '../../charts/BarChart01';
 import Icon from '../../images/icon-03.svg';
-import axios from 'axios';
+import axios from '../../functions/axiosConfig'
 
 // Import utilities
 import { tailwindConfig } from '../../utils/Utils';
@@ -14,7 +14,7 @@ function SavingsCard() {
 
   function fetchIncomesData() {
     setLoading(true);
-    axios.post('http://localhost:8000/api/incomes/fetch_user_incomes/',{},{
+    axios.post('/incomes/fetch_user_incomes/',{},{
       headers: {
         'content-type': 'application/json',
         Authorization: `Bearer ${token}`,
