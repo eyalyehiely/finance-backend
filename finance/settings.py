@@ -31,10 +31,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-)s+d6bs$ft@m#vdgt#jba0qy9sgumx&__=l&q0p3@&^mj%+$m('
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get('DEBUG',True)
+DEBUG = os.environ.get('DEBUG',False)
 
-ALLOWED_HOSTS = os.environ.get(['ALLOWED_HOSTS','*'])
-
+ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS','*')
 
 # Application definition
 
@@ -162,11 +161,11 @@ WSGI_APPLICATION = 'finance.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': os.environ.get('DATABASE_NAME'),
-        'USER': os.environ.get('DATABASE_USER'),
-        'PASSWORD': os.environ.get('DATABASE_PASSWORD'),
-        'HOST': os.environ.get('DATABASE_HOST'),
-        'PORT': os.environ.get('DATABASE_PORT'),                   
+        'NAME': os.environ('DATABASE_NAME'),
+        'USER': os.environ('DATABASE_USER'),
+        'PASSWORD': os.environ('DATABASE_PASSWORD'),
+        'HOST': os.environ('DATABASE_HOST'),
+        'PORT': os.environ('DATABASE_PORT'),                   
     }
 }
 
