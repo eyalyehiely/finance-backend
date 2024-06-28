@@ -199,14 +199,20 @@ USE_I18N = True
 
 USE_TZ = True
 
-STATIC_URL = '/frontend/src/'
+# STATIC_URL = '/frontend/src/'
 
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'frontend', 'src', ),
-]
+# STATICFILES_DIRS = [
+#     os.path.join(BASE_DIR, 'frontend', 'src', ),
+# ]
 
 # STATIC_ROOT = os.path.join(BASE_DIR, 'mosaic-react/src')
 
+
+STATIC_URL = '/frontend/src/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'frontend', 'src'),
+]
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
