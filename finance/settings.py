@@ -14,12 +14,12 @@ from pathlib import Path
 import os
 from datetime import timedelta
 from redis import Redis
-from dotenv import load_dotenv
+# from dotenv import load_dotenv
 from datetime import timedelta
 from django.conf import global_settings
 import certifi
 
-load_dotenv()
+# load_dotenv()
 SITE_ID =1
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
