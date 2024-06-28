@@ -14,12 +14,12 @@ from pathlib import Path
 import os
 from datetime import timedelta
 from redis import Redis
-# from dotenv import load_dotenv
+from dotenv import load_dotenv
 from datetime import timedelta
 from django.conf import global_settings
 import certifi
 
-# load_dotenv()
+load_dotenv()
 SITE_ID =1
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -31,10 +31,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-)s+d6bs$ft@m#vdgt#jba0qy9sgumx&__=l&q0p3@&^mj%+$m('
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = os.environ.get('DEBUG',True)
 
-ALLOWED_HOSTS = ['*']
-# INTERNAL_IPS = ["127.0.0.1"]
+ALLOWED_HOSTS = os.environ.get(['ALLOWED_HOSTS','*'])
+
 
 # Application definition
 
@@ -162,11 +162,11 @@ WSGI_APPLICATION = 'finance.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'railway',
-        'USER': 'postgres',
-        'PASSWORD': 'cohcodUhStVIJyVledXkjzfRAaECsLnm',
-        'HOST': 'roundhouse.proxy.rlwy.net',
-        'PORT': '16769',                   
+        'NAME': os.environ.get('DATABASE_NAME'),
+        'USER': os.environ.get('DATABASE_USER'),
+        'PASSWORD': os.environ.get('DATABASE_PASSWORD'),
+        'HOST': os.environ.get('DATABASE_HOST'),
+        'PORT': os.environ.get('DATABASE_PORT'),                   
     }
 }
 
