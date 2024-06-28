@@ -3,7 +3,6 @@ from django.contrib.auth.models import AbstractUser
 from django.utils import timezone
 import datetime
 
-# from .business import Business
 
 
 
