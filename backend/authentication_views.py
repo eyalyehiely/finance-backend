@@ -218,7 +218,7 @@ def edit_user(request):
         email = request.data.get('email', '')
         gender = request.data.get('gender', '')
         life_status = request.data.get('life_status', '')
-        num_of_children = request.data.get('num_of_children', '')
+        num_of_children = request.data.get('num_of_children', 0)
         phone_number = request.data.get('phone_number', '')
         birth_date = request.data.get('birth_date', '')
         profession = request.data.get('profession', '')
