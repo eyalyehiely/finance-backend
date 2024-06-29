@@ -33,7 +33,7 @@ SECRET_KEY = 'django-insecure-)s+d6bs$ft@m#vdgt#jba0qy9sgumx&__=l&q0p3@&^mj%+$m(
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DEBUG',False)
 
-ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS','*')
+ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS',['*'])
 
 # Application definition
 
@@ -158,17 +158,22 @@ WSGI_APPLICATION = 'finance.wsgi.application'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'NAME': os.environ('DATABASE_NAME'),
+#         'USER': os.environ('DATABASE_USER'),
+#         'PASSWORD': os.environ('DATABASE_PASSWORD'),
+#         'HOST': os.environ('DATABASE_HOST'),
+#         'PORT': os.environ('DATABASE_PORT'),                   
+#     }
+# }
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': os.environ('DATABASE_NAME'),
-        'USER': os.environ('DATABASE_USER'),
-        'PASSWORD': os.environ('DATABASE_PASSWORD'),
-        'HOST': os.environ('DATABASE_HOST'),
-        'PORT': os.environ('DATABASE_PORT'),                   
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
-
 
 
 
@@ -207,10 +212,10 @@ USE_TZ = True
 # STATIC_ROOT = os.path.join(BASE_DIR, 'mosaic-react/src')
 
 
-STATIC_URL = '/frontend/src/'
+STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'frontend', 'src'),
+    os.path.join(BASE_DIR, 'static'),
 ]
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
