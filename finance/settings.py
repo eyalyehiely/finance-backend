@@ -123,7 +123,7 @@ MIDDLEWARE = [
 ROOT_URLCONF = 'finance.urls'
 
 CORS_ALLOWED_ORIGINS = [
-    os.environ.get('FRONTEND_URL'),
+    os.environ.get('FRONTEND_URL','http://localhost:5173'),
     # Add other origins as needed
 ]
 CORS_ORIGIN_ALLOW_ALL = True
