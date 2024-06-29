@@ -74,8 +74,6 @@ REST_FRAMEWORK = {
 
 
 
-
-
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(days=1),  # Token expiration time
     'REFRESH_TOKEN_LIFETIME': timedelta(days=30),     # Refresh token expiration time
@@ -125,7 +123,7 @@ MIDDLEWARE = [
 ROOT_URLCONF = 'finance.urls'
 
 CORS_ALLOWED_ORIGINS = [
-    'http://localhost:5173',
+    os.environ.get('FRONTEND_URL'),
     # Add other origins as needed
 ]
 CORS_ORIGIN_ALLOW_ALL = True
@@ -161,19 +159,14 @@ WSGI_APPLICATION = 'finance.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': os.environ.get('DATABASE_NAME'),
-        'USER': os.environ.get('DATABASE_USER'),
-        'PASSWORD': os.environ.get('DATABASE_PASSWORD'),
-        'HOST': os.environ.get('DATABASE_HOST'),
-        'PORT': os.environ.get('DATABASE_PORT'),                   
+        'NAME': os.environ.get('DATABASE_NAME','railway'),
+        'USER': os.environ.get('DATABASE_USER','postgres'),
+        'PASSWORD': os.environ.get('DATABASE_PASSWORD','nSObSkPFOFpFqWrDPUlsHroWLCGJInhu'),
+        'HOST': os.environ.get('DATABASE_HOST','viaduct.proxy.rlwy.net'),
+        'PORT': os.environ.get('DATABASE_PORT','25017'),                   
     }
 }
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
+
 
 
 
@@ -203,14 +196,6 @@ USE_I18N = True
 
 USE_TZ = True
 
-# STATIC_URL = '/frontend/src/'
-
-# STATICFILES_DIRS = [
-#     os.path.join(BASE_DIR, 'frontend', 'src', ),
-# ]
-
-# STATIC_ROOT = os.path.join(BASE_DIR, 'mosaic-react/src')
-
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
@@ -237,9 +222,7 @@ os.environ['SSL_CERT_FILE'] = certifi.where()
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
 ]
-# LOGIN_URL = '/signin/'
-# LOGIN_REDIRECT_URL = '/signin/'
-# ACCOUNT_LOGOUT_REDIRECT_URL = '/login'
+
 
 # logs
 LOGGING = {
