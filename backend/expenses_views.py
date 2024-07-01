@@ -44,7 +44,7 @@ def fetch_user_expenses(request):
         credit_cards_amount = round(sum([data.price for data in current_month_credit_cards]),2)
         cash_amount = round(sum([data.price for data in current_month_cash]),2)
         check_amount = round(sum([data.price for data in current_month_check]),2)
-        all_expenses = round(expenses_amount+debts_amount+cash_amount+credit_cards_amount+check_amount,2)
+        all_expenses = round(expenses_amount+debts_amount+cash_amount+credit_cards_amount+check_amount)
 
 
         
