@@ -28,6 +28,7 @@ urlpatterns = [
     path('auth/logout/', logout, name='logout'),
     path('auth/fetch_current_user_data/',fetch_current_user_data, name='fetch_current_user_data'),
     path('auth/edit_user/',edit_user, name='edit_user'),
+    path('auth/supporting_mail/',supporting_mail, name='supporting_mail'),
     #tokens-----------------------------------------------
     path('token/', MyTokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
