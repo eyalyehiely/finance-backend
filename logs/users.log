@@ -56,3 +56,9 @@ DEBUG 2024-07-01 22:14:08,565 authentication_views 68237 6154170368 Attempting l
 DEBUG 2024-07-01 22:40:41,546 authentication_views 68651 6206418944 Attempting login for username: eyalwork0@gmail.com
 DEBUG 2024-07-01 22:47:14,062 authentication_views 68779 6122795008 Attempting login for username: eyalwork0@gmail.com
 DEBUG 2024-07-02 01:16:54,107 authentication_views 69434 6128513024 Email to eyalwork0@gmail.com sent successfully
+DEBUG 2024-07-03 00:15:34,165 authentication_views 80632 6129250304 Email sent successfully to alona@a-rococo.com.
+DEBUG 2024-07-03 00:19:04,149 authentication_views 80690 6170062848 Email sent successfully to eyalwork0@gmail.com.
+DEBUG 2024-07-03 00:41:12,917 authentication_views 80705 6161133568 Email sent successfully to eyalwork0@gmail.com.
+DEBUG 2024-07-03 00:42:07,430 authentication_views 80705 6161133568 Email sent successfully to eyalwork0@gmail.com.
+DEBUG 2024-07-03 00:50:10,535 authentication_views 80705 6161133568 Email sent successfully to eyalwork0@gmail.com.
+DEBUG 2024-07-03 00:50:46,622 authentication_views 80705 6161133568 Email sent successfully to eyalwork0@gmail.com.

@@ -137,7 +137,23 @@ def send_password_reset_email(email):
     send_mail(subject, message, DEFAULT_FROM_EMAIL, [email], fail_silently=False)
 
 
+#changing password
+@api_view(['POST'])
+def change_password(request,email):
+    data = json.loads(request.body)
+    new_password = data.get('new_password', '')
+    try:
+        user = CustomUser.objects.get(email=email)
+        user.set_password(new_password)
+        user.save()
+        logger.debug('Password updated successfully')
+        return Response({'success': 'Password updated successfully'})
+    except CustomUser.DoesNotExist:
+        logger.debug('User not found')
+        return Response({'error': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
 
+
+# ------------------------------mailing------------------------------------------------------
 def send_mail_for_signup(email):
     subject = "Welcome to Our Community!"
     message = (
@@ -150,22 +166,6 @@ def send_mail_for_signup(email):
     )
 
     send_mail(subject, message, DEFAULT_FROM_EMAIL, [email], fail_silently=False)
-
-
-
-
-
-# @api_view(['POST'])
-# def supporting_mail(email, subject, message):
-#     try:
-#         send_mail(subject, message, DEFAULT_FROM_EMAIL, [email], fail_silently=False)
-#         logger.debug(f"Email sent successfully to {email}.")
-#         return Response(f"Email sent successfully to {email}.")
-#     except Exception as e:
-#         # Logging the error to the console or a file
-#         logger.error(f"Failed to send email to {email}. Error: {str(e)}")
-#         return Response(f"Failed to send email to {email}. Error: {str(e)}")
-    
 
 
 
@@ -191,20 +191,6 @@ def supporting_mail(request):
     
 
 
-#changing password
-@api_view(['POST'])
-def change_password(request,email):
-    data = json.loads(request.body)
-    new_password = data.get('new_password', '')
-    try:
-        user = CustomUser.objects.get(email=email)
-        user.set_password(new_password)
-        user.save()
-        logger.debug('Password updated successfully')
-        return Response({'success': 'Password updated successfully'})
-    except CustomUser.DoesNotExist:
-        logger.debug('User not found')
-        return Response({'error': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
 
 
 
