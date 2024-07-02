@@ -24,11 +24,11 @@ logger = logging.getLogger('users')
 class MyTokenObtainPairView(TokenObtainPairView):
     serializer_class = MyTokenObtainPairSerializer
 
-# username is 
+
 @api_view(['POST'])
 def signin(request):
         data = json.loads(request.body)
-        username = data.get('username', '').lower()
+        username = data.get('username', '')
         password = data.get('password', '')
 
         logger.debug(f'Attempting login for username: {username}')
@@ -52,17 +52,12 @@ def signin(request):
                 'access':str(access)
             },status=200)
         else:
-            logger.debug('Error logging in')
+            logger.debug('Error logging in: Invalid username or password')
             return Response({'status': 'error', 'message': 'Invalid username or password'}, status=401)
 
 
 
-
-
-
-
-
-
+ 
 @api_view(['POST'])
 def signup(request):
     serializer = CustomUserSerializer(data=request.data)
@@ -75,7 +70,7 @@ def signup(request):
         user.last_name = request.data.get('last_name', '')
         user.gender = request.data.get('gender', '')  
         user.life_status = request.data.get('life_status', '')  
-        user.num_of_chidren = int(request.data.get('num_of_children',''))
+        user.num_of_children = int(request.data.get('num_of_children',''))
         user.phone_number = request.data.get('phone_number', '')
         user.birth_date = request.data.get('birth_date', '')
         user.profession = request.data.get('profession', '')  
@@ -83,25 +78,23 @@ def signup(request):
         logger.debug(f'user{user.username} created')
         user.save()  
         send_mail_for_signup(user.username) # got email
+        logger.debug("email to {email} send successfully")
         # Create a new token for the user
-        refresh = RefreshToken.for_user(user)
-        refresh['first_name'] = user.first_name
-        access = refresh.access_token 
+        # refresh = RefreshToken.for_user(user)
+        # refresh['first_name'] = user.first_name
+        # access = refresh.access_token 
 
         return Response({
             'status':200,
-            'refresh': str(refresh),
-            'access':str(access)
-        })
-    logger.debug(f'user not created')
+            # 'refresh': str(refresh),
+            # 'access':str(access)
+        },status = 200)
+    logger.debug(f'User not created',serializer.error_messages())
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 
 # ------------------------------password handling------------------------------------------------------
-
-
-
 
 
 os.environ['SSL_CERT_FILE'] = certifi.where()
@@ -130,16 +123,17 @@ def send_password_reset_email(email):
     link = f"\n\n({ALLOWED_HOSTS}/change_password/{email})\n\n"
     subject = "Reset Your Password"
     message = (
-        f"Dear User,\n\n"
-        f"You recently requested to reset your password for CashControl. "
-        f"Please use the following link to reset your password. "
-        f"This link is only valid for the next 24 hours."
-        f"{link}"
-        f"If you did not request a password reset, please ignore this email. "
-        f"If you continue to receive this email or believe it was sent in error, "
-        f"please contact our support team immediately.\n\n"
-        f"Thank you,\nCashControl Team"
-    )
+    f"שלום,\n\n"
+    f"אתה ביקשת לאחרונה לאפס את הסיסמה שלך עבור CashControl. "
+    f"אנא השתמש בקישור הבא כדי לאפס את הסיסמה שלך. "
+    f"קישור זה בתוקף בלבד למשך 24 שעות הקרובות.\n\n"
+    f"{link}\n\n"
+    f"אם לא ביקשת לאפס את הסיסמה שלך, אנא התעלם מהמייל הזה. "
+    f"אם אתה ממשיך לקבל מיילים כאלה או סבור שהמייל נשלח בטעות, "
+    f"אנא פנה לצוות התמיכה שלנו בהקדם.\n\n"
+    f"תודה,\nצוות CashControl"
+)
+
     send_mail(subject, message, DEFAULT_FROM_EMAIL, [email], fail_silently=False)
 
 
@@ -147,16 +141,30 @@ def send_password_reset_email(email):
 def send_mail_for_signup(email):
     subject = "Welcome to Our Community!"
     message = (
-        "Dear User,\n\n"
-        "Thank you for signing up and joining our community! We are thrilled to have you with us and excited for you to explore all the features and benefits our platform offers.\n\n"
-        "Your registration marks the beginning of a journey filled with valuable resources, engaging content, and opportunities to connect with like-minded individuals. We are committed to providing you with the best experience and support, and we look forward to assisting you in any way we can.\n\n"
-        "Welcome aboard, and thank you for choosing us!\n\n"
-        "Best regards,\n"
-        "CashControl Team"
+    "שלום,\n\n"
+    "תודה על ההרשמה והצטרפותך לקהילה שלנו! אנו נרגשים מאוד להכיר אותך ומצפים שתחקור את כל הפיצ'רים והיתרונות שהפלטפורמה שלנו מציעה.\n\n"
+    "ההרשמה שלך מסמלת את תחילתה של דרך מלאה במשאבים יקרים, תוכן מרתק והזדמנויות להתחבר עם אנשים בעלי תחומי עניין דומים. אנו מחויבים להעניק לך את החוויה והתמיכה הטובות ביותר ומצפים לעזור לך בכל דרך אפשרית.\n\n"
+    "ברוך הבא אלינו, ותודה שבחרת בנו!\n\n"
+    "בברכה,\n"
+    "צוות CashControl"
     )
+
     send_mail(subject, message, DEFAULT_FROM_EMAIL, [email], fail_silently=False)
 
 
+
+
+
+
+def supporting_mail(email, subject, message):
+    try:
+        send_mail(subject, message, DEFAULT_FROM_EMAIL, [email], fail_silently=False)
+        logger.debug(f"Email sent successfully to {email}.")
+        return Response(f"Email sent successfully to {email}.")
+    except Exception as e:
+        # Logging the error to the console or a file
+        logger.error(f"Failed to send email to {email}. Error: {str(e)}")
+        return Response(f"Failed to send email to {email}. Error: {str(e)}")
 
 #changing password
 @api_view(['POST'])

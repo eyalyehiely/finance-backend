@@ -64,11 +64,7 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework_simplejwt.authentication.JWTAuthentication',
 
-        
-    ],
-    # 'DEFAULT_PERMISSION_CLASSES': [
-    #     'rest_framework.permissions.IsAuthenticated'
-    # ],
+    ]
 }
 
 
@@ -128,6 +124,9 @@ CORS_ALLOWED_ORIGINS = [
 ]
 CORS_ORIGIN_ALLOW_ALL = True
 
+# CSRF_TRUSTED_ORIGINS = ['http://localhost:5173']
+
+
 
 TEMPLATES = [
     {
@@ -166,6 +165,12 @@ DATABASES = {
         'PORT': os.environ.get('DATABASE_PORT','25017'),                   
     }
 }
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
 
 
 
