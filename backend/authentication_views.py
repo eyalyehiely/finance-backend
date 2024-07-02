@@ -155,16 +155,41 @@ def send_mail_for_signup(email):
 
 
 
+# @api_view(['POST'])
+# def supporting_mail(email, subject, message):
+#     try:
+#         send_mail(subject, message, DEFAULT_FROM_EMAIL, [email], fail_silently=False)
+#         logger.debug(f"Email sent successfully to {email}.")
+#         return Response(f"Email sent successfully to {email}.")
+#     except Exception as e:
+#         # Logging the error to the console or a file
+#         logger.error(f"Failed to send email to {email}. Error: {str(e)}")
+#         return Response(f"Failed to send email to {email}. Error: {str(e)}")
+    
 
-def supporting_mail(email, subject, message):
+
+
+@api_view(['POST'])
+def supporting_mail(request):
     try:
-        send_mail(subject, message, DEFAULT_FROM_EMAIL, [email], fail_silently=False)
-        logger.debug(f"Email sent successfully to {email}.")
-        return Response(f"Email sent successfully to {email}.")
+        subject = request.data.get('subject')
+        message = request.data.get('message')
+        email = request.data.get('email')
+
+        recipient_email = settings.DEFAULT_FROM_EMAIL
+
+        # Append the sender's email to the message
+        full_message = f"{message}\n\nThis email was sent from {email}."
+
+        send_mail(subject, full_message, settings.DEFAULT_FROM_EMAIL, [recipient_email], fail_silently=False)
+        logger.debug(f"Email sent successfully to {recipient_email}.")
+        return Response({"message": f"Email sent successfully to {recipient_email}."}, status=status.HTTP_200_OK)
     except Exception as e:
-        # Logging the error to the console or a file
-        logger.error(f"Failed to send email to {email}. Error: {str(e)}")
-        return Response(f"Failed to send email to {email}. Error: {str(e)}")
+        logger.error(f"Failed to send email to {recipient_email}. Error: {str(e)}")
+        return Response({"error": f"Failed to send email to {recipient_email}. Error: {str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+    
+
 
 #changing password
 @api_view(['POST'])
