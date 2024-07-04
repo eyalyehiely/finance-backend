@@ -30,9 +30,9 @@ def fetch_user_expenses(request):
         user_id = request.user.id
         current_month_debts = Debts.objects.filter(user_id=user_id,finish_date__year__gte=current_year,finish_date__month__gte=current_month)
         current_month_expenses = Expenses.objects.filter(user_id=user_id,date_and_time__month=current_month,date_and_time__year=current_year)
-        current_month_credit_cards = Expenses.objects.filter(user_id=user_id,payment_method='credit_card',date_and_time__month=current_month,date_and_time__year=current_year)
-        current_month_cash = Expenses.objects.filter(user_id=user_id,payment_method='cash',date_and_time__month=current_month,date_and_time__year=current_year)
-        current_month_check = Expenses.objects.filter(user_id=user_id,payment_method='check',date_and_time__month=current_month,date_and_time__year=current_year)
+        current_month_credit_cards = Expenses.objects.filter(user_id=user_id,payment_method='כרטיס אשראי',date_and_time__month=current_month,date_and_time__year=current_year)
+        current_month_cash = Expenses.objects.filter(user_id=user_id,payment_method='מזומן',date_and_time__month=current_month,date_and_time__year=current_year)
+        current_month_check = Expenses.objects.filter(user_id=user_id,payment_method='צ׳ק',date_and_time__month=current_month,date_and_time__year=current_year)
 
 
 

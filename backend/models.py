@@ -20,11 +20,11 @@ class BaseModel(models.Model):
 
 class Savings(BaseModel):
     SAVING_TYPES = [
-        ('health', 'בריאות'),
-        ('business', 'עסקים'),
-        ('regular', 'רגיל'),
-        ('education','השכלה'),
-        ('other','אחר'),
+        ('בריאות', 'בריאות'),
+        ('עסקים', 'עסקים'),
+        ('רגיל', 'Regular'),
+        ('השכלה', 'השכלה'),
+        ('אחר', 'אחר')
     ]
     user_id = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='savings')
     saving_type = models.CharField(max_length=50, choices=SAVING_TYPES)
@@ -73,13 +73,12 @@ class Savings(BaseModel):
 #3
 class Debts(BaseModel):
     DEBT_TYPES = [
-        ('mortgage', 'משכנתא'),
-        ('goverment', 'ממשלתית'),
-        ('loan', 'הלוואה'),
-        ('business', 'עסק'),
-        ('medical', 'רפואי'),
-        ('car', 'משכון רכב'),
-        
+        ('משכנתא', 'משכנתא'),
+        ('ממשלתית', 'ממשלתית'),
+        ('הלוואה', 'Loan'),
+        ('עסק', 'עסק'),
+        ('רפואי', 'רפואי'),
+        ('משכון רכב', 'משכון רכב'),
     ]
     user_id = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='debts')
     type = models.CharField(max_length=50, choices=DEBT_TYPES)
@@ -145,7 +144,7 @@ class CreditCard(BaseModel):
         ('2', '2'),
         ('10', '10'),
         ('15', '15'),
-        ('none', 'none'),
+        ('אין', 'אין'),
     ]
     CARD_NAME = [
         ('no_card', 'no_card'),
@@ -160,8 +159,8 @@ class CreditCard(BaseModel):
 
     ]
     STATUS = [
-        ('Active', 'Active'),
-        ('Blocked', 'Blocked'),
+        ('פעיל', 'פעיל'),
+        ('חסום', 'חסום'),
     ]
     user_id = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='CreditCard')
     name = models.TextField(max_length=50, choices=CARD_NAME)
@@ -219,26 +218,26 @@ class CreditCard(BaseModel):
 class Expenses(BaseModel):
 
     EXPENSES_TYPES = [
-        ('regular_expense', 'הוצאה רגילה'),
-        ('irregular_expense', 'הוצאה לא רגילה')
+        ('הוצאה קבועה', 'הוצאה קבועה'),
+        ('הוצאה משתנה', 'הוצאה משתנה')
     ]
     PAYMENT_METHODS = [
-        ('credit_card', 'כרטיס אשראי'),
-        ('direct_debit', 'הוראת קבע'),
-        ('transaction', 'העברה בנקאית'),
-        ('cash', 'מזומן'),
-        ('check', 'צ׳ק'),
+        ('כרטיס אשראי', 'כרטיס אשראי'),
+        ('הוראת קבע', 'הוראת קבע'),
+        ('העברה בנקאית', 'העברה בנקאית'),
+        ('מזומן', 'מזומן'),
+        ('צ׳ק', 'צ׳ק'),
     ]
 
     CATEGORY_TYPES = [
-        ('supermarket','סופר'),
-        ('restaurant','מסעדה'),
-        ('tech','טכנולוגיה'),
-        ('dress_and_shoes','הלבשה והנעלה'),
-        ('fuel','דלק'),
-        ('loan','הלוואה'),
-        ('debt', 'חוב'),
-        ('gift','מתנה')
+        ('סופר','סופר'),
+        ('מסעדה','מסעדה'),
+        ('טכנולוגיה','טכנולוגיה'),
+        ('הלבשה והנעלה','הלבשה והנעלה'),
+        ('דלק','דלק'),
+        ('הלוואה','הלוואה'),
+        ('חוב', 'חוב'),
+        ('מתנה','מתנה')
 
 
     ]
@@ -263,9 +262,9 @@ class Expenses(BaseModel):
 
 class Revenues(BaseModel):
     SOURCES_TYPES = [
-        ('salary', 'משכורת'),
-        ('allowance', 'קצבה'),
-        ('other', 'אחר'),
+        ('משכורת', 'משכורת'),
+        ('קצבה', 'קצבה'),
+        ('אחר', 'אחר'),
     ]
     user_id = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='revenue')
     source = models.CharField(max_length=50, choices=SOURCES_TYPES)

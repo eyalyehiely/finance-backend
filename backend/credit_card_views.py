@@ -140,7 +140,7 @@ def edit_card(request, card_id):
 def get_active_credit_card(request):
     user_id= request.user.id
     try:
-        credit_cards = CreditCard.objects.filter(user_id=user_id,status='Active')
+        credit_cards = CreditCard.objects.filter(user_id=user_id,status='פעיל')
         serializer = CreditCardSerializer(credit_cards,many=True)
         return Response({
         'status':200,
