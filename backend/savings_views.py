@@ -69,8 +69,8 @@ def add_saving(request):
             saving_type=saving_type, 
             interest=interest,
             amount=amount,
-            starting_date=datetime.datetime.strptime(starting_date, '%d/%m/%Y').date(),
-            finish_date = datetime.datetime.strptime(finish_date, '%d/%m/%Y').date(),
+            starting_date=starting_date,
+            finish_date = finish_date,
             created_at=timezone.now(),
             updated_at=timezone.now()
         )
