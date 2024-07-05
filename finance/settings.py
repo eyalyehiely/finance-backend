@@ -32,10 +32,11 @@ SECRET_KEY = 'django-insecure-)s+d6bs$ft@m#vdgt#jba0qy9sgumx&__=l&q0p3@&^mj%+$m(
 DEBUG = os.environ.get('DEBUG',False)
 # DEBUG = True
 
-ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', 'finance-backend-dev.up.railway.app').split(',')
+
+ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', 'finance-backend-dev.up.railway.app,finance-frontend-dev.up.railway.app').split(',')
+
 
 # Application definition
-
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
