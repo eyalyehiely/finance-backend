@@ -124,20 +124,20 @@ def reset_password(request):
 
 
 
-
-
-
-logger = logging.getLogger(__name__)
-
 def send_password_reset_email(email):
+    # Get the first host from ALLOWED_HOSTS or default to 'localhost'
     allowed_host = settings.ALLOWED_HOSTS[0] if settings.ALLOWED_HOSTS else 'localhost'
     
+    # Ensure the base URL includes the correct protocol
+    protocol = 'https' if settings.SECURE_SSL_REDIRECT else 'http'
+    base_url = f"{protocol}://{allowed_host}"
+
     # Generate a secure token with a timestamp
     signer = TimestampSigner()
     token = signer.sign(email)
     
-    # Create the link
-    link = f"https://{allowed_host}/change_password/{email}/{token}/"
+    # Create the link with the token
+    link = f"{base_url}/auth/change_password/{email}/{token}/"
     
     # Email subject and message
     subject = "Reset Your Password"
@@ -160,6 +160,15 @@ def send_password_reset_email(email):
 
 
 #changing password
+from django.core.signing import TimestampSigner, BadSignature, SignatureExpired
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from rest_framework import status
+import json
+import logging
+
+logger = logging.getLogger(__name__)
+
 @api_view(['POST'])
 def change_password(request, email, token):
     data = json.loads(request.body)
@@ -169,7 +178,7 @@ def change_password(request, email, token):
     signer = TimestampSigner()
     try:
         # This will raise SignatureExpired if the link is older than 10 minutes
-        signer.unsign(token, max_age=60)  # 600 seconds = 10 minutes
+        signer.unsign(token, max_age=600)  # 600 seconds = 10 minutes
     except SignatureExpired:
         logger.debug('Password reset link has expired')
         return Response({'error': 'The reset link has expired. Please request a new one.'}, status=status.HTTP_400_BAD_REQUEST)
@@ -186,6 +195,7 @@ def change_password(request, email, token):
     except CustomUser.DoesNotExist:
         logger.debug('User not found')
         return Response({'error': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
+
 
 
 # ------------------------------mailing------------------------------------------------------
