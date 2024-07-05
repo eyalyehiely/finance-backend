@@ -14,6 +14,7 @@ from .serializers import MyTokenObtainPairSerializer
 from users.serializers import CustomUserSerializer
 from django.contrib.auth import logout as logut_method
 from rest_framework.permissions import IsAuthenticated
+from django.core.signing import TimestampSigner, BadSignature, SignatureExpired
 from django.utils.crypto import get_random_string
 
 
@@ -122,21 +123,29 @@ def reset_password(request):
 
 
 
+
+
+
+
+logger = logging.getLogger(__name__)
+
 def send_password_reset_email(email):
     allowed_host = settings.ALLOWED_HOSTS[0] if settings.ALLOWED_HOSTS else 'localhost'
     
-    # Generate a secure token (optional but recommended)
-    token = get_random_string(length=32)
-
+    # Generate a secure token with a timestamp
+    signer = TimestampSigner()
+    token = signer.sign(email)
+    
     # Create the link
     link = f"https://{allowed_host}/change_password/{email}/{token}/"
+    
     # Email subject and message
     subject = "Reset Your Password"
     message = (
         f"שלום,\n\n"
         f"אתה ביקשת לאחרונה לאפס את הסיסמה שלך עבור CashControl. "
         f"אנא השתמש בקישור הבא כדי לאפס את הסיסמה שלך. "
-        f"קישור זה בתוקף בלבד למשך 24 שעות הקרובות.\n\n"
+        f"קישור זה בתוקף בלבד למשך 10 דקות הקרובות.\n\n"
         f"{link}\n\n"
         f"אם לא ביקשת לאפס את הסיסמה שלך, אנא התעלם מהמייל הזה. "
         f"אם אתה ממשיך לקבל מיילים כאלה או סבור שהמייל נשלח בטעות, "
@@ -149,11 +158,25 @@ def send_password_reset_email(email):
 
 
 
+
 #changing password
 @api_view(['POST'])
-def change_password(request,email):
+def change_password(request, email, token):
     data = json.loads(request.body)
     new_password = data.get('new_password', '')
+    
+    # Verify the token
+    signer = TimestampSigner()
+    try:
+        # This will raise SignatureExpired if the link is older than 10 minutes
+        signer.unsign(token, max_age=60)  # 600 seconds = 10 minutes
+    except SignatureExpired:
+        logger.debug('Password reset link has expired')
+        return Response({'error': 'The reset link has expired. Please request a new one.'}, status=status.HTTP_400_BAD_REQUEST)
+    except BadSignature:
+        logger.debug('Invalid reset link')
+        return Response({'error': 'Invalid reset link.'}, status=status.HTTP_400_BAD_REQUEST)
+    
     try:
         user = CustomUser.objects.get(email=email)
         user.set_password(new_password)
