@@ -42,6 +42,8 @@ urlpatterns = [
     path('expenses/add_expense/',add_expense, name = 'add_expense'),
     path('expenses/edit_expense/<uuid:expense_id>/', edit_expense, name='edit_expense'),
     path('expenses/search_expense/<str:input>/', search_expense, name='search_expense'),
+
+    
     # incomes------------------------------------------------------
     path('incomes/fetch_user_incomes/',fetch_user_incomes, name = 'fetch_user_incomes'),
     path('incomes/get_all_incomes/',get_all_incomes, name = 'get_all_incomes'),

@@ -207,6 +207,8 @@ def edit_expense(request, expense_id):
         name = request.data.get('name', '')
         credit_card = request.data.get('credit_card', '')
         price = request.data.get('price', '')
+        expense_type = request.data.get('expense_type', '')
+        category = request.data.get('category', '')
         
         
 
@@ -223,10 +225,10 @@ def edit_expense(request, expense_id):
         expense, created = Expenses.objects.get_or_create(id=expense_id)
         expense.user_id = CustomUser(user_id)
         expense.payment_method = payment_method
-        expense.expense_type = expense.expense_type
+        expense.expense_type = expense_type
         expense.date_and_time = start_date_obj
         expense.name = name
-        expense.category=expense.category
+        expense.category=category
         expense.price = price
         credit_card = credit_card
         expense.updated_at = timezone.now()
