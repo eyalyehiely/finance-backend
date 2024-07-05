@@ -71,10 +71,18 @@ class CreditCardSerializer(serializers.ModelSerializer):
         ('חסום', 'חסום'),
     )
 
+    CREDIT_TYPE = (
+        ('Debit', 'Debit'),
+        ('Credit', 'Credit'),
+    )
+
+    name =  serializers.CharField(max_length=50)
     day_of_charge = serializers.ChoiceField(choices=DAY_CHOICES)
+    credit_type = models.TextField(max_length=50, choices=CREDIT_TYPE)
+    line_of_credit = models.FloatField(blank=True, null=True)
     status = serializers.ChoiceField(choices=STATUS_CHOICES)
     last_four_digits = serializers.CharField(max_length=4)
-    amount_to_charge = serializers.CharField()
+
 
     
     class Meta:
