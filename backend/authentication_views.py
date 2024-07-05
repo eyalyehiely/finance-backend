@@ -14,7 +14,8 @@ from .serializers import MyTokenObtainPairSerializer
 from users.serializers import CustomUserSerializer
 from django.contrib.auth import logout as logut_method
 from rest_framework.permissions import IsAuthenticated
-from finance.settings import ALLOWED_HOSTS
+from django.utils.crypto import get_random_string
+
 
 
 
@@ -119,22 +120,33 @@ def reset_password(request):
         return Response({'status': 'error', 'message': str(e)}, status=500)
 
 
+
+
 def send_password_reset_email(email):
-    link = f"\n\n({ALLOWED_HOSTS}/change_password/{email})\n\n"
+    allowed_host = settings.ALLOWED_HOSTS[0] if settings.ALLOWED_HOSTS else 'localhost'
+    
+    # Generate a secure token (optional but recommended)
+    token = get_random_string(length=32)
+
+    # Create the link
+    link = f"https://{allowed_host}/change_password/{email}/{token}/"
+    # Email subject and message
     subject = "Reset Your Password"
     message = (
-    f"שלום,\n\n"
-    f"אתה ביקשת לאחרונה לאפס את הסיסמה שלך עבור CashControl. "
-    f"אנא השתמש בקישור הבא כדי לאפס את הסיסמה שלך. "
-    f"קישור זה בתוקף בלבד למשך 24 שעות הקרובות.\n\n"
-    f"{link}\n\n"
-    f"אם לא ביקשת לאפס את הסיסמה שלך, אנא התעלם מהמייל הזה. "
-    f"אם אתה ממשיך לקבל מיילים כאלה או סבור שהמייל נשלח בטעות, "
-    f"אנא פנה לצוות התמיכה שלנו בהקדם.\n\n"
-    f"תודה,\nצוות CashControl"
-)
+        f"שלום,\n\n"
+        f"אתה ביקשת לאחרונה לאפס את הסיסמה שלך עבור CashControl. "
+        f"אנא השתמש בקישור הבא כדי לאפס את הסיסמה שלך. "
+        f"קישור זה בתוקף בלבד למשך 24 שעות הקרובות.\n\n"
+        f"{link}\n\n"
+        f"אם לא ביקשת לאפס את הסיסמה שלך, אנא התעלם מהמייל הזה. "
+        f"אם אתה ממשיך לקבל מיילים כאלה או סבור שהמייל נשלח בטעות, "
+        f"אנא פנה לצוות התמיכה שלנו בהקדם.\n\n"
+        f"תודה,\nצוות CashControl"
+    )
 
-    send_mail(subject, message, DEFAULT_FROM_EMAIL, [email], fail_silently=False)
+    # Send the email
+    send_mail(subject, message, settings.DEFAULT_FROM_EMAIL, [email], fail_silently=False)
+
 
 
 #changing password
