@@ -30,7 +30,7 @@ class MyTokenObtainPairView(TokenObtainPairView):
 @api_view(['POST'])
 def signin(request):
         data = json.loads(request.body)
-        username = data.get('username', '')
+        username = str(data.get('username', '')).lower()
         password = data.get('password', '')
 
         logger.debug(f'Attempting login for username: {username}')
@@ -67,7 +67,7 @@ def signup(request):
         user = serializer.save()  # Save the user object created by the serializer
 
         user.set_password(request.data['password'])  # Set and hash password
-        user.username = request.data.get('email', '').lower() #email
+        user.username = str(request.data.get('email', '')).lower() #email
         user.first_name = request.data.get('first_name', '')
         user.last_name = request.data.get('last_name', '')
         user.gender = request.data.get('gender', '')  
@@ -142,16 +142,15 @@ def send_password_reset_email(email):
     # Email subject and message
     subject = "Reset Your Password"
     message = (
-        f"שלום,\n\n"
-        f"אתה ביקשת לאחרונה לאפס את הסיסמה שלך עבור CashControl. "
-        f"אנא השתמש בקישור הבא כדי לאפס את הסיסמה שלך. "
-        f"קישור זה בתוקף בלבד למשך 10 דקות הקרובות.\n\n"
-        f"{link}\n\n"
-        f"אם לא ביקשת לאפס את הסיסמה שלך, אנא התעלם מהמייל הזה. "
-        f"אם אתה ממשיך לקבל מיילים כאלה או סבור שהמייל נשלח בטעות, "
-        f"אנא פנה לצוות התמיכה שלנו בהקדם.\n\n"
-        f"תודה,\nצוות CashControl"
-    )
+    f"שלום,\n\n"
+    f"אתה ביקשת לאחרונה לאפס את הסיסמה שלך עבור CashControl.\n\n"
+    f"אנא השתמש בקישור הבא כדי לאפס את הסיסמה שלך. קישור זה בתוקף בלבד למשך 10 דקות הקרובות:\n\n"
+    f"{link}\n\n"
+    f"אם לא ביקשת לאפס את הסיסמה שלך, אנא התעלם מהמייל הזה. אם אתה ממשיך לקבל מיילים כאלה או סבור שהמייל נשלח בטעות,\n"
+    f"אנא פנה לצוות התמיכה שלנו בהקדם.\n\n"
+    f"תודה,\nצוות CashControl"
+)
+
 
     # Send the email
     send_mail(subject, message, settings.DEFAULT_FROM_EMAIL, [email], fail_silently=False)
