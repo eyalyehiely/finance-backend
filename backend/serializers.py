@@ -67,14 +67,15 @@ class CreditCardSerializer(serializers.ModelSerializer):
         (15, '15'),
     )
     STATUS_CHOICES = (
-        ('Active', 'Active'),
-        ('Blocked', 'Blocked'),
+        ('פעיל', 'פעיל'),
+        ('חסום', 'חסום'),
     )
 
     day_of_charge = serializers.ChoiceField(choices=DAY_CHOICES)
     status = serializers.ChoiceField(choices=STATUS_CHOICES)
     last_four_digits = serializers.CharField(max_length=4)
     amount_to_charge = serializers.CharField()
+
     
     class Meta:
         model = CreditCard
