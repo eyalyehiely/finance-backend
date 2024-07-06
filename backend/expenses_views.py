@@ -82,7 +82,7 @@ def get_all_expenses(request):
 
 
         # Sort expenses by price in descending order and get the top 3
-        all_expenses = [{'name': expense.name,'payment_method': expense.payment_method,'price': expense.price,'date_and_time': expense.date_and_time,'id': expense.id}for expense in expenses]
+        all_expenses = [{'name': expense.name,'payment_method': expense.payment_method,'price': expense.price,'date_and_time': expense.date_and_time,'id': expense.id,'category':expense.category,'expense_type':expense.expense_type}for expense in expenses]
 
 
         return Response({
