@@ -15,7 +15,7 @@ from users.serializers import CustomUserSerializer
 from django.contrib.auth import logout as logut_method
 from rest_framework.permissions import IsAuthenticated
 from django.core.signing import TimestampSigner, BadSignature, SignatureExpired
-from django.utils.crypto import get_random_string
+
 
 
 
@@ -81,16 +81,15 @@ def signup(request):
         user.save()  
         send_mail_for_signup(user.username) # got email
         logger.debug("email to {email} send successfully")
-        # Create a new token for the user
-        # refresh = RefreshToken.for_user(user)
-        # refresh['first_name'] = user.first_name
-        # access = refresh.access_token 
-
+        refresh = RefreshToken.for_user(user)
+        refresh['first_name'] = user.first_name
+        access = refresh.access_token
+        logger.debug(f'{user.username} logged in')
         return Response({
-            'status':200,
-            # 'refresh': str(refresh),
-            # 'access':str(access)
-        },status = 200)
+            'status': 200,
+            'refresh': str(refresh),
+            'access':str(access)
+            },status=200)
     logger.debug(f'User not created',serializer.error_messages())
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
