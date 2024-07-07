@@ -81,14 +81,13 @@ def signup(request):
         user.save()  
         send_mail_for_signup(user.username) # got email
         logger.debug("email to {email} send successfully")
-        refresh = RefreshToken.for_user(user)
-        refresh['first_name'] = user.first_name
-        access = refresh.access_token
-        logger.debug(f'{user.username} logged in')
+        # refresh = RefreshToken.for_user(user)
+        # refresh['first_name'] = user.first_name
+        # access = refresh.access_token
         return Response({
             'status': 200,
-            'refresh': str(refresh),
-            'access':str(access)
+            # 'refresh': str(refresh),
+            # 'access':str(access)
             },status=200)
     logger.debug(f'User not created',serializer.error_messages())
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
