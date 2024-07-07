@@ -30,7 +30,7 @@ class MyTokenObtainPairView(TokenObtainPairView):
 @api_view(['POST'])
 def signin(request):
         data = json.loads(request.body)
-        username = str(data.get('username', '')).lower()
+        username = data.get('username', '')
         password = data.get('password', '')
 
         logger.debug(f'Attempting login for username: {username}')
@@ -67,7 +67,7 @@ def signup(request):
         user = serializer.save()  # Save the user object created by the serializer
 
         user.set_password(request.data['password'])  # Set and hash password
-        user.username = str(request.data.get('email', '')).lower() #email
+        user.username = request.data.get('email', '') #email
         user.first_name = request.data.get('first_name', '')
         user.last_name = request.data.get('last_name', '')
         user.gender = request.data.get('gender', '')  
