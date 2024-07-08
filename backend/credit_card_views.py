@@ -162,6 +162,26 @@ def get_active_credit_card(request):
 
 
 
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def get_expenses_per_credit_card(request):
+    user_id = request.user.id
+    try:
+        credit_cards = CreditCard.objects.filter(user_id=user_id)
+        serializer = CreditCardSerializer(credit_cards, many=True, context={'request': request})
+
+        return Response({
+            'status': 200,
+            'credit_cards_expenses': serializer.data,
+        })
+    except Exception as e:
+        print(f"Error: {str(e)}")  # Debug: Print the error message
+        return Response({
+            'status': 500,
+            'message': 'An error occurred while fetching data.',
+            'error': str(e)
+        }, status=500)
+
 
 
 

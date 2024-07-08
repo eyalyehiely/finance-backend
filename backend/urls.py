@@ -58,6 +58,8 @@ urlpatterns = [
     path('cards/delete_credit_card/<uuid:credit_card_id>/', delete_credit_card, name='delete_credit_card'),
     path('cards/add_credit_card/',add_credit_card, name = 'add_credit_card'),
     path('cards/edit_card/<uuid:card_id>/', edit_card, name='edit_card'),
+    path('cards/get_expenses_per_credit_card/',get_expenses_per_credit_card, name='get_expenses_per_credit_card'),
+   
     # debts------------------------------------------------------
     path('debts/get_all_debts/', get_all_debts, name = ' get_all_debts'),
     path('debts/delete_debt/<uuid:debt_id>/', delete_debt, name='delete_credit_card'),

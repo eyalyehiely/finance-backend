@@ -62,6 +62,15 @@ class DebtSerializer(serializers.ModelSerializer):
 
 
 
+
+
+class ExpenseSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Expenses
+        fields = ['id', 'description', 'amount', 'date']
+
+        
+
 class CreditCardSerializer(serializers.ModelSerializer):
     DAY_CHOICES = (
         (2, '2'),
@@ -72,7 +81,6 @@ class CreditCardSerializer(serializers.ModelSerializer):
         ('פעיל', 'פעיל'),
         ('חסום', 'חסום'),
     )
-
     CREDIT_TYPE = (
         ('Debit', 'Debit'),
         ('Credit', 'Credit'),
@@ -84,6 +92,8 @@ class CreditCardSerializer(serializers.ModelSerializer):
     line_of_credit = serializers.FloatField(allow_null=True, required=False)
     status = serializers.ChoiceField(choices=STATUS_CHOICES)
     last_four_digits = serializers.CharField(max_length=4)
+    expenses = ExpenseSerializer(many=True, read_only=True)
+    total_amount = serializers.SerializerMethodField()
 
     class Meta:
         model = CreditCard
@@ -96,21 +106,14 @@ class CreditCardSerializer(serializers.ModelSerializer):
         if len(value) != 4 or not value.isdigit():
             raise serializers.ValidationError("last_four_digits must be exactly 4 digits.")
         return value
-    
-    def get_amount_to_charge(self, obj):
-         return round(obj.amount_to_charge, 2)
+
+    def get_total_amount(self, obj):
+        """
+        Calculate the total amount of expenses for this credit card.
+        """
+        return sum(expense.amount for expense in obj.expenses.all())
 
 
-
-
-class ExpenseSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = Expenses
-        fields = '__all__'
-
-    def date(self, obj):
-        return obj.date
 
 
 class RevenueSerializer(serializers.ModelSerializer):
