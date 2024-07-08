@@ -60,6 +60,8 @@ class DebtSerializer(serializers.ModelSerializer):
 
 
 
+
+
 class CreditCardSerializer(serializers.ModelSerializer):
     DAY_CHOICES = (
         (2, '2'),
@@ -76,15 +78,13 @@ class CreditCardSerializer(serializers.ModelSerializer):
         ('Credit', 'Credit'),
     )
 
-    name =  serializers.CharField(max_length=50)
+    name = serializers.CharField(max_length=50)
     day_of_charge = serializers.ChoiceField(choices=DAY_CHOICES)
-    credit_type = models.TextField(max_length=50, choices=CREDIT_TYPE)
-    line_of_credit = models.FloatField(blank=True, null=True)
+    credit_type = serializers.ChoiceField(choices=CREDIT_TYPE)
+    line_of_credit = serializers.FloatField(allow_null=True, required=False)
     status = serializers.ChoiceField(choices=STATUS_CHOICES)
     last_four_digits = serializers.CharField(max_length=4)
 
-
-    
     class Meta:
         model = CreditCard
         fields = '__all__'
@@ -99,7 +99,6 @@ class CreditCardSerializer(serializers.ModelSerializer):
     
     def get_amount_to_charge(self, obj):
          return round(obj.amount_to_charge, 2)
-
 
 
 

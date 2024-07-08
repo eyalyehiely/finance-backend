@@ -111,8 +111,11 @@ def add_expense(request):
         name = request.data.get('name', '')
         category = request.data.get('category', '')
         price = request.data.get('price', '')
-        credit_card = request.data.get('credit_card', '')
-        credit_card_uuid = CreditCard.objects.filter(last_four_digits=credit_card).first().id
+        credit_card_id = request.data.get('credit_card_id', None)
+
+        credit_card = None
+        if credit_card_id:
+            credit_card = CreditCard.objects.filter(id=credit_card_id).first()
         
         
 
@@ -126,7 +129,7 @@ def add_expense(request):
             name=name,
             category=category,
             price=price,
-            credit_card=credit_card_uuid,
+            credit_card=credit_card,
             created_at=timezone.now(),
             updated_at=timezone.now(),
         )
