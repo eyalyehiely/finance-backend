@@ -138,7 +138,7 @@ def send_password_reset_email(email):
     message = (
     f"שלום,\n\n"
     f"אתה ביקשת לאחרונה לאפס את הסיסמה שלך עבור CashControl.\n\n"
-    f"אנא השתמש בקישור הבא כדי לאפס את הסיסמה שלך. קישור זה בתוקף בלבד למשך 10 דקות הקרובות:\n\n"
+    f"אנא השתמש בקישור הבא כדי לאפס את הסיסמה שלך. קישור זה בתוקף בלבד למשך 5 דקות הקרובות:\n\n"
     f"{link}\n\n"
     f"אם לא ביקשת לאפס את הסיסמה שלך, אנא התעלם מהמייל הזה. אם אתה ממשיך לקבל מיילים כאלה או סבור שהמייל נשלח בטעות,\n"
     f"אנא פנה לצוות התמיכה שלנו בהקדם.\n\n"
@@ -161,8 +161,8 @@ def change_password(request, email, token):
     # Verify the token
     signer = TimestampSigner()
     try:
-        # This will raise SignatureExpired if the link is older than 10 minutes
-        signer.unsign(token, max_age=600)  # 600 seconds = 10 minutes
+        # This will raise SignatureExpired if the link is older than 5 minutes
+        signer.unsign(token, max_age=300)  # 300 seconds = 5 minutes
     except SignatureExpired:
         logger.debug('Password reset link has expired')
         return Response({'error': 'The reset link has expired. Please request a new one.'}, status=status.HTTP_400_BAD_REQUEST)
