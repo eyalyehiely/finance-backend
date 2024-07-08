@@ -77,19 +77,15 @@ def signup(request):
         user.birth_date = request.data.get('birth_date', '')
         user.profession = request.data.get('profession', '')  
         user.address = request.data.get('address', '')  
+
         logger.debug(f'user{user.username} created')
         user.save()  
         send_mail_for_signup(user.username) # got email
         logger.debug("email to {email} send successfully")
-        # refresh = RefreshToken.for_user(user)
-        # refresh['first_name'] = user.first_name
-        # access = refresh.access_token
         return Response({
             'status': 200,
-            # 'refresh': str(refresh),
-            # 'access':str(access)
             },status=200)
-    logger.debug(f'User not created',serializer.error_messages())
+    logger.debug(f'User not created')
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -157,15 +153,6 @@ def send_password_reset_email(email):
 
 
 #changing password
-from django.core.signing import TimestampSigner, BadSignature, SignatureExpired
-from rest_framework.decorators import api_view
-from rest_framework.response import Response
-from rest_framework import status
-import json
-import logging
-
-logger = logging.getLogger(__name__)
-
 @api_view(['POST'])
 def change_password(request, email, token):
     data = json.loads(request.body)

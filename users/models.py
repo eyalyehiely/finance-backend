@@ -10,15 +10,15 @@ import datetime
 
 class CustomUser(AbstractUser):
     GENDER_CHOICES = [
-        ('male', 'זכר'),
-        ('female', 'נקבה'),
-        ('other', 'אחר'),
+        ('זכר', 'זכר'),
+        ('נקבה', 'נקבה'),
+        ('אחר', 'אחר'),
     ]
 
     LIFE_STATUS_CHOICES = [
-        ('single', 'רווק/ה'),
-        ('marriage', 'נשוי/ה'),
-        ('divorce', 'גרוש/ה'),
+        ('רווק/ה', 'רווק/ה'),
+        ('נשוי/ה', 'נשוי/ה'),
+        ('גרוש/ה', 'גרוש/ה'),
     ]
 
     gender = models.CharField(max_length=10, choices=GENDER_CHOICES)
