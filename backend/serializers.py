@@ -67,7 +67,7 @@ class DebtSerializer(serializers.ModelSerializer):
 class ExpenseSerializer(serializers.ModelSerializer):
     class Meta:
         model = Expenses
-        fields = ['id', 'description', 'amount', 'date']
+        fields = '__all__'
 
         
 
@@ -111,7 +111,7 @@ class CreditCardSerializer(serializers.ModelSerializer):
         """
         Calculate the total amount of expenses for this credit card.
         """
-        return sum(expense.amount for expense in obj.expenses.all())
+        return sum(expense.price for expense in obj.expenses.all())
 
 
 
