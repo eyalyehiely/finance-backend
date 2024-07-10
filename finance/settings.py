@@ -29,7 +29,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-)s+d6bs$ft@m#vdgt#jba0qy9sgumx&__=l&q0p3@&^mj%+$m('
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get('DEBUG',False)
+DEBUG = os.environ.get('DEBUG', 'False') == 'True'
 # DEBUG = True
 
 
@@ -267,9 +267,10 @@ LOGGING = {
             'handlers': ['users_file', 'console'],
             'level': 'DEBUG' if DEBUG else 'INFO',
             'propagate': True,
-        }
-    }
+        },
+    },
 }
+
 
 
 
