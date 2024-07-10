@@ -225,11 +225,6 @@ os.environ['SSL_CERT_FILE'] = certifi.where()
 
 
 # logs
-import os
-from logging.handlers import TimedRotatingFileHandler
-
-DEBUG = os.getenv('DEBUG', 'False') == 'True'
-
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
