@@ -77,9 +77,9 @@ def signup(request):
         user.birth_date = request.data.get('birth_date', '')
         user.profession = request.data.get('profession', '')  
         user.address = request.data.get('address', '')  
-
-        logger.debug(f'user{user.username} created')
-        user.save()  
+        
+        user.save() 
+        logger.debug(f'user{user.username} created') 
         send_mail_for_signup(user.username) # got email
         logger.debug("email to {email} send successfully")
         return Response({

@@ -124,7 +124,7 @@ CORS_ALLOWED_ORIGINS = [
 ]
 CORS_ORIGIN_ALLOW_ALL = True
 
-# CSRF_TRUSTED_ORIGINS = os.environ.get('FRONTEND_URL','http://localhost:5173')
+# CSRF_TRUSTED_ORIGINS = os.environ.get('CSRF_TRUSTED_ORIGINS','https://finance-backend-dev.up.railway.app')
 
 
 
@@ -225,45 +225,57 @@ os.environ['SSL_CERT_FILE'] = certifi.where()
 
 
 # logs
+import os
+from logging.handlers import TimedRotatingFileHandler
+
+DEBUG = os.getenv('DEBUG', 'False') == 'True'
+
 LOGGING = {
     'version': 1,
-    'loggers': {
-        'backend': {
-            'handlers': ['backend_file'],
-            'level': 'DEBUG',
-        },
-        'users': {
-            'handlers': ['users_file'],
-            'level': 'DEBUG',
-        }
-    },
-    'handlers': {
-        'backend_file': {
-            'level': 'DEBUG',
-            'class': 'logging.FileHandler',
-            'filename': './logs/backend.log',
-            'formatter': 'simpleRe',
-        },
-        'users_file': {
-            'level': 'DEBUG',
-            'class': 'logging.FileHandler',
-            'filename': './logs/users.log',
-            'formatter': 'simpleRe',
-        },
-        'example_file': {
-            'level': 'ERROR',
-            'class': 'logging.FileHandler',
-            'filename': './logs/debug3.log',
-            'formatter': 'simpleRe',
-        }
-    },
+    'disable_existing_loggers': False,
     'formatters': {
         'simpleRe': {
             'format': '{levelname} {asctime} {module} {process:d} {thread:d} {message}',
             'style': '{',
         }
+    },
+    'handlers': {
+        'backend_file': {
+            'level': 'DEBUG' if DEBUG else 'INFO',
+            'class': 'logging.handlers.TimedRotatingFileHandler',
+            'filename': os.path.join(BASE_DIR, 'logs/backend.log'),
+            'formatter': 'simpleRe',
+            'when': 'midnight',
+            'backupCount': 7,
+        },
+        'users_file': {
+            'level': 'DEBUG' if DEBUG else 'INFO',
+            'class': 'logging.handlers.TimedRotatingFileHandler',
+            'filename': os.path.join(BASE_DIR, 'logs/users.log'),
+            'formatter': 'simpleRe',
+            'when': 'midnight',
+            'backupCount': 7,
+        },
+        'console': {
+            'level': 'DEBUG' if DEBUG else 'INFO',
+            'class': 'logging.StreamHandler',
+            'formatter': 'simpleRe',
+        },
+    },
+    'loggers': {
+        'backend': {
+            'handlers': ['backend_file', 'console'],
+            'level': 'DEBUG' if DEBUG else 'INFO',
+            'propagate': True,
+        },
+        'users': {
+            'handlers': ['users_file', 'console'],
+            'level': 'DEBUG' if DEBUG else 'INFO',
+            'propagate': True,
+        }
     }
 }
+
 
 
 CORS_ALLOW_ALL_ORIGIN = True
