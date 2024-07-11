@@ -1,0 +1,64 @@
+DEBUG 2024-05-12 18:15:11,235 views 74116 6180368384 User logged in successfully
+DEBUG 2024-05-13 14:56:45,767 views 80400 6124367872 User logged in successfully
+DEBUG 2024-05-13 15:33:37,417 views 80400 6124367872 User logged in successfully
+DEBUG 2024-05-13 15:36:10,170 views 80640 6194638848 User logged in successfully
+DEBUG 2024-05-13 15:38:00,394 views 80640 6194638848 User logged in successfully
+DEBUG 2024-06-27 19:00:01,439 authentication_views 21880 6190313472 user not created
+DEBUG 2024-06-27 19:00:53,801 authentication_views 21880 6190313472 userohadyehiely@gmail.com created
+DEBUG 2024-07-01 15:52:16,167 authentication_views 64159 6197129216 user not created
+DEBUG 2024-07-01 15:52:51,369 authentication_views 64159 6197129216 usereyal@eyal.com created
+DEBUG 2024-07-01 15:53:32,880 authentication_views 64159 6197129216 user not created
+DEBUG 2024-07-01 15:53:57,365 authentication_views 64159 6197129216 usereyal@yehiely.com created
+DEBUG 2024-07-01 15:54:39,381 authentication_views 64217 6122352640 user not created
+DEBUG 2024-07-01 15:54:56,296 authentication_views 64217 6122352640 usereyal@y.com created
+DEBUG 2024-07-01 15:55:32,494 authentication_views 64217 6122352640 usereyaly45@gmail.com created
+DEBUG 2024-07-01 15:55:59,994 authentication_views 64217 6122352640 useraviv2004@gmail.com created
+DEBUG 2024-07-01 15:59:08,482 authentication_views 64287 6197719040 User not created: {'email': [ErrorDetail(string='Email already exists.', code='invalid')]}
+DEBUG 2024-07-01 16:00:21,849 authentication_views 64287 6197719040 User moshe@gmail.com created
+DEBUG 2024-07-01 16:19:57,685 authentication_views 64607 6220230656 User govawarehouse@gmaill.com created
+DEBUG 2024-07-01 16:20:32,761 authentication_views 64607 6220230656 User govawarehouse@gmail.com created
+DEBUG 2024-07-01 16:21:09,540 authentication_views 64607 6220230656 User govawarehouse@gmail.com created
+DEBUG 2024-07-01 16:23:48,135 authentication_views 64607 6220230656 User govawarehouse@gmail.com created
+DEBUG 2024-07-01 16:29:00,705 authentication_views 64851 6195965952 user not created
+DEBUG 2024-07-01 16:29:20,088 authentication_views 64851 6195965952 user not created
+DEBUG 2024-07-01 16:29:40,161 authentication_views 64851 6195965952 usergova@gmail.com created
+DEBUG 2024-07-01 16:31:08,674 authentication_views 64851 6195965952 user not created
+DEBUG 2024-07-01 16:31:15,566 authentication_views 64851 6195965952 usergoa@gmail.com created
+DEBUG 2024-07-01 16:32:41,018 authentication_views 64851 6195965952 usermaya@maya.com created
+DEBUG 2024-07-01 16:32:51,180 authentication_views 64851 6195965952 user not created
+DEBUG 2024-07-01 16:33:11,592 authentication_views 64851 6195965952 usermaya@maya.com created
+DEBUG 2024-07-01 16:36:21,822 authentication_views 65069 6122614784 User not created: {'email': [ErrorDetail(string='Email already exists.', code='invalid')]}
+DEBUG 2024-07-01 16:36:45,134 authentication_views 65069 6122614784  The usermaya@maya.com created
+DEBUG 2024-07-01 16:38:48,584 authentication_views 65096 6179762176  The usermaya@maya.com created
+DEBUG 2024-07-01 16:43:43,544 authentication_views 65244 6205501440 The user maya@maya.com was created successfully.
+ERROR 2024-07-01 16:43:43,544 authentication_views 65244 6205501440 Error creating user: property 'access_token' of 'RefreshToken' object has no setter
+DEBUG 2024-07-01 16:45:44,207 authentication_views 65338 6164377600 User not created: {'email': [ErrorDetail(string='Email already exists.', code='invalid')]}
+DEBUG 2024-07-01 16:45:58,506 authentication_views 65338 6164377600 The user maya@maya.com was created successfully.
+ERROR 2024-07-01 16:45:58,506 authentication_views 65338 6164377600 Error creating user: property 'access_token' of 'RefreshToken' object has no setter
+DEBUG 2024-07-01 17:29:16,578 authentication_views 65338 6130724864 The user ofirrashkov@gmail.com was created successfully.
+ERROR 2024-07-01 17:29:16,579 authentication_views 65338 6130724864 Error creating user: property 'access_token' of 'RefreshToken' object has no setter
+DEBUG 2024-07-01 17:33:48,320 authentication_views 65338 6147551232 Attempting login for username: admin
+ERROR 2024-07-01 17:34:11,679 authentication_views 65338 6147551232 Error creating user: ['“” value has an invalid date format. It must be in YYYY-MM-DD format.']
+DEBUG 2024-07-01 17:39:36,666 authentication_views 65721 6160773120 User not created: {'email': [ErrorDetail(string='Email already exists.', code='invalid')]}
+ERROR 2024-07-01 17:40:38,143 authentication_views 65752 6358691840 Error creating user: UNIQUE constraint failed: users_customuser.username
+DEBUG 2024-07-01 17:41:34,679 authentication_views 65752 6358691840 The user ofirrashkov@gmail.com was created successfully.
+ERROR 2024-07-01 17:41:34,680 authentication_views 65752 6358691840 Error creating user: property 'access_token' of 'RefreshToken' object has no setter
+DEBUG 2024-07-01 21:11:14,716 authentication_views 65893 6134378496 user not created
+DEBUG 2024-07-01 21:26:07,604 authentication_views 65893 6134378496 useralona@a-rococo.com created
+DEBUG 2024-07-01 21:32:46,271 authentication_views 67647 6257963008 useralona@a-rococo.com created
+DEBUG 2024-07-01 21:42:25,474 authentication_views 67833 6136492032 Email to alona@a-rococo.com sent successfully
+DEBUG 2024-07-01 22:01:57,257 authentication_views 67833 6325039104 usereyalwork0@gmail.com created
+DEBUG 2024-07-01 22:13:34,381 authentication_views 68237 6154170368 Attempting login for username: eyalwork0@gmail.com
+DEBUG 2024-07-01 22:13:50,886 authentication_views 68237 6154170368 Attempting login for username: eyalwork0@gmail.com
+DEBUG 2024-07-01 22:14:02,232 authentication_views 68237 6154170368 Attempting login for username: eyalwork0@gmail.com
+DEBUG 2024-07-01 22:14:02,442 authentication_views 68237 6154170368 Error logging in: Invalid username or password
+DEBUG 2024-07-01 22:14:08,565 authentication_views 68237 6154170368 Attempting login for username: eyalwork0@gmail.com
+DEBUG 2024-07-01 22:40:41,546 authentication_views 68651 6206418944 Attempting login for username: eyalwork0@gmail.com
+DEBUG 2024-07-01 22:47:14,062 authentication_views 68779 6122795008 Attempting login for username: eyalwork0@gmail.com
+DEBUG 2024-07-02 01:16:54,107 authentication_views 69434 6128513024 Email to eyalwork0@gmail.com sent successfully
+DEBUG 2024-07-03 00:15:34,165 authentication_views 80632 6129250304 Email sent successfully to alona@a-rococo.com.
+DEBUG 2024-07-03 00:19:04,149 authentication_views 80690 6170062848 Email sent successfully to eyalwork0@gmail.com.
+DEBUG 2024-07-03 00:41:12,917 authentication_views 80705 6161133568 Email sent successfully to eyalwork0@gmail.com.
+DEBUG 2024-07-03 00:42:07,430 authentication_views 80705 6161133568 Email sent successfully to eyalwork0@gmail.com.
+DEBUG 2024-07-03 00:50:10,535 authentication_views 80705 6161133568 Email sent successfully to eyalwork0@gmail.com.
+DEBUG 2024-07-03 00:50:46,622 authentication_views 80705 6161133568 Email sent successfully to eyalwork0@gmail.com.

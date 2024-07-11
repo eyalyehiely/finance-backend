@@ -82,9 +82,15 @@ def signup(request):
         logger.debug(f'user{user.username} created') 
         send_mail_for_signup(user.username) # got email
         logger.debug("email to {email} send successfully")
+        refresh = RefreshToken.for_user(user)
+        refresh['first_name'] = user.first_name
+        access = refresh.access_token
+        logger.debug(f'{user.username} logged in')
         return Response({
             'status': 200,
-            },status=200)
+            'refresh': str(refresh),
+            'access':str(access)
+        },status=200)
     logger.debug(f'User not created')
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -119,7 +125,6 @@ def reset_password(request):
 
 
 def send_password_reset_email(email):
-    # Get the first host from ALLOWED_HOSTS or default to 'localhost'
     allowed_host = settings.ALLOWED_HOSTS[1] if settings.ALLOWED_HOSTS else 'localhost'
     
     # Ensure the base URL includes the correct protocol
@@ -147,6 +152,7 @@ def send_password_reset_email(email):
 
 
     # Send the email
+    logger.debug(f'Reset password email sent to {email}')
     send_mail(subject, message, settings.DEFAULT_FROM_EMAIL, [email], fail_silently=False)
 
 
@@ -193,7 +199,7 @@ def send_mail_for_signup(email):
     "בברכה,\n"
     "צוות CashControl"
     )
-
+    logger.debug(f'Sign up email sent to {email}')
     send_mail(subject, message, DEFAULT_FROM_EMAIL, [email], fail_silently=False)
 
 
@@ -211,11 +217,11 @@ def supporting_mail(request):
         full_message = f"{message}\n\nThis email was sent from {email}."
 
         send_mail(subject, full_message, settings.DEFAULT_FROM_EMAIL, [recipient_email], fail_silently=False)
-        logger.debug(f"Email sent successfully to {recipient_email}.")
+        logger.debug(f"Email support sent successfully from {email}.")
         return Response({"message": f"Email sent successfully to {recipient_email}."}, status=status.HTTP_200_OK)
     except Exception as e:
-        logger.error(f"Failed to send email to {recipient_email}. Error: {str(e)}")
-        return Response({"error": f"Failed to send email to {recipient_email}. Error: {str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        logger.error(f"Failed to send email from {email}. Error: {str(e)}")
+        return Response({"error": f"Failed to send email from {email}. Error: {str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     
 
@@ -226,6 +232,7 @@ def supporting_mail(request):
 @api_view(['GET'])
 def logout(request):
     logut_method(request)
+    logger.debug("user {request.user} logged out. ")
     return Response({"message": "User logged out successfully."})
 
 
@@ -238,13 +245,14 @@ def fetch_current_user_data(request):
     try:
         user = CustomUser.objects.get(id=user_id)
         serializer = CustomUserSerializer(user)
+        logger.debug('Current user data fetch successfully.')
         return Response({
         'status':200,
         'user':serializer.data,
         })
         
     except Exception as e:
-        print(f"Error: {str(e)}")  # Debug: Print the error message
+        logger.debug(f"Error fetching current user data: {str(e)}")  # Debug: Print the error message
         return Response({
             'status': 500,
             'message': 'An error occurred while fetching data.',
@@ -289,44 +297,46 @@ def edit_user(request):
         user.updated_at = timezone.now()
 
         user.save()
-
+        logger.debug(f"user {user} updated")
         return Response({'status': 200, 'message': 'user updated'})
 
     except CustomUser.DoesNotExist:
+        logger.debug(f"user {user} doesn't exist")
         return Response({'error': 'User does not exist'}, status=404)
     
     except Exception as e:
+        logger.debug(f"Erorr editing user {user} {e}")
         return Response({'error': str(e)}, status=500)
 
 
-class SavingsViewSet(viewsets.ModelViewSet):
-    queryset = Savings.objects.all()
-    serializer_class = SavingsSerializer
-    permission_classes = [permissions.AllowAny]
+# class SavingsViewSet(viewsets.ModelViewSet):
+#     queryset = Savings.objects.all()
+#     serializer_class = SavingsSerializer
+#     permission_classes = [permissions.AllowAny]
 
 
-class DebtViewSet(viewsets.ModelViewSet):
-    queryset = Debts.objects.all()
-    serializer_class = DebtSerializer
-    permission_classes = [permissions.AllowAny]
+# class DebtViewSet(viewsets.ModelViewSet):
+#     queryset = Debts.objects.all()
+#     serializer_class = DebtSerializer
+#     permission_classes = [permissions.AllowAny]
 
 
-class CreditCardViewSet(viewsets.ModelViewSet):
-    queryset = CreditCard.objects.all()
-    serializer_class = CreditCardSerializer
-    permission_classes = [permissions.AllowAny]
+# class CreditCardViewSet(viewsets.ModelViewSet):
+#     queryset = CreditCard.objects.all()
+#     serializer_class = CreditCardSerializer
+#     permission_classes = [permissions.AllowAny]
 
 
-class RevenueViewSet(viewsets.ModelViewSet):
-    queryset = Revenues.objects.all()
-    serializer_class = RevenueSerializer
-    permission_classes = [permissions.AllowAny]
+# class RevenueViewSet(viewsets.ModelViewSet):
+#     queryset = Revenues.objects.all()
+#     serializer_class = RevenueSerializer
+#     permission_classes = [permissions.AllowAny]
 
 
-class ExpensesViewSet(viewsets.ModelViewSet):
-    queryset = Expenses.objects.all()
-    serializer_class = ExpenseSerializer
-    permission_classes = [permissions.AllowAny]
+# class ExpensesViewSet(viewsets.ModelViewSet):
+#     queryset = Expenses.objects.all()
+#     serializer_class = ExpenseSerializer
+#     permission_classes = [permissions.AllowAny]
 
 
 
