@@ -82,7 +82,7 @@ pyexcel==0.7.0
 pyexcel-io==0.6.6
 pyexcel-webio==0.1.4
 Pygments==2.16.1
-PyJWT==2.0.0
+PyJWT==1.7.1
 pyparsing==3.1.2
 PyPDF2==3.0.1
 pytest==7.4.4
