@@ -135,7 +135,7 @@ def add_expense(request):
         )
         expense.save()
         logger.debug('expense added')
-        return Response({'successful': 'expense added'})
+        return Response({'status':200 ,'expense':expense},status=200)
         
     except CustomUser.DoesNotExist:
         return Response({'error': 'User does not exist'}, status=404)
