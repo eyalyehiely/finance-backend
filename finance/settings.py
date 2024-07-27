@@ -15,28 +15,21 @@ import os
 from datetime import timedelta
 from redis import Redis
 from dotenv import load_dotenv
-from datetime import timedelta
-from django.conf import global_settings
 import certifi
 
 load_dotenv()
-SITE_ID =1
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
+SITE_ID = 1
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
-# SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-)s+d6bs$ft@m#vdgt#jba0qy9sgumx&__=l&q0p3@&^mj%+$m('
 
-# SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DEBUG', 'False') == 'True'
-# DEBUG = True
-
 
 ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', 'finance-backend-dev.up.railway.app,finance-frontend-dev.up.railway.app').split(',')
 
-ALLOWED_HOSTS = ['localhost']
-# Application definition
+ALLOWED_HOSTS += ['localhost']
+
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.messages',
@@ -58,48 +51,34 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google'
-
-
 ]
-
-
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework_simplejwt.authentication.JWTAuthentication',
         'rest_framework.authentication.SessionAuthentication',
         'rest_framework.authentication.BasicAuthentication',
-
     ]
 }
 
-
-
-
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(days=1),  # Token expiration time
-    'REFRESH_TOKEN_LIFETIME': timedelta(days=30),     # Refresh token expiration time
+    'ACCESS_TOKEN_LIFETIME': timedelta(days=1),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=30),
     'ROTATE_REFRESH_TOKENS': True,
     'BLACKLIST_AFTER_ROTATION': True,
     'UPDATE_LAST_LOGIN': False,
-    
-    'ALGORITHM': 'HS256',  # Token encryption algorithm
+    'ALGORITHM': 'HS256',
     'VERIFYING_KEY': None,
-
     'AUTH_HEADER_TYPES': ('Bearer',),
     'USER_ID_FIELD': 'id',
     'USER_ID_CLAIM': 'user_id',
-
     'AUTH_TOKEN_CLASSES': ('rest_framework_simplejwt.tokens.AccessToken',),
     'TOKEN_TYPE_CLAIM': 'token_type',
-
     'JTI_CLAIM': 'jti',
-    
     'SLIDING_TOKEN_REFRESH_EXP_CLAIM': 'refresh_exp',
     'SLIDING_TOKEN_LIFETIME': timedelta(minutes=5),
     'SLIDING_TOKEN_REFRESH_LIFETIME': timedelta(days=1),
 }
-
 
 SWAGGER_SETTINGS = {
     'SECURITY_DEFINITIONS': {
@@ -110,11 +89,11 @@ SWAGGER_SETTINGS = {
 }
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -122,18 +101,21 @@ MIDDLEWARE = [
     "allauth.account.middleware.AccountMiddleware",
 ]
 
-
 ROOT_URLCONF = 'finance.urls'
 
 CORS_ALLOWED_ORIGINS = [
-    os.environ.get('CORS_ALLOWED_ORIGINS','http://localhost:5173'),
-    # Add other origins as needed
+    'http://localhost:5173',
+    'http://localhost:3000',
+    'https://finance-frontend-dev.up.railway.app',
+    'https://finance-backend-dev.up.railway.app',
 ]
-CORS_ORIGIN_ALLOW_ALL = True
 
-# CSRF_TRUSTED_ORIGINS = os.environ.get('CSRF_TRUSTED_ORIGINS','https://finance-backend-dev.up.railway.app')
+CORS_ALLOW_ALL_ORIGINS = False
 
-
+CSRF_TRUSTED_ORIGINS = [
+    'https://finance-backend-dev.up.railway.app',
+    'https://finance-frontend-dev.up.railway.app',
+]
 
 TEMPLATES = [
     {
@@ -152,35 +134,19 @@ TEMPLATES = [
     },
 ]
 
-
-
-
-
 WSGI_APPLICATION = 'finance.wsgi.application'
-
-
 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': os.environ.get('DATABASE_NAME','railway'),
-        'USER': os.environ.get('DATABASE_USER','postgres'),
-        'PASSWORD': os.environ.get('DATABASE_PASSWORD','nSObSkPFOFpFqWrDPUlsHroWLCGJInhu'),
-        'HOST': os.environ.get('DATABASE_HOST','viaduct.proxy.rlwy.net'),
-        'PORT': os.environ.get('DATABASE_PORT','25017'),                   
+        'NAME': os.environ.get('DATABASE_NAME', 'railway'),
+        'USER': os.environ.get('DATABASE_USER', 'postgres'),
+        'PASSWORD': os.environ.get('DATABASE_PASSWORD', 'nSObSkPFOFpFqWrDPUlsHroWLCGJInhu'),
+        'HOST': os.environ.get('DATABASE_HOST', 'viaduct.proxy.rlwy.net'),
+        'PORT': os.environ.get('DATABASE_PORT', '25017'),
     }
 }
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
 
-
-
-
-# Password validation
 AUTH_USER_MODEL = 'users.CustomUser'
 
 AUTH_PASSWORD_VALIDATORS = [
@@ -206,14 +172,12 @@ USE_I18N = True
 
 USE_TZ = True
 
-
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
 ]
 
-#-------------------------------------------------- mailing ------------------------------------------------------------
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
@@ -223,37 +187,22 @@ EMAIL_HOST_PASSWORD = 'mnfo qlcl pwlv iuyc'
 DEFAULT_FROM_EMAIL = 'cashcontrol598@gmail.com'
 os.environ['SSL_CERT_FILE'] = certifi.where()
 
-
-
-# social authentication
 AUTHENTICATION_BACKENDS = [
-    # Needed to login by username in Django admin, regardless of `allauth`
     'django.contrib.auth.backends.ModelBackend',
-    # `allauth` specific authentication methods, such as login by email
     'allauth.account.auth_backends.AuthenticationBackend',
 ]
-
-
 
 GOOGLE_CLIENT = os.environ.get('250047389112-kc4o893e4qthl428cqd0cr29ogau0vcl.apps.googleusercontent.com', '')
 GOOGLE_KEY = os.environ.get('GOOGLE_OAUTH2_CLIENT_SECRET', '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')
 
-
-
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 
-# Configure Django Allauth
 ACCOUNT_AUTHENTICATION_METHOD = 'username'
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_EMAIL_VERIFICATION = 'optional'
 ACCOUNT_USERNAME_REQUIRED = False
 
-
-
-
-
-# logs
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
@@ -301,6 +250,3 @@ LOGGING = {
 }
 
 
-
-
-CORS_ALLOW_ALL_ORIGIN = True
