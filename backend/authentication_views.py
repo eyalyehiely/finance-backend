@@ -15,10 +15,9 @@ from users.serializers import CustomUserSerializer
 from django.contrib.auth import logout as logut_method
 from rest_framework.permissions import IsAuthenticated
 from django.core.signing import TimestampSigner, BadSignature, SignatureExpired
-from django.http import JsonResponse
 from django.contrib.auth import get_user_model
-from django.http import JsonResponse
-from rest_framework_jwt.settings import api_settings
+
+
 
 
 
@@ -68,21 +67,21 @@ def signin(request):
 @api_view(['POST'])
 def google_login(request):
     token = request.data.get('id_token')
-    
+
     if not token:
-        return Response({'error': 'No id_token provided'}, status=400)
-    
+        return Response({'error': 'No id_token provided'}, status=status.HTTP_400_BAD_REQUEST)
+
     response = requests.post(f'https://oauth2.googleapis.com/tokeninfo?id_token={token}')
-    
+
     if response.status_code != 200:
-        return Response({'error': 'Invalid token'}, status=400)
-    
+        return Response({'error': 'Invalid token'}, status=status.HTTP_400_BAD_REQUEST)
+
     google_user_info = response.json()
     email = google_user_info.get('email')
 
     if not email:
-        return Response({'error': 'Email not found in token'}, status=400)
-    
+        return Response({'error': 'Email not found in token'}, status=status.HTTP_400_BAD_REQUEST)
+
     user, created = get_user_model().objects.get_or_create(email=email)
 
     # Create JWT tokens
@@ -95,7 +94,7 @@ def google_login(request):
         'status': 200,
         'refresh': str(refresh),
         'access': str(access)
-    }, status=200)
+    }, status=status.HTTP_200_OK)
 
 
 
