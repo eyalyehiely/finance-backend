@@ -99,7 +99,7 @@ def add_income(request):
         )
         revenue.save()
         logger.debug('Income added')
-        return Response({'successful': 'Income added'})
+        return Response({'status': 200,'successful': 'Income added'},status=200)
         
     except CustomUser.DoesNotExist:
         return Response({'error': 'User does not exist'}, status=404)
