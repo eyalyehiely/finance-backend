@@ -1,4 +1,4 @@
-import json,os,certifi,logging
+import json,os,certifi,logging,requests
 from django.core.mail import send_mail
 from rest_framework.response import Response
 from rest_framework import viewsets, permissions, status
@@ -15,6 +15,11 @@ from users.serializers import CustomUserSerializer
 from django.contrib.auth import logout as logut_method
 from rest_framework.permissions import IsAuthenticated
 from django.core.signing import TimestampSigner, BadSignature, SignatureExpired
+from django.http import JsonResponse
+from django.contrib.auth import get_user_model
+from django.http import JsonResponse
+from rest_framework_jwt.settings import api_settings
+
 
 
 
@@ -56,6 +61,52 @@ def signin(request):
         else:
             logger.debug('Error logging in: Invalid username or password')
             return Response({'status': 'error', 'message': 'Invalid username or password'}, status=401)
+
+
+
+#sign in with google
+@api_view(['POST'])
+def google_login(request):
+    token = request.data.get('id_token')
+    
+    if not token:
+        return Response({'error': 'No id_token provided'}, status=400)
+    
+    response = requests.post(f'https://oauth2.googleapis.com/tokeninfo?id_token={token}')
+    
+    if response.status_code != 200:
+        return Response({'error': 'Invalid token'}, status=400)
+    
+    google_user_info = response.json()
+    email = google_user_info.get('email')
+
+    if not email:
+        return Response({'error': 'Email not found in token'}, status=400)
+    
+    user, created = get_user_model().objects.get_or_create(email=email)
+
+    # Create JWT tokens
+    refresh = RefreshToken.for_user(user)
+    access = refresh.access_token
+
+    logger.debug(f'{google_user_info} logged in')
+
+    return Response({
+        'status': 200,
+        'refresh': str(refresh),
+        'access': str(access)
+    }, status=200)
+
+
+
+
+
+
+
+
+
+
+
 
 
 

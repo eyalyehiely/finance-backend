@@ -22,6 +22,7 @@ urlpatterns = [
     # path('finance/', include(router.urls)), # models viewset
     #user-----------------------------------------------
     path('auth/signin/', signin, name='signin'),
+    path('auth/api/google-login/', google_login, name='google_login'),
     path('auth/signup/', signup, name='signup'),
     path('auth/reset_password/', reset_password, name='reset_password'),
     path('auth/change_password/<str:email>/<str:token>/', change_password, name='change_password'),
