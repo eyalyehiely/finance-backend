@@ -28,7 +28,7 @@ DEBUG = os.environ.get('DEBUG', 'False') == 'True'
 
 ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', 'finance-backend-dev.up.railway.app,finance-frontend-dev.up.railway.app').split(',')
 
-ALLOWED_HOSTS += ['localhost']
+
 
 INSTALLED_APPS = [
     'django.contrib.admin',

@@ -78,6 +78,7 @@ def google_login(request):
 
     google_user_info = response.json()
     email = google_user_info.get('email')
+    
 
     if not email:
         return Response({'error': 'Email not found in token'}, status=status.HTTP_400_BAD_REQUEST)
