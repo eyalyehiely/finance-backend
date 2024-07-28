@@ -176,7 +176,7 @@ def reset_password(request):
 
 
 def send_password_reset_email(email):
-    allowed_host = settings.ALLOWED_HOSTS[0] if settings.ALLOWED_HOSTS else 'localhost'
+    allowed_host = settings.ALLOWED_HOSTS[1] if settings.ALLOWED_HOSTS else 'localhost'
     
     # Ensure the base URL includes the correct protocol
     protocol = 'https' if settings.SECURE_SSL_REDIRECT else 'http'
