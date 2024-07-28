@@ -110,10 +110,7 @@ CORS_ALLOWED_ORIGINS = [
 ]
 CORS_ORIGIN_ALLOW_ALL = True
 
-# CSRF_TRUSTED_ORIGINS = [
-#     'https://finance-backend-dev.up.railway.app',
-#     'https://finance-frontend-dev.up.railway.app',
-# ]
+
 
 TEMPLATES = [
     {
