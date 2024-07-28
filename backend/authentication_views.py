@@ -176,7 +176,11 @@ def reset_password(request):
 
 
 def send_password_reset_email(email):
-    allowed_host = settings.ALLOWED_HOSTS[1] if settings.ALLOWED_HOSTS else 'localhost'
+    # Ensure the allowed hosts list is not empty and has at least two elements
+    if not settings.ALLOWED_HOSTS or len(settings.ALLOWED_HOSTS) < 2:
+        raise ValueError("ALLOWED_HOSTS must contain at least two entries.")
+    
+    allowed_host = settings.ALLOWED_HOSTS[1]
     
     # Ensure the base URL includes the correct protocol
     protocol = 'https' if settings.SECURE_SSL_REDIRECT else 'http'
@@ -192,20 +196,18 @@ def send_password_reset_email(email):
     # Email subject and message
     subject = "Reset Your Password"
     message = (
-    f"שלום,\n\n"
-    f"אתה ביקשת לאחרונה לאפס את הסיסמה שלך עבור CashControl.\n\n"
-    f"אנא השתמש בקישור הבא כדי לאפס את הסיסמה שלך. קישור זה בתוקף בלבד למשך 5 דקות הקרובות:\n\n"
-    f"{link}\n\n"
-    f"אם לא ביקשת לאפס את הסיסמה שלך, אנא התעלם מהמייל הזה. אם אתה ממשיך לקבל מיילים כאלה או סבור שהמייל נשלח בטעות,\n"
-    f"אנא פנה לצוות התמיכה שלנו בהקדם.\n\n"
-    f"תודה,\nצוות CashControl"
-)
-
+        f"שלום,\n\n"
+        f"אתה ביקשת לאחרונה לאפס את הסיסמה שלך עבור CashControl.\n\n"
+        f"אנא השתמש בקישור הבא כדי לאפס את הסיסמה שלך. קישור זה בתוקף בלבד למשך 5 דקות הקרובות:\n\n"
+        f"{link}\n\n"
+        f"אם לא ביקשת לאפס את הסיסמה שלך, אנא התעלם מהמייל הזה. אם אתה ממשיך לקבל מיילים כאלה או סבור שהמייל נשלח בטעות,\n"
+        f"אנא פנה לצוות התמיכה שלנו בהקדם.\n\n"
+        f"תודה,\nצוות CashControl"
+    )
 
     # Send the email
     logger.debug(f'Reset password email sent to {email}')
     send_mail(subject, message, settings.DEFAULT_FROM_EMAIL, [email], fail_silently=False)
-
 
 
 
