@@ -105,13 +105,10 @@ MIDDLEWARE = [
 ROOT_URLCONF = 'finance.urls'
 
 CORS_ALLOWED_ORIGINS = [
-    'http://localhost:5173',
-    'http://localhost:3000',
-    'https://finance-frontend-dev.up.railway.app',
-    'https://finance-backend-dev.up.railway.app',
+    os.environ.get('FRONTEND_URL','http://localhost:5173'),
+    # Add other origins as needed
 ]
-
-CORS_ALLOW_ALL_ORIGINS = True
+CORS_ORIGIN_ALLOW_ALL = True
 
 # CSRF_TRUSTED_ORIGINS = [
 #     'https://finance-backend-dev.up.railway.app',
