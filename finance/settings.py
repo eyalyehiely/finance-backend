@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-)s+d6bs$ft@m#vdgt#jba0qy9sgumx&__=l&q0p3@&^mj%+$m(
 
 DEBUG = os.environ.get('DEBUG', 'False') == 'True'
 
-ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', 'finance-backend-dev.up.railway.app,finance-frontend-dev.up.railway.app').split(',')
+ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS','finance-backend-dev.up.railway.app,finance-frontend-dev.up.railway.app').split(',')
 
 
 
@@ -104,12 +104,12 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'finance.urls'
 
-# CORS_ALLOWED_ORIGINS = [
-#     'http://localhost:5173',
-#     'http://localhost:3000',
-#     'https://finance-frontend-dev.up.railway.app',
-#     'https://finance-backend-dev.up.railway.app',
-# ]
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost:5173',
+    'http://localhost:3000',
+    'https://finance-frontend-dev.up.railway.app',
+    'https://finance-backend-dev.up.railway.app',
+]
 
 CORS_ALLOW_ALL_ORIGINS = True
 
