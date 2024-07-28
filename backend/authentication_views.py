@@ -175,12 +175,19 @@ def reset_password(request):
 
 
 
+from django.conf import settings
+from django.core.mail import send_mail
+from django.core.signing import TimestampSigner
+import logging
+
+logger = logging.getLogger(__name__)
+
 def send_password_reset_email(email):
-    # Ensure the allowed hosts list is not empty and has at least two elements
-    if not settings.ALLOWED_HOSTS or len(settings.ALLOWED_HOSTS) < 2:
-        raise ValueError("ALLOWED_HOSTS must contain at least two entries.")
+    # Ensure the allowed hosts list is not empty
+    if not settings.ALLOWED_HOSTS:
+        raise ValueError("ALLOWED_HOSTS must contain at least one entry.")
     
-    allowed_host = settings.ALLOWED_HOSTS[1]
+    allowed_host = settings.ALLOWED_HOSTS[1] if len(settings.ALLOWED_HOSTS) > 1 else settings.ALLOWED_HOSTS[0]
     
     # Ensure the base URL includes the correct protocol
     protocol = 'https' if settings.SECURE_SSL_REDIRECT else 'http'
