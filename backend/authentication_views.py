@@ -1,27 +1,30 @@
-import json
+import json,os,certifi,logging,requests
 from django.core.mail import send_mail
-from django.shortcuts import render
-from django.http import  JsonResponse
+from rest_framework.response import Response
 from rest_framework import viewsets, permissions, status
 from rest_framework.response import Response
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view,permission_classes
 from rest_framework_simplejwt.tokens import RefreshToken
-from finance.settings import redis_client
 from .serializers import *
 from redis import Redis
-import logging
 from django.contrib.auth import authenticate,login as auth_login
 from finance.settings import DEFAULT_FROM_EMAIL
-from rest_framework.views import APIView
 from rest_framework_simplejwt.views import TokenObtainPairView
 from .serializers import MyTokenObtainPairSerializer
 from users.serializers import CustomUserSerializer
 from django.contrib.auth import logout as logut_method
+from rest_framework.permissions import IsAuthenticated
+from django.core.signing import TimestampSigner, BadSignature, SignatureExpired
+from django.contrib.auth import get_user_model
 
 
 
 
-logger = logging.getLogger('backend')
+
+
+
+
+logger = logging.getLogger('users')
 
 
 class MyTokenObtainPairView(TokenObtainPairView):
@@ -38,25 +41,61 @@ def signin(request):
 
         if not CustomUser.objects.filter(username=username).exists():
             logger.debug('No user found')
-            return JsonResponse({'status': 'error', 'message': 'Invalid Username'}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'status': 'error', 'message': 'Invalid Username'}, status=status.HTTP_400_BAD_REQUEST)
 
 
         # Authenticate user
-        user = authenticate(request, username=username, password=password)
+        user = authenticate(request,username=username, password=password)
         if user is not None:
             auth_login(request, user)
             refresh = RefreshToken.for_user(user)
-            refresh['username'] = user.username
+            refresh['first_name'] = user.first_name
             access = refresh.access_token
             logger.debug(f'{username} logged in')
-            return JsonResponse({
+            return Response({
                 'status': 200,
                 'refresh': str(refresh),
                 'access':str(access)
             },status=200)
         else:
-            logger.debug('Error logging in')
-            return JsonResponse({'status': 'error', 'message': 'Invalid username or password'}, status=401)
+            logger.debug('Error logging in: Invalid username or password')
+            return Response({'status': 'error', 'message': 'Invalid username or password'}, status=401)
+
+
+
+#sign in with google
+@api_view(['POST'])
+def google_login(request):
+    token = request.data.get('id_token')
+
+    if not token:
+        return Response({'error': 'No id_token provided'}, status=status.HTTP_400_BAD_REQUEST)
+
+    response = requests.post(f'https://oauth2.googleapis.com/tokeninfo?id_token={token}')
+
+    if response.status_code != 200:
+        return Response({'error': 'Invalid token'}, status=status.HTTP_400_BAD_REQUEST)
+
+    google_user_info = response.json()
+    email = google_user_info.get('email')
+
+
+    if not email:
+        return Response({'error': 'Email not found in token'}, status=status.HTTP_400_BAD_REQUEST)
+
+    user, created = get_user_model().objects.get_or_create(email=email)
+
+    # Create JWT tokens
+    refresh = RefreshToken.for_user(user)
+    access = refresh.access_token
+
+    logger.debug(f'{google_user_info} logged in')
+
+    return Response({
+        'status': 200,
+        'refresh': str(refresh),
+        'access': str(access)
+    }, status=status.HTTP_200_OK)
 
 
 
@@ -66,6 +105,12 @@ def signin(request):
 
 
 
+
+
+
+
+
+ 
 @api_view(['POST'])
 def signup(request):
     serializer = CustomUserSerializer(data=request.data)
@@ -73,127 +118,285 @@ def signup(request):
         user = serializer.save()  # Save the user object created by the serializer
 
         user.set_password(request.data['password'])  # Set and hash password
-        user.username = request.data.get('username', '')
-        user.first_name = request.data.get('first_name','')
+        user.username = request.data.get('email', '') #email
+        user.first_name = request.data.get('first_name', '')
         user.last_name = request.data.get('last_name', '')
-        user.email = request.data.get('email', '')
         user.gender = request.data.get('gender', '')  
         user.life_status = request.data.get('life_status', '')  
+        user.num_of_children = int(request.data.get('num_of_children',''))
         user.phone_number = request.data.get('phone_number', '')
         user.birth_date = request.data.get('birth_date', '')
         user.profession = request.data.get('profession', '')  
         user.address = request.data.get('address', '')  
         
-        user.save()  
-
-        # Create a new token for the user
+        user.save() 
+        logger.debug(f'user{user.username} created') 
+        send_mail_for_signup(user.username) # got email
+        logger.debug("email to {email} send successfully")
         refresh = RefreshToken.for_user(user)
-        refresh['username'] = user.username
-        access = refresh.access_token 
-
+        refresh['first_name'] = user.first_name
+        access = refresh.access_token
+        logger.debug(f'{user.username} logged in')
         return Response({
-            'status':200,
+            'status': 200,
             'refresh': str(refresh),
             'access':str(access)
-        })
-    
+        },status=200)
+    logger.debug(f'User not created')
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 
 # ------------------------------password handling------------------------------------------------------
 
+
+os.environ['SSL_CERT_FILE'] = certifi.where()
+
+
 @api_view(['POST'])
 def reset_password(request):
-    data = json.loads(request.body)
-    username = data.get('username', '')
+    data = request.data
     email = data.get('email', '')
 
     try:
-        user = CustomUser.objects.filter(username=username).exists()
-        if user:
-            # Generate and send password reset email
-            send_password_reset_email(email=email)
-            return JsonResponse({'status': 'email sent'}, status=200)
-    except CustomUser.DoesNotExist:
-        return JsonResponse({'status': 'user not found'}, status=401)
+        user_exists = CustomUser.objects.filter(username=email).exists()
+        if user_exists:
+            send_password_reset_email(email)
+            logger.debug(f'Email to {email} sent successfully')
+            return Response({'status': 'email sent'}, status=200)
+        else:
+            logger.debug(f'User {email} not found')
+            return Response({'status': 'user not found'}, status=404)
+    except Exception as e:
+        logger.debug(f'Error: {e}')
+        return Response({'status': 'error', 'message': str(e)}, status=500)
 
+
+
+
+
+from django.conf import settings
+from django.core.mail import send_mail
+from django.core.signing import TimestampSigner
+import logging
+
+logger = logging.getLogger(__name__)
 
 def send_password_reset_email(email):
-    link = f"\n\n[Change Password](http://127.0.0.1:5173/change_password)\n\n"
+    # Ensure the allowed hosts list is not empty
+    if not settings.ALLOWED_HOSTS:
+        raise ValueError("ALLOWED_HOSTS must contain at least one entry.")
+    
+    allowed_host = settings.ALLOWED_HOSTS[1] if len(settings.ALLOWED_HOSTS) > 1 else settings.ALLOWED_HOSTS[0]
+    
+    # Ensure the base URL includes the correct protocol
+    protocol = 'https' if settings.SECURE_SSL_REDIRECT else 'http'
+    base_url = f"{protocol}://{allowed_host}"
+
+    # Generate a secure token with a timestamp
+    signer = TimestampSigner()
+    token = signer.sign(email)
+    
+    # Create the link with the token
+    link = f"{base_url}/auth/change_password/{email}/{token}/"
+    
+    # Email subject and message
     subject = "Reset Your Password"
     message = (
-        f"Dear User,\n\n"
-        f"You recently requested to reset your password for [finance app]. "
-        f"Please use the following link to reset your password. "
-        f"This link is only valid for the next 24 hours."
-        f"{link}" 
-        f"If you did not request a password reset, please ignore this email. "
-        f"If you continue to receive this email or believe it was sent in error, "
-        f"please contact our support team immediately.\n\n"
-        f"Thank you,\n[Your Application Team]"
+        f"שלום,\n\n"
+        f"אתה ביקשת לאחרונה לאפס את הסיסמה שלך עבור CashControl.\n\n"
+        f"אנא השתמש בקישור הבא כדי לאפס את הסיסמה שלך. קישור זה בתוקף בלבד למשך 5 דקות הקרובות:\n\n"
+        f"{link}\n\n"
+        f"אם לא ביקשת לאפס את הסיסמה שלך, אנא התעלם מהמייל הזה. אם אתה ממשיך לקבל מיילים כאלה או סבור שהמייל נשלח בטעות,\n"
+        f"אנא פנה לצוות התמיכה שלנו בהקדם.\n\n"
+        f"תודה,\nצוות CashControl"
     )
-    logger.debug('password reset email send successfully')
-    send_mail(subject, message, DEFAULT_FROM_EMAIL, [email], fail_silently=False)
+
+    # Send the email
+    logger.debug(f'Reset password email sent to {email}')
+    send_mail(subject, message, settings.DEFAULT_FROM_EMAIL, [email], fail_silently=False)
+
+
 
 #changing password
 @api_view(['POST'])
-def change_password(request):
+def change_password(request, email, token):
     data = json.loads(request.body)
-    username = data.get('username', '')
     new_password = data.get('new_password', '')
+    
+    # Verify the token
+    signer = TimestampSigner()
     try:
-        user = CustomUser.objects.get(username=username)
+        # This will raise SignatureExpired if the link is older than 5 minutes
+        signer.unsign(token, max_age=300)  # 300 seconds = 5 minutes
+    except SignatureExpired:
+        logger.debug('Password reset link has expired')
+        return Response({'error': 'The reset link has expired. Please request a new one.'}, status=status.HTTP_400_BAD_REQUEST)
+    except BadSignature:
+        logger.debug('Invalid reset link')
+        return Response({'error': 'Invalid reset link.'}, status=status.HTTP_400_BAD_REQUEST)
+    
+    try:
+        user = CustomUser.objects.get(email=email)
         user.set_password(new_password)
         user.save()
         logger.debug('Password updated successfully')
-        return JsonResponse({'success': 'Password updated successfully'})
+        return Response({'success': 'Password updated successfully'})
     except CustomUser.DoesNotExist:
-        return JsonResponse({'error': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
+        logger.debug('User not found')
+        return Response({'error': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
+
+
+
+# ------------------------------mailing------------------------------------------------------
+def send_mail_for_signup(email):
+    subject = "Welcome to Our Community!"
+    message = (
+    "שלום,\n\n"
+    "תודה על ההרשמה והצטרפותך לקהילה שלנו! אנו נרגשים מאוד להכיר אותך ומצפים שתחקור את כל הפיצ'רים והיתרונות שהפלטפורמה שלנו מציעה.\n\n"
+    "ההרשמה שלך מסמלת את תחילתה של דרך מלאה במשאבים יקרים, תוכן מרתק והזדמנויות להתחבר עם אנשים בעלי תחומי עניין דומים. אנו מחויבים להעניק לך את החוויה והתמיכה הטובות ביותר ומצפים לעזור לך בכל דרך אפשרית.\n\n"
+    "ברוך הבא אלינו, ותודה שבחרת בנו!\n\n"
+    "בברכה,\n"
+    "צוות CashControl"
+    )
+    logger.debug(f'Sign up email sent to {email}')
+    send_mail(subject, message, DEFAULT_FROM_EMAIL, [email], fail_silently=False)
+
+
+
+@api_view(['POST'])
+def supporting_mail(request):
+    try:
+        subject = request.data.get('subject')
+        message = request.data.get('message')
+        email = request.data.get('email')
+
+        recipient_email = settings.DEFAULT_FROM_EMAIL
+
+        # Append the sender's email to the message
+        full_message = f"{message}\n\nThis email was sent from {email}."
+
+        send_mail(subject, full_message, settings.DEFAULT_FROM_EMAIL, [recipient_email], fail_silently=False)
+        logger.debug(f"Email support sent successfully from {email}.")
+        return Response({"message": f"Email sent successfully to {recipient_email}."}, status=status.HTTP_200_OK)
+    except Exception as e:
+        logger.error(f"Failed to send email from {email}. Error: {str(e)}")
+        return Response({"error": f"Failed to send email from {email}. Error: {str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+    
+
+
 
 
 
 @api_view(['GET'])
 def logout(request):
     logut_method(request)
+    logger.debug("user {request.user} logged out. ")
     return Response({"message": "User logged out successfully."})
 
 
 
 
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def fetch_current_user_data(request):
+    user_id = request.user.id
+    try:
+        user = CustomUser.objects.get(id=user_id)
+        serializer = CustomUserSerializer(user)
+        logger.debug('Current user data fetch successfully.')
+        return Response({
+        'status':200,
+        'user':serializer.data,
+        })
+        
+    except Exception as e:
+        logger.debug(f"Error fetching current user data: {str(e)}")  # Debug: Print the error message
+        return Response({
+            'status': 500,
+            'message': 'An error occurred while fetching data.',
+            'error': str(e)
+        }, status=500)
 
 
+#edit
+@api_view(['PUT'])
+@permission_classes([IsAuthenticated])
+def edit_user(request):
+    try:
+        user_id = request.user.id
+        user = CustomUser.objects.get(id=user_id)
+
+        # Retrieve data from the request
+        first_name = request.data.get('first_name', '')
+        last_name = request.data.get('last_name', '')
+        email = request.data.get('email', '')
+        gender = request.data.get('gender', '')
+        life_status = request.data.get('life_status', '')
+        num_of_children = request.data.get('num_of_children', 0)
+        phone_number = request.data.get('phone_number', '')
+        birth_date = request.data.get('birth_date', '')
+        profession = request.data.get('profession', '')
+        address = request.data.get('address', '')
 
 
+        # Retrieve and update the user
+        user = CustomUser.objects.get(id=user_id)
+        user.user = user  
+        user.first_name = first_name
+        user.last_name = last_name
+        user.email = email
+        user.gender = gender
+        user.life_status = life_status
+        user.num_of_children = num_of_children
+        user.phone_number = phone_number
+        user.birth_date = birth_date
+        user.profession = profession
+        user.address = address
+        user.updated_at = timezone.now()
 
-class SavingsViewSet(viewsets.ModelViewSet):
-    queryset = Savings.objects.all()
-    serializer_class = SavingsSerializer
-    permission_classes = [permissions.AllowAny]
+        user.save()
+        logger.debug(f"user {user} updated")
+        return Response({'status': 200, 'message': 'user updated'})
+
+    except CustomUser.DoesNotExist:
+        logger.debug(f"user {user} doesn't exist")
+        return Response({'error': 'User does not exist'}, status=404)
+    
+    except Exception as e:
+        logger.debug(f"Erorr editing user {user} {e}")
+        return Response({'error': str(e)}, status=500)
 
 
-class DebtViewSet(viewsets.ModelViewSet):
-    queryset = Debts.objects.all()
-    serializer_class = DebtSerializer
-    permission_classes = [permissions.AllowAny]
+# class SavingsViewSet(viewsets.ModelViewSet):
+#     queryset = Savings.objects.all()
+#     serializer_class = SavingsSerializer
+#     permission_classes = [permissions.AllowAny]
 
 
-class CreditCardViewSet(viewsets.ModelViewSet):
-    queryset = CreditCard.objects.all()
-    serializer_class = CreditCardSerializer
-    permission_classes = [permissions.AllowAny]
+# class DebtViewSet(viewsets.ModelViewSet):
+#     queryset = Debts.objects.all()
+#     serializer_class = DebtSerializer
+#     permission_classes = [permissions.AllowAny]
 
 
-class RevenueViewSet(viewsets.ModelViewSet):
-    queryset = Revenues.objects.all()
-    serializer_class = RevenueSerializer
-    permission_classes = [permissions.AllowAny]
+# class CreditCardViewSet(viewsets.ModelViewSet):
+#     queryset = CreditCard.objects.all()
+#     serializer_class = CreditCardSerializer
+#     permission_classes = [permissions.AllowAny]
 
 
-class ExpensesViewSet(viewsets.ModelViewSet):
-    queryset = Expenses.objects.all()
-    serializer_class = ExpenseSerializer
-    permission_classes = [permissions.AllowAny]
+# class RevenueViewSet(viewsets.ModelViewSet):
+#     queryset = Revenues.objects.all()
+#     serializer_class = RevenueSerializer
+#     permission_classes = [permissions.AllowAny]
+
+
+# class ExpensesViewSet(viewsets.ModelViewSet):
+#     queryset = Expenses.objects.all()
+#     serializer_class = ExpenseSerializer
+#     permission_classes = [permissions.AllowAny]
 
 
 
@@ -220,18 +423,14 @@ class ExpensesViewSet(viewsets.ModelViewSet):
 
 
 
-#TODO: set logs to the example view
 
 
 
-@api_view(['GET'])
-def hello_world(request):
-    return Response({'message': 'Hello, world'})
 
 
-@api_view(['GET'])
-def dashboard(request):
-    return render(request, template_name='mosaic-react/eyal.html')
+
+
+
 
 
 

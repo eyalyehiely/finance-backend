@@ -2,30 +2,28 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.utils import timezone
 import datetime
-from .family_models import Family
-# from .business import Business
 
+# from .business import Business
 
 
 
 
 class CustomUser(AbstractUser):
     GENDER_CHOICES = [
-        ('male', 'זכר'),
-        ('female', 'נקבה'),
-        ('other', 'אחר'),
+        ('זכר', 'זכר'),
+        ('נקבה', 'נקבה'),
+        ('אחר', 'אחר'),
     ]
 
     LIFE_STATUS_CHOICES = [
-        ('single', 'רווק/ה'),
-        ('marriage', 'נשוי/ה'),
-        ('divorce', 'גרוש/ה'),
+        ('רווק/ה', 'רווק/ה'),
+        ('נשוי/ה', 'נשוי/ה'),
+        ('גרוש/ה', 'גרוש/ה'),
     ]
 
     gender = models.CharField(max_length=10, choices=GENDER_CHOICES)
     life_status = models.CharField(max_length=50, choices=LIFE_STATUS_CHOICES)
-    family = models.ForeignKey(Family, on_delete=models.CASCADE, related_name='members',blank=True, null=True )
-    # business = models.ForeignKey(Business, on_delete=models.CASCADE, related_name='business',blank=True, null=True)
+    num_of_children = models.IntegerField(default=0)
     phone_number = models.CharField(max_length=10)
     birth_date = models.DateField(default=datetime.date.today)
     profession = models.CharField(max_length=100)

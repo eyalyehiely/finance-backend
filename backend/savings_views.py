@@ -1,15 +1,16 @@
-from django.shortcuts import get_object_or_404
-import jwt,datetime,json
+import datetime
 from django.http import  JsonResponse
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
-from .serializers import *
+from .serializers import SavingsSerializer
 import logging
 from django.utils import timezone
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
-from django.contrib.auth.decorators import login_required
 from rest_framework import status
+from .models import Savings
+from users.models import CustomUser
+
 
 
 
@@ -27,22 +28,21 @@ logger = logging.getLogger('backend')
 
 # fetch all savings in all time
 @api_view(['POST'])
+@permission_classes([IsAuthenticated])
 def get_all_savings(request):
-
+    user_id= request.user.id
     try:
-
-        # Get all expense records for the given user_id
-        user_id= request.user.id
+        
         savings = Savings.objects.filter(user_id=user_id)
-        all_savings = [{'saving_type': saving.saving_type, 'amount': saving.amount, 'interest': saving.interest, 'id': saving.id,'starting_date':saving.starting_date,'finish_date':saving.finish_date,'total_amount':round(saving.total_saving_amount,2),'earnings':saving.earnings} for saving in savings]
-        return JsonResponse({
-            'status': 200,
-            'all_savings': all_savings,
-        }, status=200)
-
+        serializer = SavingsSerializer(savings,many=True)
+        return Response({
+        'status':200,
+        'all_savings':serializer.data,
+        })
+        
     except Exception as e:
         print(f"Error: {str(e)}")  # Debug: Print the error message
-        return JsonResponse({
+        return Response({
             'status': 500,
             'message': 'An error occurred while fetching data.',
             'error': str(e)
@@ -66,7 +66,6 @@ def add_saving(request):
         # Create the saving
         saving = Savings.objects.create(
             user_id=CustomUser(user_id),  # Assign the user instance directly
-            family_id= user.family_id,
             saving_type=saving_type, 
             interest=interest,
             amount=amount,
@@ -124,7 +123,6 @@ def edit_saving(request, saving_id):
         # Create or update the saving
         saving, created = Savings.objects.get_or_create(id=saving_id)
         saving.user_id = CustomUser(user_id)
-        saving.family_id = user.family_id
         saving.saving_type = saving_type
         saving.interest = interest
         saving.amount = amount  # Convert amount to float

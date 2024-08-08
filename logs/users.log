@@ -1,5 +1,1 @@
-DEBUG 2024-05-12 18:15:11,235 views 74116 6180368384 User logged in successfully
-DEBUG 2024-05-13 14:56:45,767 views 80400 6124367872 User logged in successfully
-DEBUG 2024-05-13 15:33:37,417 views 80400 6124367872 User logged in successfully
-DEBUG 2024-05-13 15:36:10,170 views 80640 6194638848 User logged in successfully
-DEBUG 2024-05-13 15:38:00,394 views 80640 6194638848 User logged in successfully
+DEBUG 2024-07-11 00:12:57,144 authentication_views 30199 6204502016 Error: list index out of range

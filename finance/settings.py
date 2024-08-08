@@ -15,37 +15,31 @@ import os
 from datetime import timedelta
 from redis import Redis
 from dotenv import load_dotenv
-from datetime import timedelta
-from django.conf import global_settings
+import certifi
 
 load_dotenv()
-SITE_ID =1
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
+SITE_ID = 1
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-)s+d6bs$ft@m#vdgt#jba0qy9sgumx&__=l&q0p3@&^mj%+$m('
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get('DEBUG', 'False') == 'True'
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1']
-INTERNAL_IPS = ["127.0.0.1"]
+ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS','finance-backend-dev.up.railway.app,finance-frontend-dev.up.railway.app').split(',')
 
-# Application definition
+SECURE_SSL_REDIRECT = os.getenv('SECURE_SSL_REDIRECT', 'False').lower() == 'true'
+
 
 INSTALLED_APPS = [
     'django.contrib.admin',
+    'django.contrib.messages',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
-    'django.contrib.messages',
     'django.contrib.staticfiles',
-    'backend',
     'rest_framework',
+    'backend',
     'rest_framework_simplejwt',
     'rest_framework.authtoken',
     'drf_yasg',
@@ -54,51 +48,38 @@ INSTALLED_APPS = [
     'django.contrib.sites',
     'debug_toolbar',
     'rest_framework_simplejwt.token_blacklist',
-
-
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google'
 ]
-
-
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework_simplejwt.authentication.JWTAuthentication',
-        
-    ],
-    # 'DEFAULT_PERMISSION_CLASSES': [
-    #     'rest_framework.permissions.IsAuthenticated'
-    # ],
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.BasicAuthentication',
+    ]
 }
 
-
-
-
-
-
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(days=1),  # Token expiration time
-    'REFRESH_TOKEN_LIFETIME': timedelta(days=30),     # Refresh token expiration time
+    'ACCESS_TOKEN_LIFETIME': timedelta(days=1),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=30),
     'ROTATE_REFRESH_TOKENS': True,
     'BLACKLIST_AFTER_ROTATION': True,
     'UPDATE_LAST_LOGIN': False,
-    
-    'ALGORITHM': 'HS256',  # Token encryption algorithm
+    'ALGORITHM': 'HS256',
     'VERIFYING_KEY': None,
-
     'AUTH_HEADER_TYPES': ('Bearer',),
     'USER_ID_FIELD': 'id',
     'USER_ID_CLAIM': 'user_id',
-
     'AUTH_TOKEN_CLASSES': ('rest_framework_simplejwt.tokens.AccessToken',),
     'TOKEN_TYPE_CLAIM': 'token_type',
-
     'JTI_CLAIM': 'jti',
-    
     'SLIDING_TOKEN_REFRESH_EXP_CLAIM': 'refresh_exp',
     'SLIDING_TOKEN_LIFETIME': timedelta(minutes=5),
     'SLIDING_TOKEN_REFRESH_LIFETIME': timedelta(days=1),
 }
-
 
 SWAGGER_SETTINGS = {
     'SECURITY_DEFINITIONS': {
@@ -109,31 +90,33 @@ SWAGGER_SETTINGS = {
 }
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'debug_toolbar.middleware.DebugToolbarMiddleware',
+    "allauth.account.middleware.AccountMiddleware",
 ]
 
 
 ROOT_URLCONF = 'finance.urls'
 
 CORS_ALLOWED_ORIGINS = [
-    'http://localhost:5173',
+    os.environ.get('FRONTEND_URL','http://localhost:5173'),
     # Add other origins as needed
 ]
 CORS_ORIGIN_ALLOW_ALL = True
 
 
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'mosaic-react/src')],
+        'DIRS': [os.path.join(BASE_DIR, 'frontend/src')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -147,23 +130,19 @@ TEMPLATES = [
     },
 ]
 
-
-
-
-
 WSGI_APPLICATION = 'finance.wsgi.application'
-
-# Database
-# https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': os.environ.get('DATABASE_NAME', 'railway'),
+        'USER': os.environ.get('DATABASE_USER', 'postgres'),
+        'PASSWORD': os.environ.get('DATABASE_PASSWORD', 'nSObSkPFOFpFqWrDPUlsHroWLCGJInhu'),
+        'HOST': os.environ.get('DATABASE_HOST', 'viaduct.proxy.rlwy.net'),
+        'PORT': os.environ.get('DATABASE_PORT', '25017'),
     }
 }
 
-# Password validation
 AUTH_USER_MODEL = 'users.CustomUser'
 
 AUTH_PASSWORD_VALIDATORS = [
@@ -189,80 +168,85 @@ USE_I18N = True
 
 USE_TZ = True
 
-STATIC_URL = '/frontend/src/'
-
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'frontend', 'src', ),
+    os.path.join(BASE_DIR, 'static'),
 ]
 
-# STATIC_ROOT = os.path.join(BASE_DIR, 'mosaic-react/src')
-
-
-#Mailing
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'eyalwork0@gmail.com'
-EMAIL_HOST_PASSWORD = 'kanw zgwa xeot cxfx'
-DEFAULT_FROM_EMAIL = 'eyalwork0@gmail.com'
+EMAIL_HOST_USER = 'cashcontrol598@gmail.com'
+EMAIL_HOST_PASSWORD = 'mnfo qlcl pwlv iuyc'
+DEFAULT_FROM_EMAIL = 'cashcontrol598@gmail.com'
+os.environ['SSL_CERT_FILE'] = certifi.where()
 
-
-# social authentication
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
 ]
-# LOGIN_URL = '/signin/'
-# LOGIN_REDIRECT_URL = '/signin/'
-# ACCOUNT_LOGOUT_REDIRECT_URL = '/login'
 
-DEFAULT_REDIS_PORT = 6379
-DEFAULT_REDIS_HOST = 'localhost'
-DEFAULT_EXPIRATION = 3600
-redis_client = Redis(host=DEFAULT_REDIS_HOST, port=DEFAULT_REDIS_PORT)
+GOOGLE_CLIENT = os.environ.get('250047389112-kc4o893e4qthl428cqd0cr29ogau0vcl.apps.googleusercontent.com', '')
+GOOGLE_KEY = os.environ.get('GOOGLE_OAUTH2_CLIENT_SECRET', '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')
 
-# logs
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/'
+
+ACCOUNT_AUTHENTICATION_METHOD = 'username'
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_EMAIL_VERIFICATION = 'optional'
+ACCOUNT_USERNAME_REQUIRED = False
+
+
+
+
+
+
 LOGGING = {
     'version': 1,
-    # 'disable_existing_loggers': False,
-    'loggers': {
-        'backend': {
-            'handlers': ['backend_file'],  # Associate both console and file handlers
-            'level': 'DEBUG',
-        },
-        'users': {
-            'handlers': ['users_file', 'example_file'],  # Associate both console and file handlers
-            'level': 'DEBUG',
-        }
-    },
-    'handlers': {
-        'backend_file': {
-            'level': 'DEBUG',
-            'class': 'logging.FileHandler',  # File handler
-            'filename': './logs/backend.log',
-            'formatter': 'simpleRe',
-        },
-        'users_file': {
-            'level': 'DEBUG',
-            'class': 'logging.FileHandler',  # File handler
-            'filename': './logs/users.log',
-            'formatter': 'simpleRe',
-        },
-        'example_file': {
-            'level': 'ERROR',  # An example to a specific logger in a file
-            'class': 'logging.FileHandler',  # File handler
-            'filename': './logs/debug3.log',
-            'formatter': 'simpleRe',
-        }
-    },
+    'disable_existing_loggers': False,
     'formatters': {
         'simpleRe': {
             'format': '{levelname} {asctime} {module} {process:d} {thread:d} {message}',
             'style': '{',
         }
-    }
-
+    },
+    'handlers': {
+        'backend_file': {
+            'level': 'DEBUG' if DEBUG else 'INFO',
+            'class': 'logging.handlers.TimedRotatingFileHandler',
+            'filename': os.path.join(BASE_DIR, 'logs/backend.log'),
+            'formatter': 'simpleRe',
+            'when': 'midnight',
+            'backupCount': 7,
+        },
+        'users_file': {
+            'level': 'DEBUG' if DEBUG else 'INFO',
+            'class': 'logging.handlers.TimedRotatingFileHandler',
+            'filename': os.path.join(BASE_DIR, 'logs/users.log'),
+            'formatter': 'simpleRe',
+            'when': 'midnight',
+            'backupCount': 7,
+        },
+        'console': {
+            'level': 'DEBUG' if DEBUG else 'INFO',
+            'class': 'logging.StreamHandler',
+            'formatter': 'simpleRe',
+        },
+    },
+    'loggers': {
+        'backend': {
+            'handlers': ['backend_file', 'console'],
+            'level': 'DEBUG' if DEBUG else 'INFO',
+            'propagate': True,
+        },
+        'users': {
+            'handlers': ['users_file', 'console'],
+            'level': 'DEBUG' if DEBUG else 'INFO',
+            'propagate': True,
+        },
+    },
 }
 
-CORS_ALLOW_ALL_ORIGIN = True

@@ -344,3 +344,172 @@ DEBUG 2024-06-15 02:54:55,628 credit_card_views 89525 6159806464 Credit card add
 DEBUG 2024-06-15 02:58:39,822 credit_card_views 89525 6176632832 Credit card added
 DEBUG 2024-06-15 03:08:56,109 expenses_views 89525 6176632832 expense added
 DEBUG 2024-06-15 18:08:44,268 incomes_views 92714 6200307712 Income added
+DEBUG 2024-06-16 12:26:07,123 debts_views 6707 6128168960 Debt not added: Cannot assign "UUID('d968d621-2fa6-4131-95e6-ac3120bfa067')": "Debts.family_id" must be a "Family" instance.
+DEBUG 2024-06-16 12:54:24,127 expenses_views 7525 6219575296 expense not added: Cannot assign "UUID('d968d621-2fa6-4131-95e6-ac3120bfa067')": "Expenses.family_id" must be a "Family" instance.
+DEBUG 2024-06-16 12:55:08,250 expenses_views 8481 6195507200 expense added
+DEBUG 2024-06-16 13:54:58,595 credit_card_views 8506 6146142208 Credit card not added: Cannot assign "UUID('d968d621-2fa6-4131-95e6-ac3120bfa067')": "CreditCard.family_id" must be a "Family" instance.
+DEBUG 2024-06-16 13:55:31,637 credit_card_views 10285 6197293056 Credit card added
+DEBUG 2024-06-16 16:17:22,564 credit_card_views 12566 6166261760 Credit card not added: cannot access local variable 'card' where it is not associated with a value
+DEBUG 2024-06-16 16:19:52,397 credit_card_views 12566 6183088128 Credit card not added: cannot access local variable 'card' where it is not associated with a value
+DEBUG 2024-06-16 16:28:06,917 credit_card_views 12744 6137458688 Credit card not added: cannot access local variable 'card' where it is not associated with a value
+DEBUG 2024-06-16 16:28:27,231 credit_card_views 12752 6162542592 Credit card not added: cannot access local variable 'card' where it is not associated with a value
+DEBUG 2024-06-16 16:31:35,378 credit_card_views 12795 6193115136 Credit card not added: cannot access local variable 'card' where it is not associated with a value
+DEBUG 2024-06-16 16:32:20,498 credit_card_views 12808 6167916544 Credit card not added: cannot access local variable 'card' where it is not associated with a value
+DEBUG 2024-06-16 16:32:29,609 credit_card_views 12808 6167916544 Credit card not added: cannot access local variable 'card' where it is not associated with a value
+DEBUG 2024-06-16 16:32:37,515 credit_card_views 12808 6167916544 Credit card not added: cannot access local variable 'card' where it is not associated with a value
+DEBUG 2024-06-16 16:40:47,134 credit_card_views 12877 6202634240 Credit card added
+DEBUG 2024-06-16 17:19:38,852 debts_views 13729 6138572800 Debt not added: cannot access local variable 'e' where it is not associated with a value
+DEBUG 2024-06-16 17:19:43,895 debts_views 13729 6138572800 Debt not added: cannot access local variable 'e' where it is not associated with a value
+DEBUG 2024-06-16 17:21:14,012 debts_views 13729 6138572800 Debt not added: cannot access local variable 'e' where it is not associated with a value
+DEBUG 2024-06-16 17:21:31,804 debts_views 13729 6138572800 Debt not added: cannot access local variable 'e' where it is not associated with a value
+DEBUG 2024-06-16 17:21:40,421 debts_views 13729 6138572800 Debt not added: cannot access local variable 'e' where it is not associated with a value
+DEBUG 2024-06-16 17:23:54,148 debts_views 13900 6124826624 Debt not added: {'created_at': [ErrorDetail(string='This field is required.', code='required')], 'user_id': [ErrorDetail(string='This field is required.', code='required')]}
+DEBUG 2024-06-16 17:23:54,148 debts_views 13900 6124826624 Debt not added: cannot access local variable 'e' where it is not associated with a value
+DEBUG 2024-06-16 17:25:25,560 debts_views 13926 6203043840 Debt not added: {'created_at': [ErrorDetail(string='This field is required.', code='required')], 'user_id': [ErrorDetail(string='This field is required.', code='required')]}
+DEBUG 2024-06-16 17:25:25,560 debts_views 13926 6203043840 Debt not added: cannot access local variable 'e' where it is not associated with a value
+DEBUG 2024-06-16 17:26:22,516 debts_views 13942 6137294848 Debt not added: {'created_at': [ErrorDetail(string='This field is required.', code='required')], 'user_id': [ErrorDetail(string='This field is required.', code='required')]}
+DEBUG 2024-06-16 17:28:56,692 debts_views 13973 6195572736 Debt not added: {'created_at': [ErrorDetail(string='Expected a date but got a datetime.', code='datetime')], 'user_id': [ErrorDetail(string='This field is required.', code='required')]}
+DEBUG 2024-06-16 17:29:27,360 debts_views 13987 6169505792 Debt not added: unbound method datetime.date() needs an argument
+DEBUG 2024-06-16 17:29:37,134 debts_views 13993 6203650048 Debt not added: module 'django.utils.timezone' has no attribute 'date'
+DEBUG 2024-06-16 17:29:49,401 debts_views 14001 6195572736 Debt not added: function missing required argument 'year' (pos 1)
+DEBUG 2024-06-16 17:30:09,393 debts_views 14018 6128496640 Debt not added: {'created_at': [ErrorDetail(string='Expected a date but got a datetime.', code='datetime')], 'user_id': [ErrorDetail(string='This field is required.', code='required')]}
+DEBUG 2024-06-16 17:32:10,267 debts_views 14042 6195507200 Debt not added: {'user_id': [ErrorDetail(string='This field is required.', code='required')]}
+DEBUG 2024-06-16 17:32:45,941 debts_views 14042 6195507200 Debt not added: {'user_id': [ErrorDetail(string='This field is required.', code='required')]}
+DEBUG 2024-06-16 17:33:20,765 debts_views 14075 6130659328 Debt not added: {'user_id': [ErrorDetail(string='This field is required.', code='required')]}
+DEBUG 2024-06-16 17:34:24,528 debts_views 14108 6167605248 Debt not added: {'user_id': [ErrorDetail(string='This field is required.', code='required')]}
+DEBUG 2024-06-16 17:35:37,367 debts_views 14117 6197948416 Debt not added: {'user_id': [ErrorDetail(string='This field is required.', code='required')]}
+DEBUG 2024-06-16 17:40:58,536 debts_views 14228 6191673344 Debt not added: {'created_at': [ErrorDetail(string='This field is required.', code='required')], 'user_id': [ErrorDetail(string='This field is required.', code='required')]}
+DEBUG 2024-06-16 17:40:58,536 debts_views 14228 6191673344 Debt not added: cannot access local variable 'e' where it is not associated with a value
+DEBUG 2024-06-16 17:41:10,930 debts_views 14246 6191902720 Debt not added: {'created_at': [ErrorDetail(string='This field is required.', code='required')], 'user_id': [ErrorDetail(string='This field is required.', code='required')]}
+DEBUG 2024-06-16 17:41:33,204 debts_views 14263 6192312320 Debt not added: {'created_at': [ErrorDetail(string='This field is required.', code='required')]}
+DEBUG 2024-06-16 17:42:43,236 debts_views 14309 6203011072 Debt added
+DEBUG 2024-06-16 23:34:13,009 expenses_views 15728 6173552640 expense added
+DEBUG 2024-06-17 12:44:52,388 debts_views 16702 6202732544 Debt added
+DEBUG 2024-06-17 13:38:15,361 savings_views 18291 6190837760 saving not added: Cannot assign "UUID('d968d621-2fa6-4131-95e6-ac3120bfa067')": "Savings.family_id" must be a "Family" instance.
+DEBUG 2024-06-17 13:39:11,516 savings_views 18330 6126743552 saving added
+DEBUG 2024-06-17 17:12:18,559 incomes_views 20247 6128037888 Income not added: Cannot assign "UUID('d968d621-2fa6-4131-95e6-ac3120bfa067')": "Revenues.family_id" must be a "Family" instance.
+DEBUG 2024-06-17 17:13:12,937 incomes_views 20247 6128037888 Income not added: Cannot assign "UUID('d968d621-2fa6-4131-95e6-ac3120bfa067')": "Revenues.family_id" must be a "Family" instance.
+DEBUG 2024-06-17 17:13:50,638 incomes_views 20289 6193262592 Income added
+DEBUG 2024-06-18 00:34:24,488 savings_views 26546 6196113408 saving added
+DEBUG 2024-06-18 00:46:57,656 credit_card_views 27173 6341865472 Credit card not added: cannot access local variable 'e' where it is not associated with a value
+DEBUG 2024-06-18 00:48:20,236 credit_card_views 27350 6196883456 Credit card not added: {'required': 'This field is required.', 'null': 'This field may not be null.', 'invalid': 'Invalid data. Expected a dictionary, but got {datatype}.'}
+DEBUG 2024-06-18 00:48:20,237 credit_card_views 27350 6196883456 Credit card not added: unhashable type: 'dict'
+DEBUG 2024-06-18 00:49:01,376 credit_card_views 27402 6157627392 Credit card not added: {'required': 'This field is required.', 'null': 'This field may not be null.', 'invalid': 'Invalid data. Expected a dictionary, but got {datatype}.'}
+DEBUG 2024-06-18 00:49:53,476 credit_card_views 27437 6166212608 Credit card not added: cannot access local variable 'e' where it is not associated with a value
+DEBUG 2024-06-18 00:51:19,162 credit_card_views 27483 6161625088 Credit card not added: {'required': 'This field is required.', 'null': 'This field may not be null.', 'invalid': 'Invalid data. Expected a dictionary, but got {datatype}.'}
+DEBUG 2024-06-18 00:51:19,175 credit_card_views 27483 6178451456 Credit card not added: {'required': 'This field is required.', 'null': 'This field may not be null.', 'invalid': 'Invalid data. Expected a dictionary, but got {datatype}.'}
+DEBUG 2024-06-18 00:54:58,141 credit_card_views 27483 6178451456 Credit card not added: {'required': 'This field is required.', 'null': 'This field may not be null.', 'invalid': 'Invalid data. Expected a dictionary, but got {datatype}.'}
+DEBUG 2024-06-18 00:59:02,970 credit_card_views 27483 6161625088 Credit card not added: {'required': 'This field is required.', 'null': 'This field may not be null.', 'invalid': 'Invalid data. Expected a dictionary, but got {datatype}.'}
+DEBUG 2024-06-18 00:59:38,738 credit_card_views 27483 6161625088 Credit card not added: {'required': 'This field is required.', 'null': 'This field may not be null.', 'invalid': 'Invalid data. Expected a dictionary, but got {datatype}.'}
+DEBUG 2024-06-18 01:00:11,740 credit_card_views 27483 6178451456 Credit card not added: {'required': 'This field is required.', 'null': 'This field may not be null.', 'invalid': 'Invalid data. Expected a dictionary, but got {datatype}.'}
+DEBUG 2024-06-18 01:03:27,787 credit_card_views 27483 6178451456 Credit card not added: {'required': 'This field is required.', 'null': 'This field may not be null.', 'invalid': 'Invalid data. Expected a dictionary, but got {datatype}.'}
+DEBUG 2024-06-18 01:07:54,084 credit_card_views 27810 6191738880 Credit card not added: {'required': 'This field is required.', 'null': 'This field may not be null.', 'invalid': 'Invalid data. Expected a dictionary, but got {datatype}.'}
+DEBUG 2024-06-18 01:09:04,327 credit_card_views 27843 6136197120 Credit card not added: {'created_at': [ErrorDetail(string='This field is required.', code='required')], 'day_of_charge': [ErrorDetail(string='"2" is not a valid choice.', code='invalid_choice')], 'user_id': [ErrorDetail(string='This field is required.', code='required')]}
+DEBUG 2024-06-18 01:09:04,327 credit_card_views 27843 6136197120 Request data: {'name': 'Mastercard', 'day_of_charge': '2', 'credit_type': 'Debit', 'line_of_credit': '7000', 'last_four_digits': '4567', 'status': 'Active'}
+DEBUG 2024-06-18 01:10:03,382 credit_card_views 27843 6136197120 Credit card not added: {'created_at': [ErrorDetail(string='This field is required.', code='required')], 'day_of_charge': [ErrorDetail(string='"2" is not a valid choice.', code='invalid_choice')], 'user_id': [ErrorDetail(string='This field is required.', code='required')]}
+DEBUG 2024-06-18 01:10:03,383 credit_card_views 27843 6136197120 Request data: {'name': 'Mastercard', 'day_of_charge': '2', 'credit_type': 'Debit', 'line_of_credit': '7000', 'last_four_digits': '4567', 'status': 'Active'}
+DEBUG 2024-06-18 01:10:20,116 credit_card_views 27867 6138195968 Credit card not added: {'required': 'This field is required.', 'null': 'This field may not be null.', 'invalid': 'Invalid data. Expected a dictionary, but got {datatype}.'}
+DEBUG 2024-06-18 13:39:27,546 debts_views 30955 6199439360 Debt added
+DEBUG 2024-06-18 13:40:21,280 savings_views 30955 6216265728 saving added
+DEBUG 2024-06-18 13:48:45,661 savings_views 31439 6149435392 saving added
+DEBUG 2024-06-18 13:52:29,437 savings_views 31439 6149435392 saving added
+DEBUG 2024-06-18 13:56:15,661 credit_card_views 31439 6149435392 Credit card not added: {'required': 'This field is required.', 'null': 'This field may not be null.', 'invalid': 'Invalid data. Expected a dictionary, but got {datatype}.'}
+DEBUG 2024-06-18 13:57:28,058 credit_card_views 31615 6196080640 Credit card not added: {'required': 'This field is required.', 'null': 'This field may not be null.', 'invalid': 'Invalid data. Expected a dictionary, but got {datatype}.'}
+DEBUG 2024-06-18 13:57:38,030 credit_card_views 31624 6161199104 Credit card not added: {'required': 'This field is required.', 'null': 'This field may not be null.', 'invalid': 'Invalid data. Expected a dictionary, but got {datatype}.'}
+DEBUG 2024-06-18 14:12:24,133 credit_card_views 31721 6213332992 Credit card not added: {'required': 'This field is required.', 'null': 'This field may not be null.', 'invalid': 'Invalid data. Expected a dictionary, but got {datatype}.'}
+DEBUG 2024-06-18 14:16:41,122 credit_card_views 31801 6126039040 Credit card not added: {'required': 'This field is required.', 'null': 'This field may not be null.', 'invalid': 'Invalid data. Expected a dictionary, but got {datatype}.'}
+DEBUG 2024-06-18 14:18:57,881 credit_card_views 31866 6200143872 Credit card not added: {'created_at': [ErrorDetail(string='This field is required.', code='required')], 'day_of_charge': [ErrorDetail(string='"15" is not a valid choice.', code='invalid_choice')]}
+DEBUG 2024-06-18 14:21:15,388 credit_card_views 31933 6130200576 Credit card not added: {'created_at': [ErrorDetail(string='This field is required.', code='required')], 'day_of_charge': [ErrorDetail(string='"15" is not a valid choice.', code='invalid_choice')]}
+DEBUG 2024-06-18 14:23:04,770 credit_card_views 31933 6130200576 Credit card not added: {'created_at': [ErrorDetail(string='This field is required.', code='required')], 'day_of_charge': [ErrorDetail(string='"15" is not a valid choice.', code='invalid_choice')]}
+DEBUG 2024-06-18 14:23:15,361 credit_card_views 31933 6130200576 Credit card not added: {'created_at': [ErrorDetail(string='This field is required.', code='required')], 'day_of_charge': [ErrorDetail(string='"10" is not a valid choice.', code='invalid_choice')]}
+DEBUG 2024-06-18 14:24:10,988 credit_card_views 32022 6195523584 Credit card not added: {'day_of_charge': [ErrorDetail(string='"10" is not a valid choice.', code='invalid_choice')]}
+DEBUG 2024-06-18 14:25:08,542 credit_card_views 32061 6121779200 Credit card not added: {'day_of_charge': [ErrorDetail(string='"10" is not a valid choice.', code='invalid_choice')]}
+DEBUG 2024-06-18 14:25:55,628 credit_card_views 32093 6134870016 Credit card not added: {'day_of_charge': [ErrorDetail(string='"10" is not a valid choice.', code='invalid_choice')]}
+DEBUG 2024-06-18 14:25:55,628 credit_card_views 32093 6151696384 Credit card not added: {'day_of_charge': [ErrorDetail(string='"10" is not a valid choice.', code='invalid_choice')]}
+DEBUG 2024-06-18 14:26:07,632 credit_card_views 32093 6151696384 Credit card not added: {'day_of_charge': [ErrorDetail(string='"10" is not a valid choice.', code='invalid_choice')]}
+DEBUG 2024-06-18 14:26:42,596 credit_card_views 32104 6157447168 Credit card not added: {'day_of_charge': [ErrorDetail(string='"10" is not a valid choice.', code='invalid_choice')]}
+DEBUG 2024-06-18 14:27:09,728 credit_card_views 32104 6157447168 Credit card not added: {'day_of_charge': [ErrorDetail(string='"10" is not a valid choice.', code='invalid_choice')]}
+DEBUG 2024-06-18 15:17:42,387 credit_card_views 32104 6157447168 Credit card not added: {'day_of_charge': [ErrorDetail(string='"2" is not a valid choice.', code='invalid_choice')]}
+DEBUG 2024-06-18 15:20:24,561 credit_card_views 32666 6161002496 Credit card added successfully.
+DEBUG 2024-06-18 18:19:27,375 credit_card_views 36386 6178746368 Credit card added successfully.
+DEBUG 2024-06-19 13:52:56,707 expenses_views 50341 6177124352 expense not added: ['“” value has an invalid format. It must be in YYYY-MM-DD HH:MM[:ss[.uuuuuu]][TZ] format.']
+DEBUG 2024-06-19 13:53:03,156 expenses_views 50341 6177124352 expense not added: ['“” value has an invalid format. It must be in YYYY-MM-DD HH:MM[:ss[.uuuuuu]][TZ] format.']
+DEBUG 2024-06-19 14:52:15,719 expenses_views 50341 6126645248 expense added
+DEBUG 2024-06-19 14:53:23,301 expenses_views 50341 6160297984 expense added
+DEBUG 2024-06-19 14:54:02,178 expenses_views 50341 6143471616 expense not added: ['“” value has an invalid format. It must be in YYYY-MM-DD HH:MM[:ss[.uuuuuu]][TZ] format.']
+DEBUG 2024-06-19 14:55:00,297 expenses_views 50341 6143471616 expense not added: ['“” value has an invalid format. It must be in YYYY-MM-DD HH:MM[:ss[.uuuuuu]][TZ] format.']
+DEBUG 2024-06-19 14:55:22,249 expenses_views 50341 6143471616 expense added
+DEBUG 2024-06-19 14:56:31,989 expenses_views 50341 6143471616 expense added
+DEBUG 2024-06-19 15:17:12,731 expenses_views 53484 6251147264 expense added
+DEBUG 2024-06-19 15:19:38,088 credit_card_views 53484 6183841792 Credit card added successfully.
+DEBUG 2024-06-19 21:18:46,505 debts_views 54063 6151172096 Debt not added: NOT NULL constraint failed: backend_debts.created_at
+DEBUG 2024-06-19 21:18:53,810 debts_views 54063 6151172096 Debt not added: NOT NULL constraint failed: backend_debts.created_at
+DEBUG 2024-06-19 21:20:42,863 debts_views 55263 6167457792 Debt added
+DEBUG 2024-06-20 00:19:21,713 incomes_views 56335 6170963968 Income added
+DEBUG 2024-06-20 00:38:13,506 savings_views 56335 6187790336 saving added
+DEBUG 2024-06-20 00:42:13,417 savings_views 57065 6167244800 saving added
+DEBUG 2024-06-20 01:06:06,625 authentication_views 57668 6130397184 Password reset email sent successfully
+ERROR 2024-06-20 01:13:44,911 authentication_views 57863 6128922624 Error sending password reset email: [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1006)
+ERROR 2024-06-20 01:16:27,458 authentication_views 57863 6128922624 Error sending password reset email: [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1006)
+ERROR 2024-06-20 01:19:55,064 authentication_views 58025 6201651200 Error sending password reset email: [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1006)
+ERROR 2024-06-20 01:19:55,064 authentication_views 58025 6201651200 Error in reset_password view: [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1006)
+ERROR 2024-06-20 01:22:47,603 authentication_views 58069 6129905664 Error sending password reset email: [SSL: WRONG_VERSION_NUMBER] wrong version number (_ssl.c:1006)
+ERROR 2024-06-20 01:22:47,603 authentication_views 58069 6129905664 Error in reset_password view: [SSL: WRONG_VERSION_NUMBER] wrong version number (_ssl.c:1006)
+ERROR 2024-06-20 01:23:59,984 authentication_views 58100 6125711360 Error sending password reset email: Cannot create a client socket with a PROTOCOL_TLS_SERVER context (_ssl.c:809)
+ERROR 2024-06-20 01:23:59,984 authentication_views 58100 6125711360 Error in reset_password view: Cannot create a client socket with a PROTOCOL_TLS_SERVER context (_ssl.c:809)
+ERROR 2024-06-20 01:24:58,486 authentication_views 58140 6126563328 Error sending password reset email: Cannot create a client socket with a PROTOCOL_TLS_SERVER context (_ssl.c:809)
+ERROR 2024-06-20 01:24:58,486 authentication_views 58140 6126563328 Error in reset_password view: Cannot create a client socket with a PROTOCOL_TLS_SERVER context (_ssl.c:809)
+ERROR 2024-06-20 01:26:38,836 authentication_views 58173 6161756160 Error sending password reset email: Cannot create a client socket with a PROTOCOL_TLS_SERVER context (_ssl.c:809)
+ERROR 2024-06-20 01:26:38,836 authentication_views 58173 6161756160 Error in reset_password view: Cannot create a client socket with a PROTOCOL_TLS_SERVER context (_ssl.c:809)
+DEBUG 2024-06-20 01:29:14,103 authentication_views 58355 6169014272 password reset email send successfully
+DEBUG 2024-06-20 01:33:44,389 authentication_views 58482 6159478784 Error , {e}
+DEBUG 2024-06-20 12:38:00,817 authentication_views 62472 6166294528 Error , {e}
+DEBUG 2024-06-20 12:42:01,625 authentication_views 62713 6136541184 Email to eyalyehiely sent successfully
+DEBUG 2024-06-20 13:10:54,780 authentication_views 63302 6134673408 Email to eyalwork0@gmail.com sent successfully
+DEBUG 2024-06-20 13:13:17,892 authentication_views 63378 6164656128 Email to eyalwork0@gmail.com sent successfully
+DEBUG 2024-06-20 13:14:59,883 authentication_views 63413 6124744704 Email to eyalwork0@gmail.com sent successfully
+DEBUG 2024-06-20 13:24:17,652 authentication_views 63638 6133395456 Email to eyalwork0@gmail.com sent successfully
+DEBUG 2024-06-20 13:27:35,413 authentication_views 63678 6134951936 Email to eyalwork0@gmail.com sent successfully
+DEBUG 2024-06-20 13:29:35,892 authentication_views 63678 6134951936 Password updated successfully
+DEBUG 2024-06-20 14:44:50,442 credit_card_views 63878 6160281600 Credit card not added: {'day_of_charge': [ErrorDetail(string='"10" is not a valid choice.', code='invalid_choice')], 'status': [ErrorDetail(string='"" is not a valid choice.', code='invalid_choice')]}
+DEBUG 2024-06-20 14:44:53,085 credit_card_views 63878 6160281600 Credit card not added: {'day_of_charge': [ErrorDetail(string='"10" is not a valid choice.', code='invalid_choice')], 'status': [ErrorDetail(string='"" is not a valid choice.', code='invalid_choice')]}
+DEBUG 2024-06-20 14:44:57,860 credit_card_views 63878 6160281600 Credit card not added: {'day_of_charge': [ErrorDetail(string='"10" is not a valid choice.', code='invalid_choice')], 'status': [ErrorDetail(string='"" is not a valid choice.', code='invalid_choice')]}
+DEBUG 2024-06-20 14:46:32,539 credit_card_views 63878 6160281600 Credit card not added: {'day_of_charge': [ErrorDetail(string='"10" is not a valid choice.', code='invalid_choice')], 'status': [ErrorDetail(string='"" is not a valid choice.', code='invalid_choice')]}
+DEBUG 2024-06-20 14:47:00,590 credit_card_views 63878 6160281600 Credit card not added: {'status': [ErrorDetail(string='"" is not a valid choice.', code='invalid_choice')]}
+DEBUG 2024-06-20 14:47:08,877 credit_card_views 63878 6160281600 Credit card not added: {'day_of_charge': [ErrorDetail(string='"10" is not a valid choice.', code='invalid_choice')], 'status': [ErrorDetail(string='"" is not a valid choice.', code='invalid_choice')]}
+DEBUG 2024-06-20 14:47:54,939 credit_card_views 63878 6160281600 Credit card not added: {'status': [ErrorDetail(string='"" is not a valid choice.', code='invalid_choice')]}
+DEBUG 2024-06-20 15:06:08,684 credit_card_views 63878 6126628864 Credit card not added: {'day_of_charge': [ErrorDetail(string='"10" is not a valid choice.', code='invalid_choice')], 'status': [ErrorDetail(string='"" is not a valid choice.', code='invalid_choice')]}
+DEBUG 2024-06-20 15:06:52,333 credit_card_views 63878 6126628864 Credit card not added: {'day_of_charge': [ErrorDetail(string='"10" is not a valid choice.', code='invalid_choice')], 'status': [ErrorDetail(string='"" is not a valid choice.', code='invalid_choice')]}
+DEBUG 2024-06-20 15:10:31,606 credit_card_views 63878 6126628864 Credit card not added: {'day_of_charge': [ErrorDetail(string='"10" is not a valid choice.', code='invalid_choice')], 'status': [ErrorDetail(string='"" is not a valid choice.', code='invalid_choice')]}
+DEBUG 2024-06-20 15:19:28,127 credit_card_views 65893 6128087040 Credit card not added: {'status': [ErrorDetail(string='"" is not a valid choice.', code='invalid_choice')]}
+DEBUG 2024-06-20 15:23:33,898 credit_card_views 65929 6171144192 Credit card not added: {'status': [ErrorDetail(string='"" is not a valid choice.', code='invalid_choice')]}
+DEBUG 2024-06-20 15:23:52,356 credit_card_views 65929 6171144192 Credit card not added: {'status': [ErrorDetail(string='"" is not a valid choice.', code='invalid_choice')]}
+DEBUG 2024-06-20 15:24:42,289 credit_card_views 65929 6171144192 Credit card not added: {'status': [ErrorDetail(string='"" is not a valid choice.', code='invalid_choice')]}
+DEBUG 2024-06-20 15:25:47,890 credit_card_views 65929 6171144192 Credit card not added: {'status': [ErrorDetail(string='"" is not a valid choice.', code='invalid_choice')]}
+DEBUG 2024-06-20 15:25:51,456 credit_card_views 65929 6171144192 Credit card not added: {'status': [ErrorDetail(string='"" is not a valid choice.', code='invalid_choice')]}
+DEBUG 2024-06-20 15:29:21,911 credit_card_views 65929 6171144192 Credit card not added: {'status': [ErrorDetail(string='"" is not a valid choice.', code='invalid_choice')]}
+DEBUG 2024-06-20 15:32:38,763 credit_card_views 65986 6133116928 Credit card not added: {'status': [ErrorDetail(string='"" is not a valid choice.', code='invalid_choice')]}
+DEBUG 2024-06-20 15:36:26,469 credit_card_views 65986 6133116928 Credit card not added: {'status': [ErrorDetail(string='"" is not a valid choice.', code='invalid_choice')]}
+DEBUG 2024-06-20 16:00:18,600 credit_card_views 66182 6201110528 Credit card added successfully.
+DEBUG 2024-06-20 16:06:18,037 authentication_views 66351 6258307072 Email to eyalwork0@gmail.com sent successfully
+DEBUG 2024-06-21 14:02:58,959 incomes_views 73719 6141292544 Income not added: 'str' object has no attribute 'strftime'
+DEBUG 2024-06-21 14:03:50,959 incomes_views 73719 6141292544 Income not added: 'str' object has no attribute 'strftime'
+DEBUG 2024-06-21 14:06:08,150 incomes_views 73805 6189674496 Income not added: module 'datetime' has no attribute 'strptime'
+DEBUG 2024-06-21 14:06:20,006 incomes_views 73816 6156005376 Income not added: module 'django.utils.timezone' has no attribute 'strptime'
+DEBUG 2024-06-21 14:07:26,596 incomes_views 73842 6157135872 Income not added: module 'datetime' has no attribute 'strptime'
+DEBUG 2024-06-21 14:07:56,031 incomes_views 73855 6128693248 Income not added: ['“21-06-2024” value has an invalid date format. It must be in YYYY-MM-DD format.']
+DEBUG 2024-06-21 14:08:12,092 incomes_views 73861 6134853632 Income added
+DEBUG 2024-06-21 14:09:07,723 incomes_views 73888 6132674560 Income added
+DEBUG 2024-06-21 14:10:59,504 incomes_views 73941 6131003392 Income added
+DEBUG 2024-06-21 14:15:01,216 incomes_views 74069 6210416640 Income not added: module 'datetime' has no attribute 'strptime'
+DEBUG 2024-06-21 14:17:24,109 incomes_views 74206 6199635968 Income added
+DEBUG 2024-06-21 14:17:44,611 incomes_views 74206 6216462336 Income added
+DEBUG 2024-06-22 01:55:46,007 expenses_views 84660 6205288448 expense added
+DEBUG 2024-06-22 14:32:59,537 expenses_views 85265 6190624768 expense added
+DEBUG 2024-06-22 22:44:31,073 expenses_views 85265 6207451136 expense added
+DEBUG 2024-06-23 18:09:10,514 expenses_views 90377 6236499968 expense added
+DEBUG 2024-06-27 19:02:42,934 expenses_views 21880 6223966208 expense not added: save() prohibited to prevent data loss due to unsaved related object 'family_id'.
+DEBUG 2024-06-27 19:02:50,928 expenses_views 21880 6223966208 expense not added: save() prohibited to prevent data loss due to unsaved related object 'family_id'.
+DEBUG 2024-06-27 19:06:47,084 expenses_views 22163 6164983808 expense not added: name 'Family' is not defined
+DEBUG 2024-06-27 19:10:00,547 expenses_views 22306 6205222912 expense added
+DEBUG 2024-06-27 20:02:43,538 expenses_views 22921 6262501376 expense added

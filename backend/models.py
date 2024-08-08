@@ -1,7 +1,7 @@
 from django.db import models
 from django.db.models import Sum
 
-from users.family_models import Family
+
 from users.models import CustomUser
 import datetime
 from django.utils import timezone
@@ -20,14 +20,13 @@ class BaseModel(models.Model):
 
 class Savings(BaseModel):
     SAVING_TYPES = [
-        ('health', 'בריאות'),
-        ('business', 'עסקים'),
-        ('regular', 'רגיל'),
-        ('education','השכלה'),
-        ('other','אחר'),
+        ('בריאות', 'בריאות'),
+        ('עסקים', 'עסקים'),
+        ('רגיל', 'רגיל'),
+        ('השכלה', 'השכלה'),
+        ('אחר', 'אחר')
     ]
     user_id = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='savings')
-    family_id = models.ForeignKey(Family, on_delete=models.CASCADE, related_name='savings',blank=True, null=True)
     saving_type = models.CharField(max_length=50, choices=SAVING_TYPES)
     interest = models.FloatField()
     amount = models.FloatField()
@@ -74,16 +73,14 @@ class Savings(BaseModel):
 #3
 class Debts(BaseModel):
     DEBT_TYPES = [
-        ('mortgage', 'משכנתא'),
-        ('goverment', 'ממשלתית'),
-        ('loan', 'הלוואה'),
-        ('business', 'עסק'),
-        ('medical', 'רפואי'),
-        ('car', 'משכון רכב'),
-        
+        ('משכנתא', 'משכנתא'),
+        ('ממשלתית', 'ממשלתית'),
+        ('הלוואה', 'הלוואה'),
+        ('עסק', 'עסק'),
+        ('רפואי', 'רפואי'),
+        ('משכון רכב', 'משכון רכב'),
     ]
     user_id = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='debts')
-    family_id = models.ForeignKey(Family, on_delete=models.CASCADE, related_name='debts',blank=True, null=True)
     type = models.CharField(max_length=50, choices=DEBT_TYPES)
     name = models.TextField(max_length=100)
     amount = models.FloatField()
@@ -98,39 +95,44 @@ class Debts(BaseModel):
         payed_amount = (self.total_amount/self.num_of_months) * calc_months
         return payed_amount
 
-    @property
-    def month_payment(self):
-        month_payment = float(self.total_amount / self.num_of_months)
-        return month_payment
-
+   
     @property
     def month_payed(self):
         num_month_payed = datetime.date.today().month - self.created_at.month
         return num_month_payed
 
-   
 
     @property
-    def num_of_months(self):
-        start_date = self.starting_date
-        num_months = (self.finish_date.year - start_date.year) * 12 + self.finish_date.month - start_date.month
-        return num_months
+    def month_payment(self):
+        if self.num_of_months > 0:
+            month_payment = float(self.total_amount / self.num_of_months)
+        else:
+            month_payment = 0.0  # Handle division by zero scenario
+        return month_payment
 
     @property
     def total_amount(self):
         principal = self.amount
         interest_rate = self.interest
         num_of_months = self.num_of_months
-        monthly_interest_rate = (interest_rate) / 100 / 12
-        total_amount = principal
 
-        for _ in range(num_of_months):
-            interest_amount = total_amount * monthly_interest_rate
-            total_amount += interest_amount
+        if num_of_months > 0:
+            monthly_interest_rate = (interest_rate) / 100 / 12
+            total_amount = principal
 
-        return total_amount
+            for _ in range(num_of_months):
+                interest_amount = total_amount * monthly_interest_rate
+                total_amount += interest_amount
 
+            return total_amount
+        else:
+            return principal  # Return principal if no months
 
+    @property
+    def num_of_months(self):
+        start_date = self.starting_date
+        num_months = (self.finish_date.year - start_date.year) * 12 + self.finish_date.month - start_date.month
+        return num_months if num_months > 0 else 1  # Ensure it returns at least 1 to avoid division by zero
 
    
 
@@ -139,10 +141,10 @@ class Debts(BaseModel):
 
 class CreditCard(BaseModel):
     DAY_OF_CHARGE = [
-        ('type1', '2'),
-        ('type2', '10'),
-        ('type3', '15'),
-        ('type4', 'none'),
+        ('2', '2'),
+        ('10', '10'),
+        ('15', '15'),
+        ('אין', 'אין'),
     ]
     CARD_NAME = [
         ('no_card', 'no_card'),
@@ -157,34 +159,33 @@ class CreditCard(BaseModel):
 
     ]
     STATUS = [
-        ('Active', 'Active'),
-        ('Blocked', 'Blocked'),
+        ('פעיל', 'פעיל'),
+        ('חסום', 'חסום'),
     ]
     user_id = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='CreditCard')
-    family_id = models.ForeignKey(Family, on_delete=models.CASCADE, related_name='CreditCard',blank=True, null=True)
     name = models.TextField(max_length=50, choices=CARD_NAME)
     day_of_charge = models.CharField(max_length=50, choices=DAY_OF_CHARGE)
     credit_type = models.TextField(max_length=50, choices=CREDIT_TYPE)
     line_of_credit = models.FloatField(blank=True, null=True)
-    last_four_digits = models.TextField(max_length=100)
+    last_four_digits = models.TextField(max_length=4)
     status = models.CharField(max_length=50, choices=STATUS)
 
 
     @property
     def amount_to_charge(self):
         expenses_sum = 0.0
-        expenses = Expenses.objects.filter(family_id=self.family_id, payment_method = 'credit_card')
+        expenses = Expenses.objects.filter(user_id=self.user_id, payment_method = 'credit_card',credit_card=self.id)
         for expense in expenses:
             expenses_sum += expense.price
         return expenses_sum
 
-#credit card status
+
     @property
     def rate(self):
         if (self.amount_to_charge < self.line_of_credit):
-            return True
+            return 'חיובי'
         else:
-            return False
+            return 'שלילי'
 
 
     # until the end of the previous month - calc the expenses
@@ -192,7 +193,7 @@ class CreditCard(BaseModel):
     def depending_charges(self):
         current_month = timezone.now().month
         total_depending_charges = 0
-        expenses = Expenses.objects.filter(family_id=self.family_id, payment_method = 'credit_card')
+        expenses = Expenses.objects.filter(user_id=self.user_id, payment_method = 'credit_card')
         for expense in expenses:
             if (expense.created_at.month == current_month):
                 total_depending_charges += expense.price
@@ -217,31 +218,31 @@ class CreditCard(BaseModel):
 class Expenses(BaseModel):
 
     EXPENSES_TYPES = [
-        ('regular_expense', 'הוצאה רגילה'),
-        ('irregular_expense', 'הוצאה לא רגילה')
+        ('הוצאה קבועה', 'הוצאה קבועה'),
+        ('הוצאה משתנה', 'הוצאה משתנה')
     ]
     PAYMENT_METHODS = [
-        ('credit_card', 'כרטיס אשראי'),
-        ('direct_debit', 'הוראת קבע'),
-        ('transaction', 'העברה בנקאית'),
-        ('cash', 'מזומן'),
-        ('check', 'צ׳ק'),
+        ('כרטיס אשראי', 'כרטיס אשראי'),
+        ('הוראת קבע', 'הוראת קבע'),
+        ('העברה בנקאית', 'העברה בנקאית'),
+        ('מזומן', 'מזומן'),
+        ('צ׳ק', 'צ׳ק'),
     ]
 
     CATEGORY_TYPES = [
-        ('supermarket','סופר'),
-        ('restaurant','מסעדה'),
-        ('tech','טכנולוגיה'),
-        ('dress_and_shoes','הלבשה והנעלה'),
-        ('fuel','דלק'),
-        ('loan','הלוואה'),
-        ('debt', 'חוב'),
-        ('gift','מתנה')
+        ('סופר','סופר'),
+        ('מסעדה','מסעדה'),
+        ('טכנולוגיה','טכנולוגיה'),
+        ('הלבשה והנעלה','הלבשה והנעלה'),
+        ('דלק','דלק'),
+        ('הלוואה','הלוואה'),
+        ('חוב', 'חוב'),
+        ('מתנה','מתנה'),
+        ('אחר','אחר')
 
 
     ]
     user_id = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='expenses')
-    family_id = models.ForeignKey(Family, on_delete=models.CASCADE, related_name='expenses',blank=True, null=True)
     payment_method = models.CharField(max_length=50, choices=PAYMENT_METHODS)
     expense_type = models.CharField(max_length=50, choices=EXPENSES_TYPES)
     date_and_time = models.DateTimeField()
@@ -262,12 +263,11 @@ class Expenses(BaseModel):
 
 class Revenues(BaseModel):
     SOURCES_TYPES = [
-        ('salary', 'משכורת'),
-        ('allowance', 'קצבה'),
-        ('other', 'אחר'),
+        ('משכורת', 'משכורת'),
+        ('קצבה', 'קצבה'),
+        ('אחר', 'אחר'),
     ]
     user_id = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='revenue')
-    family_id = models.ForeignKey(Family, on_delete=models.CASCADE, related_name='revenue',blank=True, null=True)
     source = models.CharField(max_length=50, choices=SOURCES_TYPES)
     amount = models.FloatField()
     date = models.DateField()
